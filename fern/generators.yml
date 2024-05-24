@@ -1,0 +1,28 @@
+default-group: local
+api:
+  path: ./openapi/fluidstack-openapi.json
+  overrides: ./openapi/openapi-overrides.yml
+groups:
+  python-sdk:
+    generators:
+      - name: fernapi/fern-python-sdk
+        version: 2.5.3
+        output:
+          location: pypi
+          package-name: fluidstack
+        github:
+          repository: fluidstackio/fluidstack-python-sdk
+        config:
+          client_class_name: FluidStack
+        smart-casing: true
+
+  python-local:
+    generators:
+      - name: fernapi/fern-python-sdk
+        version: 2.5.3
+        output:
+          location: local-file-system
+          path: ../generated
+        config:
+          client_class_name: FluidStack
+        smart-casing: true

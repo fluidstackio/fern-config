@@ -1,0 +1,79 @@
+paths:
+  /healthcheck:
+    get:
+      x-fern-ignore: true
+  /auth/callback:
+    get:
+      x-fern-sdk-group-name: auth
+      x-fern-sdk-method-name: get_callback
+  /auth/url:
+    get:
+      x-fern-sdk-group-name: auth
+      x-fern-sdk-method-name: get_url
+  /auth/session:
+    get:
+      x-fern-sdk-group-name: auth
+      x-fern-sdk-method-name: get_session
+  /auth/user:
+    get:
+      x-fern-sdk-group-name: auth
+      x-fern-sdk-method-name: get_user
+  /instances:
+    get:
+      x-fern-sdk-group-name: instances
+      x-fern-sdk-method-name: list
+    post:
+      x-fern-sdk-group-name: instances
+      x-fern-sdk-method-name: create
+  /instances/{instance_id}:
+    delete:
+      x-fern-sdk-group-name: instances
+      x-fern-sdk-method-name: delete
+  /ssh_keys:
+    get:
+      x-fern-sdk-group-name: ssh_keys
+      x-fern-sdk-method-name: list
+    post:
+      x-fern-sdk-group-name: ssh_keys
+      x-fern-sdk-method-name: create
+  /ssh_keys/{ssh_key_id}:
+    delete:
+      x-fern-sdk-group-name: ssh_keys
+      x-fern-sdk-method-name: delete
+  /api_keys:
+    get:
+      x-fern-sdk-group-name: api_keys
+      x-fern-sdk-method-name: list
+    post:
+      x-fern-sdk-group-name: api_keys
+      x-fern-sdk-method-name: create
+  /api_keys/{api_key_id}:
+    delete:
+      x-fern-sdk-group-name: api_keys
+      x-fern-sdk-method-name: delete
+  /list_available_configurations:
+    get:
+      x-fern-sdk-group-name: plans
+      x-fern-sdk-method-name: list
+  /list_user_ssh_keys:
+    get:
+      x-fern-sdk-group-name: [user, ssh_keys]
+      x-fern-sdk-method-name: list
+    post:
+      x-fern-sdk-group-name: [user, ssh_keys]
+      x-fern-sdk-method-name: create
+  /list_user_ssh_keys/{ssh_key_id}:
+    delete:
+      x-fern-sdk-group-name: [user, ssh_keys]
+      x-fern-sdk-method-name: delete
+  /list_available_os_templates:
+    get:
+      x-fern-sdk-group-name: templates
+      x-fern-sdk-method-name: list
+  /payments/create-intent:
+    post:
+      x-fern-sdk-group-name: [payments, intent]
+      x-fern-sdk-method-name: create
+  /webhooks/stripe/payment_completed:
+    post:
+      x-fern-ignore: true
