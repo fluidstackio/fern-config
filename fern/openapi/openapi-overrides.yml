@@ -77,22 +77,7 @@ paths:
   /webhooks/stripe/payment_completed:
     post:
       x-fern-ignore: true
-components:
-  securitySchemes:
-    BasicAuth:
-      type: http
-      scheme: basic
-      x-fern-basic:
-        username:
-          name: apiKey
-          env: FLUIDSTACK_API_KEY
-        password:
-          name: apiToken
-          env: FLUIDSTACK_API_TOKEN
 
-# TODO(fern team): confirm the utility of this header, which seems
-# to conflict with the BasicAuth security scheme.
 x-fern-global-headers:
   - header: api-key
-    name: header-key
-    optional: true
+    env: FLUIDSTACK_API_KEY
