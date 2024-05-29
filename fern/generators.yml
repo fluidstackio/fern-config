@@ -10,6 +10,7 @@ groups:
         output:
           location: pypi
           package-name: fluidstack
+          token: ${PYPI_TOKEN}
         github:
           repository: fluidstackio/fluidstack-python-sdk
         config:
