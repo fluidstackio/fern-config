@@ -12,7 +12,6 @@ groups:
           package-name: fluidstack
         github:
           repository: fluidstackio/fluidstack-python-sdk
-          mode: pull-request
         config:
           client_class_name: FluidStack
         smart-casing: true
