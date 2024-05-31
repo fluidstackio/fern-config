@@ -1,0 +1,46 @@
+instances:
+  - url: https://fluidstack.docs.buildwithfern.com
+title: Fluidstack API
+favicon: ./docs/assets/logo.png
+navigation:
+  - page: Home
+    path: ./docs/pages/home.mdx
+  - page: Overview
+    path: ./docs/pages/overview.mdx
+  - page: Authentication Methods
+    path: ./docs/pages/authentication-methods.mdx
+  - page: Example API Usage in Python
+    path: ./docs/pages/example-usage-in-python.mdx
+  - page: Page Under Construction
+    slug: todo
+    path: ./docs/pages/todo.mdx
+    hidden: true
+  - api: API Reference
+colors:
+  accentPrimary: 
+    light: '#0270FF'
+    dark: '#0270ff'
+  background: 
+    light: '#EAEEF6'
+    dark: '#0f1b27'
+  border: 
+    light: '#DDEEFF'
+    dark: '#30314a'
+  sidebar-background: 
+    light: '#FFFFFF'
+    dark: '#111111'
+layout:
+  page-width: full
+  disable-header: true
+typography:
+  bodyFont:
+    name: Inter
+    path: ./docs/assets/Inter.woff2
+  headingsFont: 
+    name: Roc Grotesk Extra Bold
+    path: ./docs/assets/Inter.woff2
+logo: 
+  light: ./docs/assets/logo-light-mode.svg
+  dark: ./docs/assets/logo-dark-mode.svg
+  href: /
+  height: 30

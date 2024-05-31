@@ -1,0 +1,14 @@
+You can pass your api_key and api_token as url parameters using the following format:
+
+```bash maxLines=0
+curl -H "Content-Type: application/json" \
+    --request GET 'https://<api_key>:<api_token>@api.fluidstack.io/v1/servers'
+```
+
+You can also pass them using basic access authentication with the following format:
+
+```bash maxLines=0
+curl -H "Content-Type: application/json" \
+    --request GET 'https://api.fluidstack.io/v1/servers' \
+    -u '<your_api_key>:<your_api_token>'
+```

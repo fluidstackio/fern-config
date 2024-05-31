@@ -1,0 +1,140 @@
+This script interacts with the FluidStack API to manage servers programmatically. It performs several operations, including SSH key management, server instance creation (both custom and preconfigured), server status monitoring, and finally, server deletion.
+
+```python maxLines=20
+import requests
+from base64 import b64encode
+import random
+from pathlib import Path
+import os
+import time
+
+url = "https://api.fluidstack.io/v1/"
+api_key = "<api_key>"
+api_token = "<api_token>"
+
+# basic auth header
+headers = {
+    "Authorization": "Basic "
+    + b64encode(bytes(api_key + ":" + api_token, "utf-8")).decode("ascii")
+}
+
+# get ssh keys
+print("Getting ssh keys")
+r = requests.get(url + "ssh", headers=headers)
+ssh_keys = r.json()
+if ssh_keys:
+    ssh_key_ids = [ssh_key["id"] for ssh_key in ssh_keys]
+else:
+    # create ssh key
+    print("SSH keys not found, creating one")
+    public_key = open(os.path.join(Path.home(), ".ssh", "id_rsa.pub")).read().strip()
+    r = requests.post(
+        url + "ssh",
+        headers=headers,
+        json={"name": "mykey", "public_key": public_key},
+    )
+    if r.status_code != 200:
+        raise Exception("Could not create ssh key")
+    ssh_key_ids = [r.json()["id"]]
+
+# get instance types
+print("Getting plans")
+r = requests.get(url + "plans")
+plans = r.json()
+
+# launch preconfigured instance
+print("Choosing a random plan")
+plan = random.choice(
+    [p for p in plans if p["type"] == "preconfigured" and p["regions"] != []]
+)
+print("Creating server")
+region = random.choice(plan["regions"])
+operating_system = random.choice(plan["os_options"])
+print("\t GPU: " + plan["gpu_type"])
+print("\t GPU Count: " + str(plan["configuration"]["gpu_count"]))
+print("\t CPU Count: " + str(plan["configuration"]["core_count"]))
+print("\t Memory: " + str(plan["configuration"]["ram"]))
+print("\t Storage: " + str(plan["configuration"]["storage_size"]))
+print("\t Operating System: " + operating_system)
+print("\t Region: " + region["id"])
+print("\t OS: " + operating_system)
+print("\t Price: " + str(round(plan["price"]["hourly"], 2)) + " per gpu per hour")
+print("\n")
+r = requests.post(
+    url + "server",
+    headers=headers,
+    json={
+        "ssh_keys": [ssh_key_ids[0]],
+        "region": region["id"],
+        "plan": plan["plan_id"],
+        "os": operating_system,
+    },
+)
+
+if r.status_code != 201:
+    print(r.json()["error"])
+    raise Exception("Could not create server")
+server_id = r.json()["server"]["id"]
+server_status = "provisioning"
+print("Waiting for server to start")
+count = 1
+while server_status != "running":
+    if server_status in ["out of stock", "failed to create", "timeout error"]:
+        print("Could not create server")
+        break
+    try:
+        r = requests.get(url + "server/" + server_id, headers=headers)
+        server_status = r.json()["status"]
+    except:
+        pass
+    print("\t [" + str(count) + "] Status: " + server_status)
+    time.sleep(10)
+    count += 1
+
+# server is running
+server = r.json()
+print("Server IP Address: \t" + server["ip_address"])
+print("Server Running Price: \t" + server["running_rate"])
+
+# delete server
+print("Deleting server")
+r = requests.delete(url + f"server/{server_id}", headers=headers)
+if not r.ok:
+    print(r.json()["error"])
+    raise Exception("Could not delete server")
+print("Server Deleted")
+```
+
+## Required Modules
+- `requests`: for making HTTP requests to the FluidStack API.
+- `base64`: for encoding the API key and token in the Authorization header.
+- `random`: for randomly choosing between custom and preconfigured server options, as well as choosing regions and operating systems.
+- `pathlib` and `os`: for reading the SSH public key from the user's home directory.
+
+## API Key and Token
+You need to replace `"<your_api_key>"` and `"<your_api_token>"` with your actual FluidStack API key and token.
+
+## Basic Authentication
+The API uses Basic HTTP Authentication. The `headers` dictionary contains the `Authorization` key. The value is the string "Basic " followed by the base64-encoded string of `api_key` and `api_token` separated by a colon.
+
+## Getting SSH Keys
+The script sends a GET request to the `ssh_key` endpoint to retrieve all existing SSH keys associated with the account. If no SSH keys exist, it reads the public key from the default location (`~/.ssh/id_rsa.pub`) and sends a POST request to the same endpoint to create a new SSH key.
+
+## Getting Instance Types
+The script sends a GET request to the `plans` endpoint to get all available server plans.
+
+## Launching Server Instance
+The script randomly decides whether to launch a custom or preconfigured server instance, specifying SSH keys, region ID, plan ID, and OS.
+
+## Checking Server Status
+The script continuously checks the status of the created server until its status is "running" or "Error Creating". If the status is any of "out_of_stock", "failed_to_create", "timeout_error", the script prints an error message and stops checking.
+
+## Printing Server Details
+Once the server is running, the script prints the server IP and cost.
+
+## Deleting Server
+Finally, the script sends a DELETE request to the `server` endpoint to delete the created server.
+
+<Info>
+Please note that exception handling is minimal in this script. In a production environment, you'd likely want more robust error checking and handling.
+</Info>

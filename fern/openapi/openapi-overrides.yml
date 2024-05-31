@@ -12,6 +12,7 @@ paths:
       x-fern-sdk-method-name: get_url
   /auth/session:
     get:
+      description: Update the auth session.
       x-fern-sdk-group-name: auth
       x-fern-sdk-method-name: get_session
   /auth/user:
