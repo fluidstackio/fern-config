@@ -5,7 +5,7 @@ favicon: ./docs/assets/logo.png
 navigation:
   - page: Home
     path: ./docs/pages/home.mdx
-  - page: Overview
+  - page: API Overview
     path: ./docs/pages/overview.mdx
   - page: Authentication Methods
     path: ./docs/pages/authentication-methods.mdx
