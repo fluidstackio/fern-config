@@ -4,21 +4,20 @@ paths:
       x-fern-ignore: true
   /auth/callback:
     get:
-      x-fern-sdk-group-name: auth
-      x-fern-sdk-method-name: get_callback
+      x-fern-ignore: true
   /auth/url:
     get:
-      x-fern-sdk-group-name: auth
-      x-fern-sdk-method-name: get_url
+      x-fern-ignore: true
   /auth/session:
     get:
-      description: Update the auth session.
-      x-fern-sdk-group-name: auth
-      x-fern-sdk-method-name: get_session
+      x-fern-ignore: true
   /auth/user:
     get:
-      x-fern-sdk-group-name: auth
-      x-fern-sdk-method-name: get_user
+      x-fern-ignore: true
+  /user/balance:
+    get:
+      x-fern-sdk-group-name: user
+      x-fern-sdk-method-name: get_balance
   /instances:
     get:
       x-fern-sdk-group-name: instances
@@ -58,23 +57,19 @@ paths:
       x-fern-sdk-method-name: list
   /list_user_ssh_keys:
     get:
-      x-fern-sdk-group-name: [user, ssh_keys]
-      x-fern-sdk-method-name: list
+    x-fern-ignore: true
     post:
-      x-fern-sdk-group-name: [user, ssh_keys]
-      x-fern-sdk-method-name: create
+      x-fern-ignore: true
   /list_user_ssh_keys/{ssh_key_id}:
     delete:
-      x-fern-sdk-group-name: [user, ssh_keys]
-      x-fern-sdk-method-name: delete
+      x-fern-ignore: true
   /list_available_os_templates:
     get:
       x-fern-sdk-group-name: templates
       x-fern-sdk-method-name: list
   /payments/create-intent:
     post:
-      x-fern-sdk-group-name: [payments, intent]
-      x-fern-sdk-method-name: create
+      x-fern-ignore: true
   /webhooks/stripe/payment_completed:
     post:
       x-fern-ignore: true

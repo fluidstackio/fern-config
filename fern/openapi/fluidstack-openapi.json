@@ -1,1932 +1,1519 @@
 {
-    "openapi": "3.1.0",
-    "info": {
-        "title": "Fluidstack API Service",
-        "version": "0.1.0"
-    },
-    "paths": {
-        "/healthcheck": {
-            "get": {
-                "tags": [
-                    "General"
-                ],
-                "summary": "Healthcheck",
-                "operationId": "healthcheck_healthcheck_get",
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HealthCheckOutSchema"
-                                }
-                            }
-                        }
-                    }
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Fluidstack API Service",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/healthcheck": {
+      "get": {
+        "tags": [
+          "General"
+        ],
+        "summary": "Healthcheck",
+        "operationId": "healthcheck_healthcheck_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthCheckOutSchema"
                 }
-            },
-            "head": {
-                "tags": [
-                    "General"
-                ],
-                "summary": "Healthcheck",
-                "operationId": "healthcheck_healthcheck_get",
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HealthCheckOutSchema"
-                                }
-                            }
-                        }
-                    }
-                }
+              }
             }
-        },
-        "/auth/callback": {
-            "get": {
-                "summary": "Callback route for the authentication.",
-                "description": "Callback route for the authentication.",
-                "operationId": "auth_callback_auth_callback_get",
-                "parameters": [
-                    {
-                        "name": "code",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "title": "Code"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Authentication Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Message"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/auth/url": {
-            "get": {
-                "summary": "Get the authentication URL.",
-                "description": "Get the authentication URL.",
-                "operationId": "auth_url_auth_url_get",
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "string",
-                                    "title": "Response Auth Url Auth Url Get"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Authentication Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Message"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/auth/session": {
-            "get": {
-                "summary": "update the auth session.",
-                "description": "update the auth session.",
-                "operationId": "update_session_auth_session_get",
-                "parameters": [
-                    {
-                        "name": "wos_session",
-                        "in": "cookie",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "title": "Wos Session"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Authentication Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Message"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/auth/user": {
-            "get": {
-                "summary": "Get the auth user.",
-                "description": "Get the auth user.",
-                "operationId": "get_auth_session_auth_user_get",
-                "parameters": [
-                    {
-                        "name": "wos_session",
-                        "in": "cookie",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "title": "Wos Session"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Authentication Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Message"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/instances": {
-            "get": {
-                "summary": "List user instances.",
-                "description": "List user instances.",
-                "operationId": "list_instances_instances_get",
-                "parameters": [
-                    {
-                        "name": "api-key",
-                        "in": "header",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "title": "Api-Key"
-                        }
-                    },
-                    {
-                        "name": "wos_session",
-                        "in": "cookie",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "title": "Wos Session"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/ListInstanceResponse"
-                                    },
-                                    "title": "Response List Instances Instances Get"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Authentication Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Message"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "summary": "Create instance",
-                "description": "Create a new instance.",
-                "operationId": "create_instance_instances_post",
-                "parameters": [
-                    {
-                        "name": "api-key",
-                        "in": "header",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "title": "Api-Key"
-                        }
-                    },
-                    {
-                        "name": "wos_session",
-                        "in": "cookie",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "title": "Wos Session"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/CreateInstanceRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/CreateInstanceResponse"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Authentication Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Message"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/instances/{instance_id}": {
-            "delete": {
-                "summary": "Terminate instance",
-                "description": "Terminate a instance.",
-                "operationId": "terminate_instance_instances__instance_id__delete",
-                "parameters": [
-                    {
-                        "name": "instance_id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "title": "Instance Id"
-                        }
-                    },
-                    {
-                        "name": "api-key",
-                        "in": "header",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "title": "Api-Key"
-                        }
-                    },
-                    {
-                        "name": "wos_session",
-                        "in": "cookie",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "title": "Wos Session"
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "Successful Response"
-                    },
-                    "401": {
-                        "description": "Authentication Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Message"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/ssh_keys": {
-            "get": {
-                "summary": "List user ssh keys.",
-                "description": "List user ssh keys.",
-                "operationId": "list_user_ssh_keys_ssh_keys_get",
-                "parameters": [
-                    {
-                        "name": "api-key",
-                        "in": "header",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "title": "Api-Key"
-                        }
-                    },
-                    {
-                        "name": "wos_session",
-                        "in": "cookie",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "title": "Wos Session"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/SSHKeyResponse"
-                                    },
-                                    "title": "Response List User Ssh Keys Ssh Keys Get"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Authentication Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Message"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "summary": "Create ssh key",
-                "description": "Create a new ssh key.",
-                "operationId": "create_ssh_key_ssh_keys_post",
-                "parameters": [
-                    {
-                        "name": "api-key",
-                        "in": "header",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "title": "Api-Key"
-                        }
-                    },
-                    {
-                        "name": "wos_session",
-                        "in": "cookie",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "title": "Wos Session"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/CreateSSHKeyRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/SSHKeyResponse"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Authentication Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Message"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/ssh_keys/{ssh_key_id}": {
-            "delete": {
-                "summary": "Delete user ssh key.",
-                "description": "Delete a user ssh key.",
-                "operationId": "delete_ssh_key_ssh_keys__ssh_key_id__delete",
-                "parameters": [
-                    {
-                        "name": "ssh_key_id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "title": "Ssh Key Id"
-                        }
-                    },
-                    {
-                        "name": "api-key",
-                        "in": "header",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "title": "Api-Key"
-                        }
-                    },
-                    {
-                        "name": "wos_session",
-                        "in": "cookie",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "title": "Wos Session"
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "Successful Response"
-                    },
-                    "401": {
-                        "description": "Authentication Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Message"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api_keys": {
-            "get": {
-                "summary": "List user api keys.",
-                "description": "List user api keys.",
-                "operationId": "list_user_api_keys_api_keys_get",
-                "parameters": [
-                    {
-                        "name": "api-key",
-                        "in": "header",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "title": "Api-Key"
-                        }
-                    },
-                    {
-                        "name": "wos_session",
-                        "in": "cookie",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "title": "Wos Session"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/APIKeyResponse"
-                                    },
-                                    "title": "Response List User Api Keys Api Keys Get"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Authentication Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Message"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "summary": "Create api key",
-                "description": "Create a new api key.",
-                "operationId": "create_api_key_api_keys_post",
-                "parameters": [
-                    {
-                        "name": "api-key",
-                        "in": "header",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "title": "Api-Key"
-                        }
-                    },
-                    {
-                        "name": "wos_session",
-                        "in": "cookie",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "title": "Wos Session"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/CreateAPIKeyRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/APIKeyResponse"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Authentication Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Message"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api_keys/{api_key_id}": {
-            "delete": {
-                "summary": "Delete user api key.",
-                "description": "Delete a user api key.",
-                "operationId": "delete_api_key_api_keys__api_key_id__delete",
-                "parameters": [
-                    {
-                        "name": "api_key_id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "title": "Api Key Id"
-                        }
-                    },
-                    {
-                        "name": "api-key",
-                        "in": "header",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "title": "Api-Key"
-                        }
-                    },
-                    {
-                        "name": "wos_session",
-                        "in": "cookie",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "title": "Wos Session"
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "Successful Response"
-                    },
-                    "401": {
-                        "description": "Authentication Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Message"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/list_available_configurations": {
-            "get": {
-                "summary": "List available plans.",
-                "description": "List available plans/configurations.",
-                "operationId": "list_available_configurations_list_available_configurations_get",
-                "parameters": [
-                    {
-                        "name": "api-key",
-                        "in": "header",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "title": "Api-Key"
-                        }
-                    },
-                    {
-                        "name": "wos_session",
-                        "in": "cookie",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "title": "Wos Session"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/ConfigurationResponse"
-                                    },
-                                    "title": "Response List Available Configurations List Available Configurations Get"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Authentication Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Message"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/list_user_ssh_keys": {
-            "get": {
-                "summary": "List user ssh keys.",
-                "description": "List user ssh keys.",
-                "operationId": "list_user_ssh_keys_list_user_ssh_keys_get",
-                "parameters": [
-                    {
-                        "name": "api-key",
-                        "in": "header",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "title": "Api-Key"
-                        }
-                    },
-                    {
-                        "name": "wos_session",
-                        "in": "cookie",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "title": "Wos Session"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/SSHKeyResponse"
-                                    },
-                                    "title": "Response List User Ssh Keys List User Ssh Keys Get"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Authentication Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Message"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "summary": "Create ssh key",
-                "description": "Create a new ssh key.",
-                "operationId": "create_ssh_key_list_user_ssh_keys_post",
-                "parameters": [
-                    {
-                        "name": "api-key",
-                        "in": "header",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "title": "Api-Key"
-                        }
-                    },
-                    {
-                        "name": "wos_session",
-                        "in": "cookie",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "title": "Wos Session"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/CreateSSHKeyRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/SSHKeyResponse"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Authentication Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Message"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/list_user_ssh_keys/{ssh_key_id}": {
-            "delete": {
-                "summary": "Delete user ssh key.",
-                "description": "Delete a user ssh key.",
-                "operationId": "delete_ssh_key_list_user_ssh_keys__ssh_key_id__delete",
-                "parameters": [
-                    {
-                        "name": "ssh_key_id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "title": "Ssh Key Id"
-                        }
-                    },
-                    {
-                        "name": "api-key",
-                        "in": "header",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "title": "Api-Key"
-                        }
-                    },
-                    {
-                        "name": "wos_session",
-                        "in": "cookie",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "title": "Wos Session"
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "Successful Response"
-                    },
-                    "401": {
-                        "description": "Authentication Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Message"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/list_available_os_templates": {
-            "get": {
-                "summary": "List available OS template images.",
-                "description": "List available OS template images.",
-                "operationId": "list_available_os_templates_list_available_os_templates_get",
-                "parameters": [
-                    {
-                        "name": "api-key",
-                        "in": "header",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "title": "Api-Key"
-                        }
-                    },
-                    {
-                        "name": "wos_session",
-                        "in": "cookie",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "title": "Wos Session"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/OperatingSystemResponse"
-                                    },
-                                    "title": "Response List Available Os Templates List Available Os Templates Get"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Authentication Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Message"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/payments/create-intent": {
-            "post": {
-                "summary": "Create a new payment intent.",
-                "description": "Create a new payment intent.",
-                "operationId": "create_payment_intent_payments_create_intent_post",
-                "parameters": [
-                    {
-                        "name": "api-key",
-                        "in": "header",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "title": "Api-Key"
-                        }
-                    },
-                    {
-                        "name": "wos_session",
-                        "in": "cookie",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "title": "Wos Session"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/CreatePaymentRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/CreatePaymentResponse"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Authentication Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Message"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/webhooks/stripe/payment_completed": {
-            "post": {
-                "summary": "Stripe payment webhook endpoint",
-                "description": "Stripe payment webhook endpoint",
-                "operationId": "stripe_event_webhook_webhooks_stripe_payment_completed_post",
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Authentication Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Message"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+          }
         }
-    },
-    "components": {
-        "schemas": {
-            "APIKeyResponse": {
-                "properties": {
-                    "id": {
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/EntityId"
-                            }
-                        ],
-                        "description": "The ID of the API key."
-                    },
-                    "name": {
-                        "type": "string",
-                        "title": "Name",
-                        "description": "The API key name."
-                    },
-                    "api_key": {
-                        "type": "string",
-                        "title": "Api Key",
-                        "description": "The API key."
-                    }
-                },
-                "type": "object",
-                "required": [
-                    "id"
-                ],
-                "title": "APIKeyResponse"
-            },
-            "ConfigurationResponse": {
-                "properties": {
-                    "id": {
-                        "$ref": "#/components/schemas/EntityId"
-                    },
-                    "gpu_model": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/components/schemas/GPUModelResponse"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "description": "The GPU model of the configuration."
-                    },
-                    "cpu_model": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "title": "Cpu Model",
-                        "description": "The CPU model of the configuration.",
-                        "default": "generic"
-                    },
-                    "gpu_count": {
-                        "type": "integer",
-                        "title": "Gpu Count",
-                        "description": "The number of GPUs in the configuration."
-                    },
-                    "cpu_count": {
-                        "type": "integer",
-                        "title": "Cpu Count",
-                        "description": "The number of CPUs in the configuration."
-                    },
-                    "nvme_storage_size_gb": {
-                        "type": "integer",
-                        "title": "Nvme Storage Size Gb",
-                        "description": "The size of NVMe in the configuration."
-                    },
-                    "memory_size_mb": {
-                        "type": "number",
-                        "title": "Memory Size Mb",
-                        "description": "The amount of RAM memory in the configuration."
-                    },
-                    "hdd_storage_size_gb": {
-                        "anyOf": [
-                            {
-                                "type": "integer"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "title": "Hdd Storage Size Gb",
-                        "description": "The amount of HDD storage in the configuration.",
-                        "default": 0
-                    }
-                },
-                "type": "object",
-                "required": [
-                    "id",
-                    "gpu_model",
-                    "gpu_count",
-                    "cpu_count",
-                    "nvme_storage_size_gb",
-                    "memory_size_mb"
-                ],
-                "title": "ConfigurationResponse"
-            },
-            "CreateAPIKeyRequest": {
-                "properties": {
-                    "name": {
-                        "type": "string",
-                        "title": "Name",
-                        "description": "The name of the API key."
-                    }
-                },
-                "type": "object",
-                "required": [
-                    "name"
-                ],
-                "title": "CreateAPIKeyRequest"
-            },
-            "CreateInstanceRequest": {
-                "properties": {
-                    "name": {
-                        "type": "string",
-                        "title": "Name",
-                        "description": "A custom name of the instance."
-                    },
-                    "configuration_id": {
-                        "type": "string",
-                        "title": "Configuration Id",
-                        "description": "The configuration id of the instance."
-                    },
-                    "ssh_keys": {
-                        "items": {
-                            "type": "string"
-                        },
-                        "type": "array",
-                        "title": "Ssh Keys",
-                        "description": "The list of ssh key ids to be added to the instance.",
-                        "default": []
-                    },
-                    "operating_system_label": {
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/SupportedOperatingSystem"
-                            }
-                        ],
-                        "description": "The operating_system_label of the instance.",
-                        "default": "ubuntu_20_04_lts"
-                    }
-                },
-                "type": "object",
-                "required": [
-                    "name",
-                    "configuration_id"
-                ],
-                "title": "CreateInstanceRequest"
-            },
-            "CreateInstanceResponse": {
-                "properties": {
-                    "id": {
-                        "type": "string",
-                        "title": "Id"
-                    },
-                    "name": {
-                        "type": "string",
-                        "title": "Name"
-                    },
-                    "configuration_id": {
-                        "type": "string",
-                        "title": "Configuration Id"
-                    },
-                    "operating_system_label": {
-                        "$ref": "#/components/schemas/SupportedOperatingSystem"
-                    }
-                },
-                "type": "object",
-                "required": [
-                    "id",
-                    "name",
-                    "configuration_id",
-                    "operating_system_label"
-                ],
-                "title": "CreateInstanceResponse"
-            },
-            "CreatePaymentRequest": {
-                "properties": {
-                    "amount": {
-                        "type": "integer",
-                        "title": "Amount"
-                    },
-                    "currency": {
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/CurrencyType"
-                            }
-                        ],
-                        "default": "usd"
-                    }
-                },
-                "type": "object",
-                "required": [
-                    "amount"
-                ],
-                "title": "CreatePaymentRequest"
-            },
-            "CreatePaymentResponse": {
-                "properties": {
-                    "client_secret": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "title": "Client Secret"
-                    }
-                },
-                "type": "object",
-                "required": [
-                    "client_secret"
-                ],
-                "title": "CreatePaymentResponse"
-            },
-            "CreateSSHKeyRequest": {
-                "properties": {
-                    "name": {
-                        "type": "string",
-                        "title": "Name",
-                        "description": "The name of the SSH key."
-                    },
-                    "public_key": {
-                        "type": "string",
-                        "title": "Public Key",
-                        "description": "The public key of the SSH key."
-                    }
-                },
-                "type": "object",
-                "required": [
-                    "name",
-                    "public_key"
-                ],
-                "title": "CreateSSHKeyRequest"
-            },
-            "CurrencyType": {
-                "type": "string",
-                "const": "usd",
-                "title": "CurrencyType"
-            },
-            "EntityId": {
-                "type": "string",
-                "title": "EntityId"
-            },
-            "GPUModelResponse": {
-                "properties": {
-                    "name": {
-                        "type": "string",
-                        "title": "Name",
-                        "description": "The FluidStack unique name of the GPU model."
-                    },
-                    "memory_size_mb": {
-                        "anyOf": [
-                            {
-                                "type": "integer"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "title": "Memory Size Mb",
-                        "description": "Memory capacity of the GPU in megabytes."
-                    }
-                },
-                "type": "object",
-                "required": [
-                    "name"
-                ],
-                "title": "GPUModelResponse"
-            },
-            "HTTPValidationError": {
-                "properties": {
-                    "detail": {
-                        "items": {
-                            "$ref": "#/components/schemas/ValidationError"
-                        },
-                        "type": "array",
-                        "title": "Detail"
-                    }
-                },
-                "type": "object",
-                "title": "HTTPValidationError"
-            },
-            "HealthCheckOutSchema": {
-                "properties": {
-                    "status": {
-                        "type": "string",
-                        "title": "Status",
-                        "default": "ok"
-                    }
-                },
-                "type": "object",
-                "title": "HealthCheckOutSchema"
-            },
-            "InstanceStatus": {
-                "type": "string",
-                "enum": [
-                    "running",
-                    "pending",
-                    "shutting_down",
-                    "terminated",
-                    "stopping",
-                    "stopped"
-                ],
-                "title": "InstanceStatus"
-            },
-            "InstanceTerm": {
-                "type": "string",
-                "enum": [
-                    "hourly",
-                    "weekly",
-                    "monthly",
-                    "quarterly",
-                    "six_monthly",
-                    "yearly"
-                ],
-                "title": "InstanceTerm"
-            },
-            "ListInstanceResponse": {
-                "properties": {
-                    "id": {
-                        "type": "string",
-                        "title": "Id",
-                        "description": "The unique identifier of the instance."
-                    },
-                    "status": {
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/InstanceStatus"
-                            }
-                        ],
-                        "description": "The current status of the instance.",
-                        "default": "pending"
-                    },
-                    "username": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "title": "Username",
-                        "description": "The username of the instance.",
-                        "default": "fsuser"
-                    },
-                    "ssh_port": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "title": "Ssh Port",
-                        "description": "The SSH port of the instance.",
-                        "default": "22"
-                    },
-                    "ssh_keys": {
-                        "anyOf": [
-                            {
-                                "items": {
-                                    "$ref": "#/components/schemas/SSHKeyResponse"
-                                },
-                                "type": "array"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "title": "Ssh Keys",
-                        "description": "The list of SSH keys of the instance.",
-                        "default": []
-                    },
-                    "ip_address": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "title": "Ip Address",
-                        "description": "The IP address of the instance."
-                    },
-                    "name": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "title": "Name",
-                        "description": "The name of the instance."
-                    },
-                    "term": {
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/InstanceTerm"
-                            }
-                        ],
-                        "description": "The commitment term of the instance.",
-                        "default": "hourly"
-                    },
-                    "current_rate": {
-                        "anyOf": [
-                            {
-                                "type": "number"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "title": "Current Rate",
-                        "description": "The current hourly price of the instance per processor based on its current status."
-                    },
-                    "configuration": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/components/schemas/ConfigurationResponse"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "description": "The configuration/plan of the instance."
-                    },
-                    "region": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/components/schemas/RegionResponse"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "description": "The region of the instance."
-                    },
-                    "volumes": {
-                        "items": {
-                            "$ref": "#/components/schemas/VolumeResponse"
-                        },
-                        "type": "array",
-                        "title": "Volumes",
-                        "description": "The volumes attached to the instance.",
-                        "default": []
-                    },
-                    "operating_system": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/components/schemas/OperatingSystemResponse"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "description": "The operating system of the instance."
-                    },
-                    "created_at": {
-                        "anyOf": [
-                            {
-                                "type": "string",
-                                "format": "date-time"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "title": "Created At",
-                        "description": "The creation date of the instance."
-                    }
-                },
-                "type": "object",
-                "required": [
-                    "id"
-                ],
-                "title": "ListInstanceResponse"
-            },
-            "Message": {
-                "properties": {
-                    "message": {
-                        "type": "string",
-                        "title": "Message"
-                    }
-                },
-                "additionalProperties": false,
-                "type": "object",
-                "required": [
-                    "message"
-                ],
-                "title": "Message"
-            },
-            "OperatingSystemResponse": {
-                "properties": {
-                    "id": {
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/EntityId"
-                            }
-                        ],
-                        "description": "The ID of the operating system."
-                    },
-                    "name": {
-                        "type": "string",
-                        "title": "Name",
-                        "description": "The name of the operating system."
-                    },
-                    "description": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "title": "Description",
-                        "description": "The description of the operating system."
-                    },
-                    "label": {
-                        "$ref": "#/components/schemas/SupportedOperatingSystem"
-                    }
-                },
-                "type": "object",
-                "required": [
-                    "id",
-                    "name",
-                    "label"
-                ],
-                "title": "OperatingSystemResponse"
-            },
-            "RegionResponse": {
-                "properties": {
-                    "id": {
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/EntityId"
-                            }
-                        ],
-                        "description": "The unique ID of the region."
-                    },
-                    "name": {
-                        "type": "string",
-                        "title": "Name",
-                        "description": "The name of the region."
-                    }
-                },
-                "type": "object",
-                "required": [
-                    "id",
-                    "name"
-                ],
-                "title": "RegionResponse"
-            },
-            "SSHKeyResponse": {
-                "properties": {
-                    "id": {
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/EntityId"
-                            }
-                        ],
-                        "description": "The ID of the SSH key."
-                    },
-                    "name": {
-                        "type": "string",
-                        "title": "Name",
-                        "description": "The name of the SSH key."
-                    },
-                    "public_key": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "title": "Public Key",
-                        "description": "The public key."
-                    }
-                },
-                "type": "object",
-                "required": [
-                    "id",
-                    "name"
-                ],
-                "title": "SSHKeyResponse"
-            },
-            "SupportedOperatingSystem": {
-                "type": "string",
-                "enum": [
-                    "ubuntu_22_04_lts",
-                    "ubuntu_20_04_lts",
-                    "ubuntu_20_04_lts_nvidia",
-                    "ubuntu_22_04_lts_nvidia"
-                ],
-                "title": "SupportedOperatingSystem"
-            },
-            "ValidationError": {
-                "properties": {
-                    "loc": {
-                        "items": {
-                            "anyOf": [
-                                {
-                                    "type": "string"
-                                },
-                                {
-                                    "type": "integer"
-                                }
-                            ]
-                        },
-                        "type": "array",
-                        "title": "Location"
-                    },
-                    "msg": {
-                        "type": "string",
-                        "title": "Message"
-                    },
-                    "type": {
-                        "type": "string",
-                        "title": "Error Type"
-                    }
-                },
-                "type": "object",
-                "required": [
-                    "loc",
-                    "msg",
-                    "type"
-                ],
-                "title": "ValidationError"
-            },
-            "VolumeResponse": {
-                "properties": {
-                    "id": {
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/EntityId"
-                            }
-                        ],
-                        "description": "The ID of the volume"
-                    },
-                    "name": {
-                        "type": "string",
-                        "title": "Name",
-                        "description": "The name of the volume."
-                    },
-                    "size_gb": {
-                        "type": "integer",
-                        "title": "Size Gb",
-                        "description": "The size of the volume in GB."
-                    },
-                    "status": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/components/schemas/VolumeStatus"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "description": "The status of the volume.",
-                        "default": "creating"
-                    },
-                    "current_rate": {
-                        "type": "number",
-                        "title": "Current Rate",
-                        "description": "The current hourly rate of the volume."
-                    },
-                    "created_at": {
-                        "anyOf": [
-                            {
-                                "type": "string",
-                                "format": "date-time"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "title": "Created At",
-                        "description": "The creation time of the volume."
-                    }
-                },
-                "type": "object",
-                "required": [
-                    "id",
-                    "name",
-                    "size_gb",
-                    "current_rate",
-                    "created_at"
-                ],
-                "title": "VolumeResponse"
-            },
-            "VolumeStatus": {
-                "type": "string",
-                "enum": [
-                    "creating",
-                    "available",
-                    "attaching",
-                    "attached",
-                    "detaching",
-                    "detached",
-                    "deleting",
-                    "error",
-                    "deleted"
-                ],
-                "title": "VolumeStatus"
+      },
+      "head": {
+        "tags": [
+          "General"
+        ],
+        "summary": "Healthcheck",
+        "operationId": "healthcheck_healthcheck_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthCheckOutSchema"
+                }
+              }
             }
+          }
         }
+      }
+    },
+    "/instances": {
+      "get": {
+        "summary": "List user instances.",
+        "description": "List user instances.",
+        "operationId": "list_instances_instances_get",
+        "parameters": [
+          {
+            "name": "api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Api-Key"
+            }
+          },
+          {
+            "name": "wos_session",
+            "in": "cookie",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Wos Session"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ListInstanceResponse"
+                  },
+                  "title": "Response List Instances Instances Get"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create instance",
+        "description": "Create a new instance.",
+        "operationId": "create_instance_instances_post",
+        "parameters": [
+          {
+            "name": "api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Api-Key"
+            }
+          },
+          {
+            "name": "wos_session",
+            "in": "cookie",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Wos Session"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateInstanceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateInstanceResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/instances/{instance_id}": {
+      "delete": {
+        "summary": "Terminate instance",
+        "description": "Terminate an instance.",
+        "operationId": "terminate_instance_instances__instance_id__delete",
+        "parameters": [
+          {
+            "name": "instance_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Instance Id"
+            }
+          },
+          {
+            "name": "api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Api-Key"
+            }
+          },
+          {
+            "name": "wos_session",
+            "in": "cookie",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Wos Session"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "401": {
+            "description": "Authentication Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ssh_keys": {
+      "get": {
+        "summary": "List SSH keys.",
+        "description": "List SSH keys.",
+        "operationId": "list_user_ssh_keys_ssh_keys_get",
+        "parameters": [
+          {
+            "name": "api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Api-Key"
+            }
+          },
+          {
+            "name": "wos_session",
+            "in": "cookie",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Wos Session"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SSHKeyResponse"
+                  },
+                  "title": "Response List User Ssh Keys Ssh Keys Get"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create SSH key",
+        "description": "Create a new SSH key.",
+        "operationId": "create_ssh_key_ssh_keys_post",
+        "parameters": [
+          {
+            "name": "api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Api-Key"
+            }
+          },
+          {
+            "name": "wos_session",
+            "in": "cookie",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Wos Session"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSSHKeyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SSHKeyResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ssh_keys/{ssh_key_id}": {
+      "delete": {
+        "summary": "Delete SSH key.",
+        "description": "Delete an SSH key.",
+        "operationId": "delete_ssh_key_ssh_keys__ssh_key_id__delete",
+        "parameters": [
+          {
+            "name": "ssh_key_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Ssh Key Id"
+            }
+          },
+          {
+            "name": "api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Api-Key"
+            }
+          },
+          {
+            "name": "wos_session",
+            "in": "cookie",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Wos Session"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "401": {
+            "description": "Authentication Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api_keys": {
+      "get": {
+        "summary": "List user API keys.",
+        "description": "List user API keys.",
+        "operationId": "list_user_api_keys_api_keys_get",
+        "parameters": [
+          {
+            "name": "api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Api-Key"
+            }
+          },
+          {
+            "name": "wos_session",
+            "in": "cookie",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Wos Session"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/APIKeyResponse"
+                  },
+                  "title": "Response List User Api Keys Api Keys Get"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create API key",
+        "description": "Create a new API key.",
+        "operationId": "create_api_key_api_keys_post",
+        "parameters": [
+          {
+            "name": "api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Api-Key"
+            }
+          },
+          {
+            "name": "wos_session",
+            "in": "cookie",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Wos Session"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAPIKeyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIKeyResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api_keys/{api_key_id}": {
+      "delete": {
+        "summary": "Delete user API key.",
+        "description": "Delete a user API key.",
+        "operationId": "delete_api_key_api_keys__api_key_id__delete",
+        "parameters": [
+          {
+            "name": "api_key_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Api Key Id"
+            }
+          },
+          {
+            "name": "api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Api-Key"
+            }
+          },
+          {
+            "name": "wos_session",
+            "in": "cookie",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Wos Session"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "401": {
+            "description": "Authentication Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/list_available_configurations": {
+      "get": {
+        "summary": "List available plans.",
+        "description": "List available plans/configurations.",
+        "operationId": "list_available_configurations_list_available_configurations_get",
+        "parameters": [
+          {
+            "name": "api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Api-Key"
+            }
+          },
+          {
+            "name": "wos_session",
+            "in": "cookie",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Wos Session"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ConfigurationResponse"
+                  },
+                  "title": "Response List Available Configurations List Available Configurations Get"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/list_available_os_templates": {
+      "get": {
+        "summary": "List available OS template images.",
+        "description": "List available OS template images.",
+        "operationId": "list_available_os_templates_list_available_os_templates_get",
+        "parameters": [
+          {
+            "name": "api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Api-Key"
+            }
+          },
+          {
+            "name": "wos_session",
+            "in": "cookie",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Wos Session"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OperatingSystemResponse"
+                  },
+                  "title": "Response List Available Os Templates List Available Os Templates Get"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/balance": {
+      "get": {
+        "summary": "Get the current user's balance.",
+        "description": "Get the current user's balance.",
+        "operationId": "get_user_balance_user_balance_get",
+        "parameters": [
+          {
+            "name": "api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Api-Key"
+            }
+          },
+          {
+            "name": "wos_session",
+            "in": "cookie",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Wos Session"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserBalanceResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
+  },
+  "components": {
+    "schemas": {
+      "APIKeyResponse": {
+        "properties": {
+          "id": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EntityId"
+              }
+            ],
+            "description": "The ID of the API key."
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "The API key name."
+          },
+          "api_key": {
+            "type": "string",
+            "title": "Api Key",
+            "description": "The API key."
+          }
+        },
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "title": "APIKeyResponse"
+      },
+      "ConfigurationResponse": {
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/EntityId"
+          },
+          "gpu_model": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/GPUModelResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The GPU model of the configuration."
+          },
+          "cpu_model": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cpu Model",
+            "description": "The CPU model of the configuration.",
+            "default": "generic"
+          },
+          "gpu_count": {
+            "type": "integer",
+            "title": "Gpu Count",
+            "description": "The number of GPUs in the configuration."
+          },
+          "cpu_count": {
+            "type": "integer",
+            "title": "Cpu Count",
+            "description": "The number of CPUs in the configuration."
+          },
+          "nvme_storage_size_gb": {
+            "type": "integer",
+            "title": "Nvme Storage Size Gb",
+            "description": "The size of NVMe in the configuration."
+          },
+          "memory_size_mb": {
+            "type": "number",
+            "title": "Memory Size Mb",
+            "description": "The amount of RAM memory in the configuration."
+          },
+          "estimated_provisioning_time_minutes": {
+            "type": "integer",
+            "title": "Estimated Provisioning Time Minutes",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "gpu_model",
+          "gpu_count",
+          "cpu_count",
+          "nvme_storage_size_gb",
+          "memory_size_mb"
+        ],
+        "title": "ConfigurationResponse"
+      },
+      "CreateAPIKeyRequest": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "The name of the API key."
+          }
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "CreateAPIKeyRequest"
+      },
+      "CreateInstanceRequest": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "A custom name of the instance."
+          },
+          "gpu_type": {
+            "$ref": "#/components/schemas/GPUType"
+          },
+          "gpu_count": {
+            "type": "integer",
+            "title": "Gpu Count",
+            "description": "The number of GPUs to attach to the instance.",
+            "default": 1
+          },
+          "ssh_keys": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Ssh Keys",
+            "description": "The list of ssh key ids to add to the instance."
+          },
+          "operating_system_label": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SupportedOperatingSystem"
+              }
+            ],
+            "description": "The operating_system_label of the instance.",
+            "default": "ubuntu_20_04_lts"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "gpu_type",
+          "ssh_keys"
+        ],
+        "title": "CreateInstanceRequest"
+      },
+      "CreateInstanceResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "gpu_type": {
+            "$ref": "#/components/schemas/GPUType"
+          },
+          "operating_system_label": {
+            "$ref": "#/components/schemas/SupportedOperatingSystem"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "gpu_type",
+          "operating_system_label"
+        ],
+        "title": "CreateInstanceResponse"
+      },
+      "CreateSSHKeyRequest": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "The name of the SSH key."
+          },
+          "public_key": {
+            "type": "string",
+            "title": "Public Key",
+            "description": "The public key of the SSH key."
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "public_key"
+        ],
+        "title": "CreateSSHKeyRequest"
+      },
+      "EntityId": {
+        "type": "string",
+        "title": "EntityId"
+      },
+      "GPUModelResponse": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "The FluidStack unique name of the GPU model."
+          },
+          "memory_size_mb": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Memory Size Mb",
+            "description": "Memory capacity of the GPU in megabytes."
+          }
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "GPUModelResponse"
+      },
+      "GPUType": {
+        "type": "string",
+        "enum": [
+          "RTX_A4000_16GB",
+          "RTX_A6000_48GB",
+          "RTX_A5000_24GB",
+          "A100_PCIE_80GB",
+          "A40_48GB",
+          "A30_24GB",
+          "A100_SXM4_80GB",
+          "A10_PCIE_24GB",
+          "A100_SXM4_40GB",
+          "A100_PCIE_40GB",
+          "A100_NVLINK_80GB",
+          "A100_NVLINK_40GB",
+          "H100_SXM5_80GB",
+          "H100_PCIE_80GB",
+          "H100_NVLINK_80GB",
+          "RTX_6000_ADA_48GB",
+          "L40_48GB",
+          "L4_24GB",
+          "T4_16GB"
+        ],
+        "title": "GPUType"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HealthCheckOutSchema": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "ok"
+          }
+        },
+        "type": "object",
+        "title": "HealthCheckOutSchema"
+      },
+      "InstanceStatus": {
+        "type": "string",
+        "enum": [
+          "running",
+          "pending",
+          "unhealthy",
+          "shutting_down",
+          "terminated",
+          "stopping",
+          "stopped"
+        ],
+        "title": "InstanceStatus"
+      },
+      "InstanceTerm": {
+        "type": "string",
+        "enum": [
+          "hourly",
+          "weekly",
+          "monthly",
+          "quarterly",
+          "six_monthly",
+          "yearly"
+        ],
+        "title": "InstanceTerm"
+      },
+      "ListInstanceResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "The unique identifier of the instance."
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/InstanceStatus"
+              }
+            ],
+            "description": "The current status of the instance.",
+            "default": "pending"
+          },
+          "username": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Username",
+            "description": "The username of the instance.",
+            "default": "fsuser"
+          },
+          "ssh_port": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ssh Port",
+            "description": "The SSH port of the instance.",
+            "default": "22"
+          },
+          "ssh_keys": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/SSHKeyResponse"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ssh Keys",
+            "description": "The list of SSH keys of the instance.",
+            "default": []
+          },
+          "ip_address": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ip Address",
+            "description": "The IP address of the instance."
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name",
+            "description": "The name of the instance."
+          },
+          "term": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/InstanceTerm"
+              }
+            ],
+            "description": "The commitment term of the instance.",
+            "default": "hourly"
+          },
+          "current_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Current Rate",
+            "description": "The current hourly price of the instance per processor based on its current status."
+          },
+          "configuration": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ConfigurationResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The configuration/plan of the instance."
+          },
+          "region": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RegionResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The region of the instance."
+          },
+          "volumes": {
+            "items": {
+              "$ref": "#/components/schemas/VolumeResponse"
+            },
+            "type": "array",
+            "title": "Volumes",
+            "description": "The volumes attached to the instance.",
+            "default": []
+          },
+          "operating_system": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/OperatingSystemResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The operating system of the instance."
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At",
+            "description": "The creation date of the instance."
+          }
+        },
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "title": "ListInstanceResponse"
+      },
+      "Message": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "title": "Message"
+      },
+      "OperatingSystemResponse": {
+        "properties": {
+          "id": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EntityId"
+              }
+            ],
+            "description": "The ID of the operating system."
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "The name of the operating system."
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "The description of the operating system."
+          },
+          "label": {
+            "$ref": "#/components/schemas/SupportedOperatingSystem"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "label"
+        ],
+        "title": "OperatingSystemResponse"
+      },
+      "RegionResponse": {
+        "properties": {
+          "id": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EntityId"
+              }
+            ],
+            "description": "The unique ID of the region."
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "The name of the region."
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "title": "RegionResponse"
+      },
+      "SSHKeyResponse": {
+        "properties": {
+          "id": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EntityId"
+              }
+            ],
+            "description": "The ID of the SSH key."
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "The name of the SSH key."
+          },
+          "public_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Public Key",
+            "description": "The public key."
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "title": "SSHKeyResponse"
+      },
+      "SupportedOperatingSystem": {
+        "type": "string",
+        "enum": [
+          "ubuntu_22_04_lts",
+          "ubuntu_20_04_lts",
+          "ubuntu_20_04_lts_nvidia",
+          "ubuntu_22_04_lts_nvidia"
+        ],
+        "title": "SupportedOperatingSystem"
+      },
+      "UserBalanceResponse": {
+        "properties": {
+          "balance": {
+            "type": "number",
+            "title": "Balance"
+          }
+        },
+        "type": "object",
+        "required": [
+          "balance"
+        ],
+        "title": "UserBalanceResponse"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "VolumeResponse": {
+        "properties": {
+          "id": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EntityId"
+              }
+            ],
+            "description": "The ID of the volume"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "The name of the volume."
+          },
+          "size_gb": {
+            "type": "integer",
+            "title": "Size Gb",
+            "description": "The size of the volume in GB."
+          },
+          "status": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/VolumeStatus"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The status of the volume.",
+            "default": "creating"
+          },
+          "current_rate": {
+            "type": "number",
+            "title": "Current Rate",
+            "description": "The current hourly rate of the volume."
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At",
+            "description": "The creation time of the volume."
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "size_gb",
+          "current_rate",
+          "created_at"
+        ],
+        "title": "VolumeResponse"
+      },
+      "VolumeStatus": {
+        "type": "string",
+        "enum": [
+          "creating",
+          "available",
+          "attaching",
+          "attached",
+          "detaching",
+          "detached",
+          "deleting",
+          "error",
+          "deleted"
+        ],
+        "title": "VolumeStatus"
+      }
+    }
+  }
 }
