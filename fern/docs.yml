@@ -1,5 +1,5 @@
 instances:
-  - url: https://fluidstack.docs.buildwithfern.com
+  - url: https://fluidstack-ai.docs.buildwithfern.com
     custom-domain: https://docs.fluidstack.io/
 title: Fluidstack API
 favicon: ./docs/assets/logo.png
