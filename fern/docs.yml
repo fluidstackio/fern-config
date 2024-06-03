@@ -1,6 +1,6 @@
 instances:
-  - url:  fluidstack-openapi.docs.buildwithfern.com
-    custom-domain : docs.fluidstack.io
+  - url: https://fluidstack.docs.buildwithfern.com
+    custom-domain: https://docs.fluidstack.io/
 title: Fluidstack API
 favicon: ./docs/assets/logo.png
 navigation:
