@@ -1,4 +1,4 @@
-This script interacts with the FluidStack API to manage servers programmatically. It performs several operations, including SSH key management, server instance creation (both custom and preconfigured), server status monitoring, and finally, server deletion.
+This script interacts with the FluidStack API to manage instances programmatically. It performs several operations, including SSH key management, instance instance creation (both custom and preconfigured), instance status monitoring, and finally, instance deletion.
 
 ```python maxLines=20
 import requests
@@ -8,132 +8,146 @@ from pathlib import Path
 import os
 import time
 
-url = "https://api.fluidstack.io/v1/"
+url = "https://platform.fluidstack.io/"
 api_key = "<api_key>"
-api_token = "<api_token>"
 
-# basic auth header
+
+# set API Key header
 headers = {
-    "Authorization": "Basic "
-    + b64encode(bytes(api_key + ":" + api_token, "utf-8")).decode("ascii")
+    "api-key": api_key
 }
+
 
 # get ssh keys
 print("Getting ssh keys")
-r = requests.get(url + "ssh", headers=headers)
+r = requests.get(url + "ssh_keys", headers=headers)
+if not r.ok:
+	print("Could not fetch SSH keys")
+	print(r.json())
+	exit()
+
 ssh_keys = r.json()
+
 if ssh_keys:
     ssh_key_ids = [ssh_key["id"] for ssh_key in ssh_keys]
 else:
     # create ssh key
-    print("SSH keys not found, creating one")
+    print("SSH keys not found, creating one from "+ str(os.path.join(Path.home(), ".ssh", "id_rsa.pub")))
     public_key = open(os.path.join(Path.home(), ".ssh", "id_rsa.pub")).read().strip()
     r = requests.post(
-        url + "ssh",
+        url + "ssh_keys",
         headers=headers,
         json={"name": "mykey", "public_key": public_key},
     )
-    if r.status_code != 200:
+    if not r.ok:
         raise Exception("Could not create ssh key")
     ssh_key_ids = [r.json()["id"]]
 
 # get instance types
 print("Getting plans")
-r = requests.get(url + "plans")
-plans = r.json()
+r = requests.get(url + "list_available_configurations",headers=headers)
+configurations = r.json()
 
-# launch preconfigured instance
-print("Choosing a random plan")
-plan = random.choice(
-    [p for p in plans if p["type"] == "preconfigured" and p["regions"] != []]
-)
-print("Creating server")
-region = random.choice(plan["regions"])
-operating_system = random.choice(plan["os_options"])
-print("\t GPU: " + plan["gpu_type"])
-print("\t GPU Count: " + str(plan["configuration"]["gpu_count"]))
-print("\t CPU Count: " + str(plan["configuration"]["core_count"]))
-print("\t Memory: " + str(plan["configuration"]["ram"]))
-print("\t Storage: " + str(plan["configuration"]["storage_size"]))
-print("\t Operating System: " + operating_system)
-print("\t Region: " + region["id"])
-print("\t OS: " + operating_system)
-print("\t Price: " + str(round(plan["price"]["hourly"], 2)) + " per gpu per hour")
-print("\n")
-r = requests.post(
-    url + "server",
-    headers=headers,
-    json={
-        "ssh_keys": [ssh_key_ids[0]],
-        "region": region["id"],
-        "plan": plan["plan_id"],
-        "os": operating_system,
-    },
-)
+# get random configuration
 
-if r.status_code != 201:
-    print(r.json()["error"])
-    raise Exception("Could not create server")
-server_id = r.json()["server"]["id"]
-server_status = "provisioning"
-print("Waiting for server to start")
+count=1
+while True:
+	print("Choosing configuration - "+str(count))
+	configuration = random.choice(configurations)
+
+	gpu_type = configuration['gpu_model']['name']
+	gpu_count = configuration['gpu_count']
+
+
+	operating_system_label ='ubuntu_20_04_lts'
+
+	# create an instance 
+	print("Creating instance ")
+	print("GPU Type",gpu_type,"GPU Count", gpu_count)
+	r = requests.post(
+	    url + "instances",
+	    headers=headers,
+	    json={
+	    	"name" : "myinstance",
+	        "ssh_keys": [ssh_key_ids[0]],
+	        "gpu_type": gpu_type,
+	        "gpu_count": gpu_count,
+	        "operating_system_label": operating_system_label,
+	    },
+	)
+
+	if not r.ok:
+	    print(r.json())
+	    count += 1
+	else:
+		break
+	    
+
+
+instance_id = r.json()['id']
+
+# wait for instance to start
+instance_status = "pending"
+print("Waiting for instance to start")
 count = 1
-while server_status != "running":
-    if server_status in ["out of stock", "failed to create", "timeout error"]:
-        print("Could not create server")
+instance = None
+while instance_status != "running":
+    if instance_status in ["unhealthy"]:
+        print("Could not create instance")
         break
     try:
-        r = requests.get(url + "server/" + server_id, headers=headers)
-        server_status = r.json()["status"]
+        r = requests.get(url + "instances", headers=headers)
+        instances = r.json()
+        instance = [instance for instance in instances if instance['id'] == instance_id][0]
+        instance_status = instance['status']
     except:
         pass
-    print("\t [" + str(count) + "] Status: " + server_status)
+    print("\t [" + str(count) + "] Status: " + instance_status)
     time.sleep(10)
     count += 1
 
-# server is running
-server = r.json()
-print("Server IP Address: \t" + server["ip_address"])
-print("Server Running Price: \t" + server["running_rate"])
+if instance is None:
+	print("Could not create instance")
 
-# delete server
-print("Deleting server")
-r = requests.delete(url + f"server/{server_id}", headers=headers)
+# instance is running
+
+print("Instance Running Price: \t" + str(instance["current_rate"]))
+
+# delete instance
+print("Deleting instance")
+r = requests.delete(url + f"instances/{instance_id}", headers=headers)
 if not r.ok:
     print(r.json()["error"])
-    raise Exception("Could not delete server")
-print("Server Deleted")
+    raise Exception("Could not delete instance")
+print("Instance Deleted")
 ```
 
 ## Required Modules
 - `requests`: for making HTTP requests to the FluidStack API.
 - `base64`: for encoding the API key and token in the Authorization header.
-- `random`: for randomly choosing between custom and preconfigured server options, as well as choosing regions and operating systems.
+- `random`: for randomly choosing between custom and preconfigured instance options, as well as choosing regions and operating systems.
 - `pathlib` and `os`: for reading the SSH public key from the user's home directory.
 
 ## API Key and Token
-You need to replace `"<your_api_key>"` and `"<your_api_token>"` with your actual FluidStack API key and token.
-
-## Basic Authentication
-The API uses Basic HTTP Authentication. The `headers` dictionary contains the `Authorization` key. The value is the string "Basic " followed by the base64-encoded string of `api_key` and `api_token` separated by a colon.
+You need to replace `"<your_api_key>"`  with your actual FluidStack API key .
 
 ## Getting SSH Keys
-The script sends a GET request to the `ssh_key` endpoint to retrieve all existing SSH keys associated with the account. If no SSH keys exist, it reads the public key from the default location (`~/.ssh/id_rsa.pub`) and sends a POST request to the same endpoint to create a new SSH key.
+The script sends a GET request to the `ssh_keys` endpoint to retrieve all existing SSH keys associated with the account. If no SSH keys exist, it reads the public key from the default location (`~/.ssh/id_rsa.pub`) and sends a POST request to the same endpoint to create a new SSH key.
 
 ## Getting Instance Types
-The script sends a GET request to the `plans` endpoint to get all available server plans.
+The script sends a GET request to the `list_available_configurations` endpoint to get all available instance plans.
 
-## Launching Server Instance
-The script randomly decides whether to launch a custom or preconfigured server instance, specifying SSH keys, region ID, plan ID, and OS.
+## Launching instance Instance
+The script randomly decides whether to launch an instance, specifying SSH keys, GPU Type, GPU count, and OS.
 
-## Checking Server Status
-The script continuously checks the status of the created server until its status is "running" or "Error Creating". If the status is any of "out_of_stock", "failed_to_create", "timeout_error", the script prints an error message and stops checking.
+## Checking instance Status
+The script continuously checks the status of the created instance until its status is "running" or "unhealthy". If the status is "unhealthy", the script prints an error message and stops checking.
 
-## Printing Server Details
-Once the server is running, the script prints the server IP and cost.
+## Printing instance Details
+Once the instance is running, the script prints the instance IP and cost.
 
-## Deleting Server
-Finally, the script sends a DELETE request to the `server` endpoint to delete the created server.
+## Deleting instance
+Finally, the script sends a DELETE request to the `instance` endpoint to delete the created instance.
 
 <Info>
 Please note that exception handling is minimal in this script. In a production environment, you'd likely want more robust error checking and handling.

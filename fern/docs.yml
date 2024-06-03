@@ -1,5 +1,5 @@
 instances:
-  - url: https://fluidstack.docs.buildwithfern.com
+  - url: https://fluidstack-openapi.buildwithfern.com
 title: Fluidstack API
 favicon: ./docs/assets/logo.png
 navigation:
