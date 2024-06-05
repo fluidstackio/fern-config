@@ -1,0 +1,343 @@
+## Configurations
+A configuration is a type of instance, showing the type of GPU, CPU, and storage.
+
+## Operating system
+An operating system is the software that runs on the instance.
+
+## Getting the list of available configurations
+
+You can get the list of available configurations by using the following endpoint:
+
+```bash maxLines=0
+curl -H "Content-Type: application/json" \
+     -H "api-key: <api_key>" \
+    --request GET 'https://platform.fluidstack.io/list_available_configurations'
+```
+which will return a list of configurations
+
+```json
+[
+  {
+    "id": "<configuration_id>",
+    "gpu_model": {
+      "name": "<gpu_type>",
+      "memory_size_mb": <memory_size_mb>
+    },
+    "cpu_model": "generic",
+    "gpu_count": <gpu_count>,
+    "cpu_count": <cpu_count>,
+    "nvme_storage_size_gb": <nvme_storage_size_gb>,
+    "memory_size_mb": <memory_size_mb>,
+    "estimated_provisioning_time_minutes": <estimated_provisioning_time_minutes>
+  }
+  ...
+]
+```
+use `gpu_model.name` as `<gpu_type>` and `<gpu_count>` to select the configuration you want to use.
+
+## Getting the list of available operating systems
+
+You can get the list of available operating systems by using the following endpoint:
+
+```bash maxLines=0
+curl -H "Content-Type: application/json" \
+     -H "api-key: <api_key>" \
+    --request GET 'https://platform.fluidstack.io/list_available_os_templates'
+```
+which will return a list of operating system templates
+
+```json
+[
+    {
+    "id": "<operating_system_id>",
+    "name": "<operating_system_name>",
+    "description": "<operating_system_description>",
+    "label": "<operating_system_label>"
+    }
+    ...
+]
+```
+
+# List of available configurations
+
+
+
+
+<div style="background-color: white; border-radius: 4px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); overflow: hidden;">
+  <table style="width: 100%; border-collapse: collapse;">
+    <thead style="background-color: #f5f5f5;">
+      <tr>
+        <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">GPU Type</th>
+        <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">GPU Count</th>
+        <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">CPU Count</th>
+        <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">RAM Size (MB)</th>
+        <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">NVME Storage Size (GB)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">RTX_A6000_48GB</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">1</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">16</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">59</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">425</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">RTX_A6000_48GB</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">2</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">32</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">119</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">850</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">RTX_A6000_48GB</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">4</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">64</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">238</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">1700</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">A100_PCIE_80GB</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">1</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">32</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">120</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">200</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">A100_PCIE_80GB</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">2</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">64</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">240</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">400</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">A100_PCIE_80GB</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">4</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">128</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">480</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">800</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">RTX_A4000_16GB</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">1</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">6</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">24</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">160</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">RTX_A4000_16GB</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">2</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">12</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">48</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">320</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">RTX_A4000_16GB</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">4</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">24</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">96</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">640</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">RTX_A4000_16GB</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">8</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">48</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">192</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">1280</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">RTX_A4000_16GB</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">10</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">64</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">240</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">1600</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">RTX_A5000_24GB</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">1</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">8</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">30</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">200</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">RTX_A5000_24GB</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">2</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">16</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">60</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">400</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">RTX_A5000_24GB</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">4</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">32</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">120</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">800</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">RTX_A5000_24GB</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">8</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">64</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">240</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">1600</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">A100_PCIE_80GB</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">4</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">126</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">480</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">3300</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">A100_PCIE_80GB</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">8</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">252</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">960</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">6600</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">A100_NVLINK_80GB</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">8</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">252</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">960</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">6500</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">A100_PCIE_80GB</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">1</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">32</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">120</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">850</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">H100_PCIE_80GB</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">4</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">126</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">720</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">3200</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">H100_PCIE_80GB</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">8</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">252</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">1440</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">6500</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">H100_PCIE_80GB</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">1</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">32</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">180</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">750</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">H100_PCIE_80GB</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">2</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">64</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">360</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">1500</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">L40_48GB</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">4</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">126</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">240</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">3300</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+{/*
+|      gpu_type          |gpu_count|cpu_count|ram_size_mb|nvme_storage_size_gb|
++------------------------+---------+---------+-----------+--------------------+
+|     RTX_A6000_48GB     |    1    |    16   |     59    |         425        |
++------------------------+---------+---------+-----------+--------------------+
+|     RTX_A6000_48GB     |    2    |    32   |    119    |         850        |
++------------------------+---------+---------+-----------+--------------------+
+|     RTX_A6000_48GB     |    4    |    64   |    238    |        1700        |
++------------------------+---------+---------+-----------+--------------------+
+|     A100_PCIE_80GB     |    1    |    32   |    120    |         200        |
++------------------------+---------+---------+-----------+--------------------+
+|     A100_PCIE_80GB     |    2    |    64   |    240    |         400        |
++------------------------+---------+---------+-----------+--------------------+
+|     A100_PCIE_80GB     |    4    |   128   |    480    |         800        |
++------------------------+---------+---------+-----------+--------------------+
+|     RTX_A4000_16GB     |    1    |    6    |     24    |         160        |
++------------------------+---------+---------+-----------+--------------------+
+|     RTX_A4000_16GB     |    2    |    12   |     48    |         320        |
++------------------------+---------+---------+-----------+--------------------+
+|     RTX_A4000_16GB     |    4    |    24   |     96    |         640        |
++------------------------+---------+---------+-----------+--------------------+
+|     RTX_A4000_16GB     |    8    |    48   |    192    |        1280        |
++------------------------+---------+---------+-----------+--------------------+
+|     RTX_A4000_16GB     |    10   |    64   |    240    |        1600        |
++------------------------+---------+---------+-----------+--------------------+
+|     RTX_A5000_24GB     |    1    |    8    |     30    |         200        |
++------------------------+---------+---------+-----------+--------------------+
+|     RTX_A5000_24GB     |    2    |    16   |     60    |         400        |
++------------------------+---------+---------+-----------+--------------------+
+|     RTX_A5000_24GB     |    4    |    32   |    120    |         800        |
++------------------------+---------+---------+-----------+--------------------+
+|     RTX_A5000_24GB     |    8    |    64   |    240    |        1600        |
++------------------------+---------+---------+-----------+--------------------+
+|     A100_PCIE_80GB     |    4    |   126   |    480    |        3300        |
++------------------------+---------+---------+-----------+--------------------+
+|     A100_PCIE_80GB     |    8    |   252   |    960    |        6600        |
++------------------------+---------+---------+-----------+--------------------+
+|    A100_NVLINK_80GB    |    8    |   252   |    960    |        6500        |
++------------------------+---------+---------+-----------+--------------------+
+|     A100_PCIE_80GB     |    1    |    32   |    120    |         850        |
++------------------------+---------+---------+-----------+--------------------+
+|     H100_PCIE_80GB     |    4    |   126   |    720    |        3200        |
++------------------------+---------+---------+-----------+--------------------+
+|     H100_PCIE_80GB     |    8    |   252   |    1440   |        6500        |
++------------------------+---------+---------+-----------+--------------------+
+|     H100_PCIE_80GB     |    1    |    32   |    180    |         750        |
++------------------------+---------+---------+-----------+--------------------+
+|     H100_PCIE_80GB     |    2    |    64   |    360    |        1500        |
++------------------------+---------+---------+-----------+--------------------+
+|        L40_48GB        |    4    |   126   |    240    |        3300        |
++------------------------+---------+---------+-----------+--------------------+
+|        L40_48GB        |    8    |   252   |    480    |        6600        |
++------------------------+---------+---------+-----------+--------------------+
+|        L40_48GB        |    1    |    32   |     60    |         850        |
++------------------------+---------+---------+-----------+--------------------+
+|        L40_48GB        |    2    |    64   |    120    |        1600        |
++------------------------+---------+---------+-----------+--------------------+
+|     RTX_A6000_48GB     |    8    |   128   |    480    |        1700        |
++------------------------+---------+---------+-----------+--------------------+
+|     RTX_A6000_48GB     |    1    |    6    |     55    |         500        |
++------------------------+---------+---------+-----------+--------------------+
+|     RTX_A6000_48GB     |    2    |    12   |    110    |        1000        |
++------------------------+---------+---------+-----------+--------------------+
+|     RTX_A6000_48GB     |    4    |    24   |    220    |        2000        |
++------------------------+---------+---------+-----------+--------------------+
+|     A100_PCIE_80GB     |    1    |    16   |    125    |         500        |
++------------------------+---------+---------+-----------+--------------------+
+|     A100_PCIE_80GB     |    4    |    64   |    500    |        2000        |
++------------------------+---------+---------+-----------+--------------------+
+|     A100_PCIE_80GB     |    8    |   128   |    1000   |        4000        |
++------------------------+---------+---------+-----------+--------------------+
+|     A100_PCIE_40GB     |    1    |    14   |    112    |        1700        |
++------------------------+---------+---------+-----------+--------------------+
+|     A100_PCIE_40GB     |    2    |    28   |    224    |        3400        |
++------------------------+---------+---------+-----------+--------------------+
+|     A100_PCIE_40GB     |    4    |    56   |    448    |        6800        |
++------------------------+---------+---------+-----------+--------------------+
+|     A100_PCIE_40GB     |    8    |   120   |    940    |        13600       |
++------------------------+---------+---------+-----------+--------------------+
+|        A30_24GB        |    1    |    8    |   32      |         20         |
++------------------------+---------+---------+-----------+--------------------+
+|        A30_24GB        |    2    |    16   |   64      |         20         |
++------------------------+---------+---------+-----------+--------------------+
+|        A30_24GB        |    4    |    32   |   128     |         20         |
++------------------------+---------+---------+-----------+--------------------+
+|        A30_24GB        |    8    |    64   |   256     |         20         |
++------------------------+---------+---------+-----------+--------------------+
+|        A30_24GB        |    2    |    8    |   128     |         20         |
++------------------------+---------+---------+-----------+--------------------+
+|        A30_24GB        |    4    |    16   |   256     |         20         |
++------------------------+---------+---------+-----------+--------------------+
+|        A30_24GB        |    8    |    32   |   512     |         20         |
++-----------------------------------------------------------------------------+
+```
+*/}

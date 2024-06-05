@@ -6,17 +6,17 @@ favicon: ./docs/assets/logo.png
 navigation:
   - page: Home
     path: ./docs/pages/home.mdx
-  - page: API Overview
-    path: ./docs/pages/overview.mdx
-  - page: Authentication Methods
-    path: ./docs/pages/authentication-methods.mdx
-  - page: Example API Usage in Python
-    path: ./docs/pages/example-usage-in-python.mdx
-  - page: Page Under Construction
-    slug: todo
-    path: ./docs/pages/todo.mdx
-    hidden: true
+  - page: Getting Started
+    path: ./docs/pages/getting-started.mdx
+  # - page: Authentication Methods
+  #   path: ./docs/pages/authentication-methods.mdx
+  - page: Programmatic Instance Management
+    path: ./docs/pages/programmatic-instance-management.mdx
+  - page: Configurations and Operating Systems
+    path: ./docs/pages/list-available.mdx
   - api: API Reference
+    snippets:
+      python: fluidstack
 colors:
   accentPrimary: 
     light: '#0270FF'
