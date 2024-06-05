@@ -1,0 +1,103 @@
+## Script Steps
+ 
+1. **Create an SSH key**: If no SSH keys exist, it reads the public key from the default location (`~/.ssh/id_rsa.pub`) and sends a POST request to the same endpoint to create a new SSH key.
+
+2. **Launch Instance**: Launche instances, specifying SSH keys, GPU Type, GPU count, and OS.
+
+3. **Check instance Status**: Check the status of the created instance until they are running.
+
+4. **Printing instance Details**: Once the instance is running, the script prints the instance IP.
+
+5. **Deleting instance**: Finally, delete the created instance.
+
+## Script 
+
+```python maxLines=30
+import requests
+from base64 import b64encode
+import random
+from pathlib import Path
+import os
+import time
+
+api_url = "https://platform.fluidstack.io/"
+api_key = "<api_key>"
+
+
+# Set API Key header
+headers = {
+    "api-key": api_key
+}
+
+# Create SSH Key
+print("Creating SSH Key")
+public_key = open(os.path.join(Path.home(), ".ssh", "id_rsa.pub")).read().strip() # Read the public key from the home directory
+r = requests.post(
+    url + "ssh_keys",
+    headers=headers,
+    json={"name": "my_key", "public_key": public_key}, # Create a new SSH key with the name "my_key" and the public key from the home directory
+)
+if not r.ok:
+    raise Exception("Could not create ssh key")
+
+ssh_key_ids = [r.json()["id"]]
+
+gpu_type = "RTX_A6000_48GB"
+gpu_count = 4
+operating_system_label ='ubuntu_20_04_lts'
+
+# create an instance 
+print("Creating Instance")
+r = requests.post(
+    url + "instances",
+    headers=headers,
+    json={
+        "name" : "myinstance",
+        "ssh_keys": [ssh_key_ids[0]],
+        "gpu_type": gpu_type,
+        "gpu_count": gpu_count,
+        "operating_system_label": operating_system_label,
+    },
+)
+	if not r.ok:
+	    print(r.json())
+	else:
+		raise Exception("Could not create instance")
+	
+instance_id = r.json()['id']
+
+# Wait for instance to start
+instance_status = "pending"
+print("Waiting for instance to start")
+
+while instance_status != "running":
+    if instance_status in ["unhealthy"]:
+        print("Could not create instance")
+        raise Exception("Could not create instance")
+    try
+        r = requests.get(url + "instances", headers=headers)
+        instances = r.json()
+        instance = None
+        for instance in instances:
+            if instance['id'] == instance_id:
+                instance_status = instance['status']
+                break
+        instance_status = instance['status']
+    except Exception as e:
+        print(e)
+    print("\t [" + str(count) + "] Status: " + instance_status)
+    time.sleep(10)
+
+# Instance is running
+
+print("Instance IP address: " + instance['public_ip'])
+
+# Delete instance
+print("Deleting instance")
+r = requests.delete(url + f"instances/{instance_id}", headers=headers)
+if not r.ok:
+    print(r.json())
+    raise Exception("Could not delete instance")
+print("Instance Deleted")
+
+```

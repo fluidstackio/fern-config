@@ -16,8 +16,7 @@ paths:
       x-fern-ignore: true
   /user/balance:
     get:
-      x-fern-sdk-group-name: user
-      x-fern-sdk-method-name: get_balance
+      x-fern-ignore: true
   /instances:
     get:
       x-fern-sdk-group-name: instances
@@ -42,22 +41,19 @@ paths:
       x-fern-sdk-method-name: delete
   /api_keys:
     get:
-      x-fern-sdk-group-name: api_keys
-      x-fern-sdk-method-name: list
+      x-fern-ignore: true
     post:
-      x-fern-sdk-group-name: api_keys
-      x-fern-sdk-method-name: create
+      x-fern-ignore: true
   /api_keys/{api_key_id}:
     delete:
-      x-fern-sdk-group-name: api_keys
-      x-fern-sdk-method-name: delete
+      x-fern-ignore: true
   /list_available_configurations:
     get:
-      x-fern-sdk-group-name: plans
+      x-fern-sdk-group-name: configurations
       x-fern-sdk-method-name: list
   /list_user_ssh_keys:
     get:
-    x-fern-ignore: true
+      x-fern-ignore: true
     post:
       x-fern-ignore: true
   /list_user_ssh_keys/{ssh_key_id}:

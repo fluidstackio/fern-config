@@ -11,7 +11,7 @@
           "General"
         ],
         "summary": "Healthcheck",
-        "operationId": "healthcheck_healthcheck_get",
+        "operationId": "healthcheck_healthcheck_head",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -30,7 +30,7 @@
           "General"
         ],
         "summary": "Healthcheck",
-        "operationId": "healthcheck_healthcheck_get",
+        "operationId": "healthcheck_healthcheck_head",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -47,8 +47,8 @@
     },
     "/instances": {
       "get": {
-        "summary": "List user instances.",
-        "description": "List user instances.",
+        "summary": "List user instances",
+        "description": "This endpoint is used to retrieve a list of all instances associated with the authenticated user.",
         "operationId": "list_instances_instances_get",
         "parameters": [
           {
@@ -108,8 +108,8 @@
         }
       },
       "post": {
-        "summary": "Create instance",
-        "description": "Create a new instance.",
+        "summary": "Create a new instance",
+        "description": "This endpoint is used to create a new instance. You must provide a name, gpu_type and a list of ssh_key ids. The default GPU count is 1.",
         "operationId": "create_instance_instances_post",
         "parameters": [
           {
@@ -177,8 +177,8 @@
     },
     "/instances/{instance_id}": {
       "delete": {
-        "summary": "Terminate instance",
-        "description": "Terminate an instance.",
+        "summary": "Terminate an instance",
+        "description": "This endpoint can be used to terminate an existing instance by its ID.",
         "operationId": "terminate_instance_instances__instance_id__delete",
         "parameters": [
           {
@@ -238,8 +238,8 @@
     },
     "/ssh_keys": {
       "get": {
-        "summary": "List SSH keys.",
-        "description": "List SSH keys.",
+        "summary": "List SSH keys",
+        "description": "Fetch a list of SSH keys associated with the authenticated user.",
         "operationId": "list_user_ssh_keys_ssh_keys_get",
         "parameters": [
           {
@@ -299,8 +299,8 @@
         }
       },
       "post": {
-        "summary": "Create SSH key",
-        "description": "Create a new SSH key.",
+        "summary": "Create an SSH key",
+        "description": "Create a new SSH Key for the authenticated user. A unique name must be provided for the SSH key and a public key. The public key must be a valid SSH key with supported formats ssh-rsa, ssh-dss (DSA), ssh-ed25519 and ecdsa keys with NIST curves.",
         "operationId": "create_ssh_key_ssh_keys_post",
         "parameters": [
           {
@@ -368,8 +368,8 @@
     },
     "/ssh_keys/{ssh_key_id}": {
       "delete": {
-        "summary": "Delete SSH key.",
-        "description": "Delete an SSH key.",
+        "summary": "Delete an SSH key",
+        "description": "Delete an existing SSH key using the SSH key ID.",
         "operationId": "delete_ssh_key_ssh_keys__ssh_key_id__delete",
         "parameters": [
           {
@@ -427,201 +427,10 @@
         }
       }
     },
-    "/api_keys": {
-      "get": {
-        "summary": "List user API keys.",
-        "description": "List user API keys.",
-        "operationId": "list_user_api_keys_api_keys_get",
-        "parameters": [
-          {
-            "name": "api-key",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "title": "Api-Key"
-            }
-          },
-          {
-            "name": "wos_session",
-            "in": "cookie",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "title": "Wos Session"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/APIKeyResponse"
-                  },
-                  "title": "Response List User Api Keys Api Keys Get"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Message"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "summary": "Create API key",
-        "description": "Create a new API key.",
-        "operationId": "create_api_key_api_keys_post",
-        "parameters": [
-          {
-            "name": "api-key",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "title": "Api-Key"
-            }
-          },
-          {
-            "name": "wos_session",
-            "in": "cookie",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "title": "Wos Session"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateAPIKeyRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/APIKeyResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Message"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api_keys/{api_key_id}": {
-      "delete": {
-        "summary": "Delete user API key.",
-        "description": "Delete a user API key.",
-        "operationId": "delete_api_key_api_keys__api_key_id__delete",
-        "parameters": [
-          {
-            "name": "api_key_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Api Key Id"
-            }
-          },
-          {
-            "name": "api-key",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "title": "Api-Key"
-            }
-          },
-          {
-            "name": "wos_session",
-            "in": "cookie",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "title": "Wos Session"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Successful Response"
-          },
-          "401": {
-            "description": "Authentication Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Message"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/list_available_configurations": {
       "get": {
-        "summary": "List available plans.",
-        "description": "List available plans/configurations.",
+        "summary": "List available configurations",
+        "description": "List available configurations including GPU type, GPU count, RAM size and disk size.",
         "operationId": "list_available_configurations_list_available_configurations_get",
         "parameters": [
           {
@@ -683,8 +492,8 @@
     },
     "/list_available_os_templates": {
       "get": {
-        "summary": "List available OS template images.",
-        "description": "List available OS template images.",
+        "summary": "List available OS template images",
+        "description": "List available OS template images. Use the label to create an instance.",
         "operationId": "list_available_os_templates_list_available_os_templates_get",
         "parameters": [
           {
@@ -743,96 +552,10 @@
           }
         }
       }
-    },
-    "/user/balance": {
-      "get": {
-        "summary": "Get the current user's balance.",
-        "description": "Get the current user's balance.",
-        "operationId": "get_user_balance_user_balance_get",
-        "parameters": [
-          {
-            "name": "api-key",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "title": "Api-Key"
-            }
-          },
-          {
-            "name": "wos_session",
-            "in": "cookie",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "title": "Wos Session"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserBalanceResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Message"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
     "schemas": {
-      "APIKeyResponse": {
-        "properties": {
-          "id": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EntityId"
-              }
-            ],
-            "description": "The ID of the API key."
-          },
-          "name": {
-            "type": "string",
-            "title": "Name",
-            "description": "The API key name."
-          },
-          "api_key": {
-            "type": "string",
-            "title": "Api Key",
-            "description": "The API key."
-          }
-        },
-        "type": "object",
-        "required": [
-          "id"
-        ],
-        "title": "APIKeyResponse"
-      },
       "ConfigurationResponse": {
         "properties": {
           "id": {
@@ -899,20 +622,6 @@
         ],
         "title": "ConfigurationResponse"
       },
-      "CreateAPIKeyRequest": {
-        "properties": {
-          "name": {
-            "type": "string",
-            "title": "Name",
-            "description": "The name of the API key."
-          }
-        },
-        "type": "object",
-        "required": [
-          "name"
-        ],
-        "title": "CreateAPIKeyRequest"
-      },
       "CreateInstanceRequest": {
         "properties": {
           "name": {
@@ -936,7 +645,7 @@
             "type": "array",
             "minItems": 1,
             "title": "Ssh Keys",
-            "description": "The list of ssh key ids to add to the instance."
+            "description": "The list of SSH key IDs to add to the instance. These SSH keys will be used to connect to the instance."
           },
           "operating_system_label": {
             "allOf": [
@@ -944,7 +653,7 @@
                 "$ref": "#/components/schemas/SupportedOperatingSystem"
               }
             ],
-            "description": "The operating_system_label of the instance.",
+            "description": "The operating system label to be used to create the instance.",
             "default": "ubuntu_20_04_lts"
           }
         },
@@ -1132,7 +841,7 @@
               }
             ],
             "title": "Username",
-            "description": "The username of the instance.",
+            "description": "The username to be used to connect to the instance. For instance, to connect to the instance via SSH use; \"ssh <username>@<ip_address> -p <ssh_port>\".",
             "default": "fsuser"
           },
           "ssh_port": {
@@ -1145,7 +854,7 @@
               }
             ],
             "title": "Ssh Port",
-            "description": "The SSH port of the instance.",
+            "description": "The SSH port to be used to connect to the instance.",
             "default": "22"
           },
           "ssh_keys": {
@@ -1161,7 +870,7 @@
               }
             ],
             "title": "Ssh Keys",
-            "description": "The list of SSH keys of the instance.",
+            "description": "This is the list of the SSH keys of the instance with which you can login.",
             "default": []
           },
           "ip_address": {
@@ -1186,7 +895,7 @@
               }
             ],
             "title": "Name",
-            "description": "The name of the instance."
+            "description": "The name provided when the instance was created."
           },
           "term": {
             "allOf": [
@@ -1218,7 +927,7 @@
                 "type": "null"
               }
             ],
-            "description": "The configuration/plan of the instance."
+            "description": "The configuration used to create the instance."
           },
           "region": {
             "anyOf": [
@@ -1229,16 +938,7 @@
                 "type": "null"
               }
             ],
-            "description": "The region of the instance."
-          },
-          "volumes": {
-            "items": {
-              "$ref": "#/components/schemas/VolumeResponse"
-            },
-            "type": "array",
-            "title": "Volumes",
-            "description": "The volumes attached to the instance.",
-            "default": []
+            "description": "The region in which the instance is located."
           },
           "operating_system": {
             "anyOf": [
@@ -1249,7 +949,7 @@
                 "type": "null"
               }
             ],
-            "description": "The operating system of the instance."
+            "description": "The operating system template used to create the instance"
           },
           "created_at": {
             "anyOf": [
@@ -1262,7 +962,7 @@
               }
             ],
             "title": "Created At",
-            "description": "The creation date of the instance."
+            "description": "The creation date and time of the instance."
           }
         },
         "type": "object",
@@ -1287,18 +987,10 @@
       },
       "OperatingSystemResponse": {
         "properties": {
-          "id": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EntityId"
-              }
-            ],
-            "description": "The ID of the operating system."
-          },
           "name": {
             "type": "string",
             "title": "Name",
-            "description": "The name of the operating system."
+            "description": "The friendly name of the operating system."
           },
           "description": {
             "anyOf": [
@@ -1310,15 +1002,19 @@
               }
             ],
             "title": "Description",
-            "description": "The description of the operating system."
+            "description": "The description of the operating system detailing the list of pre-installed packages and customisations, if any."
           },
           "label": {
-            "$ref": "#/components/schemas/SupportedOperatingSystem"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SupportedOperatingSystem"
+              }
+            ],
+            "description": "The unique slug identifier of the operating system."
           }
         },
         "type": "object",
         "required": [
-          "id",
           "name",
           "label"
         ],
@@ -1392,19 +1088,6 @@
         ],
         "title": "SupportedOperatingSystem"
       },
-      "UserBalanceResponse": {
-        "properties": {
-          "balance": {
-            "type": "number",
-            "title": "Balance"
-          }
-        },
-        "type": "object",
-        "required": [
-          "balance"
-        ],
-        "title": "UserBalanceResponse"
-      },
       "ValidationError": {
         "properties": {
           "loc": {
@@ -1437,82 +1120,6 @@
           "type"
         ],
         "title": "ValidationError"
-      },
-      "VolumeResponse": {
-        "properties": {
-          "id": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EntityId"
-              }
-            ],
-            "description": "The ID of the volume"
-          },
-          "name": {
-            "type": "string",
-            "title": "Name",
-            "description": "The name of the volume."
-          },
-          "size_gb": {
-            "type": "integer",
-            "title": "Size Gb",
-            "description": "The size of the volume in GB."
-          },
-          "status": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/VolumeStatus"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "The status of the volume.",
-            "default": "creating"
-          },
-          "current_rate": {
-            "type": "number",
-            "title": "Current Rate",
-            "description": "The current hourly rate of the volume."
-          },
-          "created_at": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Created At",
-            "description": "The creation time of the volume."
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "name",
-          "size_gb",
-          "current_rate",
-          "created_at"
-        ],
-        "title": "VolumeResponse"
-      },
-      "VolumeStatus": {
-        "type": "string",
-        "enum": [
-          "creating",
-          "available",
-          "attaching",
-          "attached",
-          "detaching",
-          "detached",
-          "deleting",
-          "error",
-          "deleted"
-        ],
-        "title": "VolumeStatus"
       }
     }
   }
