@@ -7,10 +7,9 @@ Get the up-to-date list of all available configurations from the [`GET /list_ava
 
 For example, you can use cURL to call the endpoint:
 
-```bash maxLines=0
-curl -H "Content-Type: application/json" \
-     -H "api-key: <api_key>" \
-    --request GET 'https://platform.fluidstack.io/list_available_configurations'
+```bash title="bash"
+curl https://platform.fluidstack.io/list_available_configurations \
+     -H "api-key: <your_api_key>"
 ```
 
 Expected output:
@@ -28,12 +27,11 @@ Expected output:
     "nvme_storage_size_gb": <nvme_storage_size_gb>,
     "memory_size_mb": <memory_size_mb>,
     "estimated_provisioning_time_minutes": <estimated_provisioning_time_minutes>
-  }
+  },
   ...
 ]
 ```
-
-Use `gpu_model.name` as `<gpu_type>` and `<gpu_count>` to select the configuration you want to use.
+When creating a new instance, a value for `"gpu_type"` is required. Find the available options in the values for `"gpu_model.name"` returned by this endpoint. 
 
 ## Get the list of available operating systems
 
@@ -41,25 +39,26 @@ Get the up-to-date list of all available operating systems from the [`GET /list_
 
 For example, you can use cURL to call the endpoint:
 
-```bash maxLines=0
-curl -H "Content-Type: application/json" \
-     -H "api-key: <api_key>" \
-    --request GET 'https://platform.fluidstack.io/list_available_os_templates'
+```bash title="bash"
+curl https://platform.fluidstack.io/list_available_os_templates \
+     -H "api-key: <api_key>"
 ```
 
 Expected output:
-
-```json
+```json title="JSON"
 [
     {
-    "id": "<operating_system_id>",
-    "name": "<operating_system_name>",
-    "description": "<operating_system_description>",
-    "label": "<operating_system_label>"
+        "name": "<operating_system_name>",
+        "description": "<operating_system_description>",
+        "label": "<operating_system_label>"
     }
     ...
 ]
 ```
+
+When creating a new instance, you can optionally include a value for `"operating_system_label"`. Find the available options in the values for `"label"` returned by this endpoint.
+
+If you do not provide an `"operating_system_label"` value when creating an instance, `"ubuntu_20_04_lts"` is used as the default. 
 
 ## List of available configurations
 
