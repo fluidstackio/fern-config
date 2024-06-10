@@ -1,20 +1,19 @@
 ## Configurations
-A configuration is a type of instance, showing the type of GPU, CPU, and storage.
+A configuration consists of the specific GPU, CPU, and storage settings for an instance.
 
-## Operating system
-An operating system is the software that runs on the instance.
+## Get the list of available configurations
 
-## Getting the list of available configurations
+Get the up-to-date list of all available configurations from the [`GET /list_available_configurations](https://docs.fluidstack.io/api-reference/configurations/list) endpoint.
 
-You can get the list of available configurations by using the following endpoint:
+For example, you can use cURL to call the endpoint:
 
 ```bash maxLines=0
 curl -H "Content-Type: application/json" \
      -H "api-key: <api_key>" \
     --request GET 'https://platform.fluidstack.io/list_available_configurations'
 ```
-which will return a list of configurations
 
+Expected output:
 ```json
 [
   {
@@ -33,18 +32,22 @@ which will return a list of configurations
   ...
 ]
 ```
-use `gpu_model.name` as `<gpu_type>` and `<gpu_count>` to select the configuration you want to use.
 
-## Getting the list of available operating systems
+Use `gpu_model.name` as `<gpu_type>` and `<gpu_count>` to select the configuration you want to use.
 
-You can get the list of available operating systems by using the following endpoint:
+## Get the list of available operating systems
+
+Get the up-to-date list of all available operating systems from the [`GET /list_available_os_templates](https://docs.fluidstack.io/api-reference/templates/list) endpoint.
+
+For example, you can use cURL to call the endpoint:
 
 ```bash maxLines=0
 curl -H "Content-Type: application/json" \
      -H "api-key: <api_key>" \
     --request GET 'https://platform.fluidstack.io/list_available_os_templates'
 ```
-which will return a list of operating system templates
+
+Expected output:
 
 ```json
 [
@@ -58,10 +61,7 @@ which will return a list of operating system templates
 ]
 ```
 
-# List of available configurations
-
-
-
+## List of available configurations
 
 <div style="background-color: white; border-radius: 4px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); overflow: hidden;">
   <table style="width: 100%; border-collapse: collapse;">
