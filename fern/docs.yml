@@ -8,8 +8,8 @@ navigation:
     path: ./docs/pages/home.mdx
   - page: Getting Started
     path: ./docs/pages/getting-started.mdx
-  # - page: Authentication Methods
-  #   path: ./docs/pages/authentication-methods.mdx
+  - page: Authentication 
+    path: ./docs/pages/authentication.mdx
   - page: Programmatic Instance Management
     path: ./docs/pages/programmatic-instance-management.mdx
   - page: Configurations and Operating Systems
