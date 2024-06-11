@@ -28,6 +28,14 @@ paths:
     delete:
       x-fern-sdk-group-name: instances
       x-fern-sdk-method-name: delete
+  /instances/{instance_id}/stop:
+    put:
+      x-fern-sdk-group-name: instances
+      x-fern-sdk-method-name: put
+  /instances/{instance_id}/start:
+    put:
+      x-fern-sdk-group-name: instances
+      x-fern-sdk-method-name: put
   /ssh_keys:
     get:
       x-fern-sdk-group-name: ssh_keys
