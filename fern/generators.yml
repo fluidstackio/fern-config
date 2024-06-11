@@ -27,3 +27,24 @@ groups:
         config:
           client_class_name: FluidStack
         smart-casing: true
+  
+  ts-local: 
+    generators:
+      - name: fernapi/fern-typescript-node-sdk
+        version: 0.22.0
+        output:
+          location: local-file-system
+          path: ../generated
+        smart-casing: true
+
+  ts-sdk:
+    generators:
+      - name: fernapi/fern-typescript-node-sdk
+        version: 0.22.0
+        output:
+          location: npm
+          package-name: fluidstack
+          token: ${NPM_TOKEN}
+        github: 
+          repository: fluidstackio/fluidstack-typescript-sdk
+        smart-casing: true

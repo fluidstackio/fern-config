@@ -17,6 +17,7 @@ navigation:
   - api: API Reference
     snippets:
       python: fluidstack
+      typescript: fluidstack
 colors:
   accentPrimary: 
     light: '#0270FF'
