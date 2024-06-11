@@ -72,7 +72,7 @@ r = requests.post(
     headers=headers,
     json={
         "name" : "myinstance",
-        "ssh_keys": [ssh_key_names[0]],
+        "ssh_keys": ssh_key_names,
         "gpu_type": gpu_type,
         "gpu_count": gpu_count,
         "operating_system_label": operating_system_label,

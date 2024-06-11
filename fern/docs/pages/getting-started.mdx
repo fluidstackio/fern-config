@@ -12,7 +12,9 @@ The example below uses cURL to call the [`GET /instances`](/api-reference/instan
 
 <EndpointRequestSnippet endpoint="GET /instances" />
 
+
 ## Create an SSH key
+
 
 When creating an instance, you must provide an SSH key. The SSH key is used for command-line access to the instance, once the instance is running. 
 
@@ -22,6 +24,7 @@ Alternatively, you can create an SSH key by calling the [`POST /ssh_keys`](/api-
 
 You must provide a unique name for the SSH key, along with a public key. If you don't have a public key, see: [Create a public key](/).
 
+
 <Note>
   Supported public key formats: 
     - ssh-rsa
@@ -29,6 +32,7 @@ You must provide a unique name for the SSH key, along with a public key. If you 
     - ssh-ed25519
     - ecdsa keys with NIST curves
 </Note>
+
 
 <EndpointRequestSnippet endpoint="POST /ssh_keys" />
 
@@ -62,6 +66,7 @@ Each object in the list represents an SSH key, including its `name` and `public_
 ## Create the instance 
 
 Use the cURL command below to create a new endpoint. Replace `<api_key>` with your API key, and `<ssh_key_name>` with the `name` of your SSH key. 
+
 
 The example below is configured with a `"gpu_type"` of `"RTX_A6000_48GB"`, a `"gpu_count"` of `1`, and an `"operating_system_label"` of `"ubuntu_20_04_lts"`. 
 

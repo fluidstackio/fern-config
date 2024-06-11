@@ -17,7 +17,7 @@
           "General"
         ],
         "summary": "Healthcheck",
-        "operationId": "healthcheck_healthcheck_head",
+        "operationId": "healthcheck_healthcheck_get",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -36,7 +36,7 @@
           "General"
         ],
         "summary": "Healthcheck",
-        "operationId": "healthcheck_healthcheck_head",
+        "operationId": "healthcheck_healthcheck_get",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -155,6 +155,142 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CreateInstanceResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/instances/{instance_id}/stop": {
+      "put": {
+        "summary": "Stop an instance",
+        "description": "This endpoint can be used to stop an existing instance by its ID.",
+        "operationId": "stop_instance_instances__instance_id__stop_put",
+        "parameters": [
+          {
+            "name": "instance_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Instance Id"
+            }
+          },
+          {
+            "name": "api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Api-Key"
+            }
+          },
+          {
+            "name": "wos_session",
+            "in": "cookie",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Wos Session"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListInstanceResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/instances/{instance_id}/start": {
+      "put": {
+        "summary": "Start an instance",
+        "description": "This endpoint can be used to start an existing instance by its ID.",
+        "operationId": "start_instance_instances__instance_id__start_put",
+        "parameters": [
+          {
+            "name": "instance_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Instance Id"
+            }
+          },
+          {
+            "name": "api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Api-Key"
+            }
+          },
+          {
+            "name": "wos_session",
+            "in": "cookie",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Wos Session"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListInstanceResponse"
                 }
               }
             }
@@ -373,19 +509,19 @@
         }
       }
     },
-    "/ssh_keys/{ssh_key_id}": {
+    "/ssh_keys/{ssh_key_name}": {
       "delete": {
         "summary": "Delete an SSH key",
-        "description": "Delete an existing SSH key using the SSH key ID.",
-        "operationId": "delete_ssh_key_ssh_keys__ssh_key_id__delete",
+        "description": "Delete an existing SSH key using the SSH key name.",
+        "operationId": "delete_ssh_key_ssh_keys__ssh_key_name__delete",
         "parameters": [
           {
-            "name": "ssh_key_id",
+            "name": "ssh_key_name",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Ssh Key Id"
+              "title": "Ssh Key name"
             }
           },
           {
@@ -849,18 +985,6 @@
         ],
         "title": "InstanceStatus"
       },
-      "InstanceTerm": {
-        "type": "string",
-        "enum": [
-          "hourly",
-          "weekly",
-          "monthly",
-          "quarterly",
-          "six_monthly",
-          "yearly"
-        ],
-        "title": "InstanceTerm"
-      },
       "ListInstanceResponse": {
         "properties": {
           "id": {
@@ -907,7 +1031,7 @@
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/SSHKeyResponse"
+                  "type": "string"
                 },
                 "type": "array"
               },
@@ -943,15 +1067,6 @@
             "title": "Name",
             "description": "The name provided when the instance was created."
           },
-          "term": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/InstanceTerm"
-              }
-            ],
-            "description": "The commitment term of the instance.",
-            "default": "hourly"
-          },
           "current_rate": {
             "anyOf": [
               {
@@ -974,28 +1089,6 @@
               }
             ],
             "description": "The configuration used to create the instance."
-          },
-          "region": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/RegionResponse"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "The region in which the instance is located."
-          },
-          "operating_system": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/OperatingSystemResponse"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "The operating system template used to create the instance"
           },
           "created_at": {
             "anyOf": [
@@ -1065,29 +1158,6 @@
           "label"
         ],
         "title": "OperatingSystemResponse"
-      },
-      "RegionResponse": {
-        "properties": {
-          "id": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EntityId"
-              }
-            ],
-            "description": "The unique ID of the region."
-          },
-          "name": {
-            "type": "string",
-            "title": "Name",
-            "description": "The name of the region."
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "name"
-        ],
-        "title": "RegionResponse"
       },
       "SSHKeyResponse": {
         "properties": {
