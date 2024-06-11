@@ -18,6 +18,8 @@ When creating an instance, you must provide an SSH key. The SSH key is used for 
 
 Existing SSH keys are listed in your [FluidStack Dashboard](https://dashboard.fluidstack.io/dashboard/ssh-keys). If there are none listed, or you want to use a new SSH key, you can create one through the Dashboard. 
 
+Alternatively, you can create an SSH key by calling the [`POST /ssh_keys`](/api-reference/ssh-keys/create) endpoint:
+
 You must provide a unique name for the SSH key, along with a public key. If you don't have a public key, see: [Create a public key](/).
 
 <Note>
@@ -28,13 +30,11 @@ You must provide a unique name for the SSH key, along with a public key. If you 
     - ecdsa keys with NIST curves
 </Note>
 
-Alternatively, you can create an SSH key by calling the [`POST /ssh_keys`](/api-reference/ssh-keys/create) endpoint:
-
 <EndpointRequestSnippet endpoint="POST /ssh_keys" />
 
-If your POST request is successful, the endpoint responds by echoing the `name` and `public_key` you sent.
+If your POST request is successful, the endpoint responds by echoing the `name` and `public_key` that you sent.
 
-```json title="JSON"
+```json title="Response"
 {
     "name": "mykey",
     "public_key": "<your_public_key>"
@@ -49,7 +49,7 @@ The following endpoint responds with a list of SSH keys:
 
 Each object in the list represents an SSH key, including its `name` and `public_key`. 
 
-```json title="JSON"
+```json title="Response"
 [
     {
         "name": "mykey",
@@ -61,11 +61,11 @@ Each object in the list represents an SSH key, including its `name` and `public_
 
 ## Create the instance 
 
-Use the cURL command below to create a new endpoint. Replace `<ssh_key_name>` with the `name` of your SSH key. 
+Use the cURL command below to create a new endpoint. Replace `<api_key>` with your API key, and `<ssh_key_name>` with the `name` of your SSH key. 
 
 The example below is configured with a `"gpu_type"` of `"RTX_A6000_48GB"`, a `"gpu_count"` of `1`, and an `"operating_system_label"` of `"ubuntu_20_04_lts"`. 
 
-To use a different configuration, view [the available configurations and operating systems](/list-of-available-configurations-and-operating-systems). 
+If you prefer, you can use a different configuration and/or operating system. [View your options.](/list-of-available-configurations-and-operating-systems)
 
 ```bash title="bash"
 curl -X POST https://platform.fluidstack.io/instances \
@@ -74,11 +74,11 @@ curl -X POST https://platform.fluidstack.io/instances \
     --d '{"name": "myinstance", "operating_system_label": "ubuntu_20_04_lts", "ssh_keys": ["<ssh_key_name>"], "gpu_type": "RTX_A6000_48GB", "gpu_count": 1}'
 ```
 
-You will receive a response with an instance `id`. 
+If your request is sent successfully, the endpoint responds with the created instance's details, including its `id` and `status`.
 
-At first, the instance `status` will be `pending`. The `status` will change to `running` after the instance is created and available. 
+Initially, the instance `status` will be `pending`. The `status` changes to `running` once the instance is created and available. 
 
-```json title="json"
+```json title="JSON response"
 {
     "id": "<instance_id>",
     "status": "pending",
