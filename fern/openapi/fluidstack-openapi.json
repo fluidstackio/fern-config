@@ -886,6 +886,10 @@
             "description": "The public key of the SSH key."
           }
         },
+        "example": {
+          "name": "mykey",
+          "public_key": "<public_key>"
+        },
         "type": "object",
         "required": [
           "name",

@@ -8,15 +8,10 @@
 
 Whenever you make a call to the FluidStack API, include your API key in the request headers.
 
-The example below uses cURL to call the [`GET /instances`](/api-reference/instances/list) endpoint. The second line demonstrates how to include your API key in the headers:
-
-<EndpointRequestSnippet endpoint="GET /instances" />
-
 
 ## Create an SSH key
 
-
-When creating an instance, you must provide an SSH key. The SSH key is used for command-line access to the instance, once the instance is running. 
+When creating an instance, you must provide an SSH key. The SSH key is used for command-line access to the running instance. You can use the same SSH key for multiple instances.
 
 Existing SSH keys are listed in your [FluidStack Dashboard](https://dashboard.fluidstack.io/dashboard/ssh-keys). If there are none listed, or you want to use a new SSH key, you can create one through the Dashboard. 
 
@@ -24,15 +19,7 @@ Alternatively, you can create an SSH key by calling the [`POST /ssh_keys`](/api-
 
 You must provide a unique name for the SSH key, along with a public key. If you don't have a public key, see: [Create a public key](/).
 
-
-<Note>
-  Supported public key formats: 
-    - ssh-rsa
-    - ssh-dss (DSA)
-    - ssh-ed25519
-    - ecdsa keys with NIST curves
-</Note>
-
+<Markdown src="../snippets/public-key-formats.mdx" />
 
 <EndpointRequestSnippet endpoint="POST /ssh_keys" />
 

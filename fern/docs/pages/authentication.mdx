@@ -1,0 +1,59 @@
+---
+subtitle: How to authenticate with API and SSH keys
+---
+
+## API keys
+
+An **API key** is required for authentication to use the FluidSpring API. The API key is connected to your FluidSpring account. Conceptually, it is similar to a password that is sent with every API call. 
+
+<Warning>
+  Keep your API keys secure! Treat them like you would any other password. Do not share them with others, or in public repositories such as in GitHub. 
+</Warning>
+
+### Create an API key
+
+Create, view, and delete your API keys from the [FluidStack Dashboard](https://dashboard.fluidstack.io/dashboard/api-keys).
+
+### Use your API key
+
+Whenever you make a call to the FluidStack API, include your API key in the request headers. Otherwise, your call will fail. 
+
+Example:
+<EndpointRequestSnippet endpoint="GET /instances" />
+
+## SSH keys
+
+The SSH (Secure SHell) protocol is used for command-line access to a running instance. It uses public-key cryptography for authentication.
+
+Access requires a public/private key pair. You must [generate a key pair locally](https://www.ssh.com/academy/ssh/keygen), then use its public key to create an SSH key on your FluidStack account. In this context, _creating an SSH key_ means _storing a copy of a public key on your FluidStack account_. The stored SSH key is identical to your public key.
+
+<Markdown src="../snippets/public-key-formats.mdx" />
+
+You can create an SSH key from the FluidStack Dashboard, or with the FluidStack API.
+
+### Create an SSH key from the FluidStack Dashboard
+
+1. Visit the [SSH Keys page on the FluidStack Dashboard](https://dashboard.fluidstack.io/dashboard/ssh-keys).
+2. Select **Add SSH key** from the top right corner.
+3. In the popup form's **Name** field, input a unique name for this SSH key. 
+4. Paste your public key in the field labeled **Public SSH key**. Click **Confirm**.
+
+### Create an SSH key using the FluidStack API
+
+An SSH key can be created using a command-line tool such as [cURL](https://curl.se/) or programmatically, using the [`POST /ssh_keys`](/api-reference/ssh-keys/create) endpoint:
+
+<EndpointRequestSnippet endpoint="POST /ssh_keys" />
+
+If your POST request is successful, the endpoint responds with a JSON object that echoes the `name` and `public_key` that you sent.
+
+```json title="Response example"
+{
+    "name": "mykey",
+    "public_key": "<your_public_key>"
+}
+```
+
+### Use your SSH key
+
+Whenever you create a new instance, you must provide one or more SSH keys. Once the instance is running, use the SSH key to authenticate when connecting to the instance via an SSH client.
+
