@@ -40,7 +40,7 @@ r = requests.post(
 if not r.ok:
     raise Exception("Could not create ssh key")
 
-ssh_key_ids = [r.json()["id"]]
+ssh_key_names = [r.json()["name"]]
 
 gpu_type = "RTX_A6000_48GB"
 gpu_count = 4
@@ -53,7 +53,7 @@ r = requests.post(
     headers=headers,
     json={
         "name" : "myinstance",
-        "ssh_keys": [ssh_key_ids[0]],
+        "ssh_keys": ssh_key_names,
         "gpu_type": gpu_type,
         "gpu_count": gpu_count,
         "operating_system_label": operating_system_label,

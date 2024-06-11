@@ -502,19 +502,19 @@
         }
       }
     },
-    "/ssh_keys/{ssh_key_id}": {
+    "/ssh_keys/{ssh_key_name}": {
       "delete": {
         "summary": "Delete an SSH key",
-        "description": "Delete an existing SSH key using the SSH key ID.",
-        "operationId": "delete_ssh_key_ssh_keys__ssh_key_id__delete",
+        "description": "Delete an existing SSH key using the SSH key name.",
+        "operationId": "delete_ssh_key_ssh_keys__ssh_key_name__delete",
         "parameters": [
           {
-            "name": "ssh_key_id",
+            "name": "ssh_key_name",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Ssh Key Id"
+              "title": "Ssh Key name"
             }
           },
           {

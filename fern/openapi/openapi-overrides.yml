@@ -35,7 +35,7 @@ paths:
     post:
       x-fern-sdk-group-name: ssh_keys
       x-fern-sdk-method-name: create
-  /ssh_keys/{ssh_key_id}:
+  /ssh_keys/{ssh_key_name}:
     delete:
       x-fern-sdk-group-name: ssh_keys
       x-fern-sdk-method-name: delete
@@ -56,7 +56,7 @@ paths:
       x-fern-ignore: true
     post:
       x-fern-ignore: true
-  /list_user_ssh_keys/{ssh_key_id}:
+  /list_user_ssh_keys/{ssh_key_name}:
     delete:
       x-fern-ignore: true
   /list_available_os_templates:

@@ -14,7 +14,7 @@ curl -H "Content-Type: application/json" \
 
 # Creating an Instance
 
-To create an instance, first you need to get the `gpu_type`, `operating_system_label` and `ssh_key_id`. You can get the `ssh_key_id` by creating a new SSH key or using an existing one.
+To create an instance, first you need to get the `gpu_type`, `operating_system_label` and `ssh_key_name`. You can get the `ssh_key_name` by creating a new SSH key or using an existing one.
 
 ## Creating an SSH Key
 
@@ -27,11 +27,10 @@ curl -H "Content-Type: application/json" \
     --data '{"name": "mykey", "public_key": "<public_key>"}'
 ```
 
-the endpoint will return the ssh key id
+the endpoint will return the ssh key name
 
 ```json
 {
-    "id": "<ssh_key_id>",
     "name": "mykey",
     "public_key": "<public_key>"
 }
@@ -42,13 +41,12 @@ curl -H "Content-Type: application/json" \
      -H "api-key: <api_key>" \
     --request GET 'https://platform.fluidstack.io/ssh_keys'
 ```
-which will return a list of ssh keys and their ids
+which will return a list of ssh keys
 
 
 ```json
 [
     {
-        "id": "<ssh_key_id>",
         "name": "mykey",
         "public_key": "<public_key>"
     }
@@ -61,7 +59,7 @@ which will return a list of ssh keys and their ids
 
 ## Create the instance 
 
-You can create an instance by using the following endpoint. Replace `<ssh_key_id>` with the value you got from the previous steps. We will use `RTX_A6000_48GB` GPU instance type with exactly 1 GPU. 
+You can create an instance by using the following endpoint. Replace `<ssh_key_name>` with the value you got from the previous steps. We will use `RTX_A6000_48GB` GPU instance type with exactly 1 GPU. 
 We will also use the `ubuntu_20_04_lts` operating system template. 
 
 You can get the list of available operating systems and GPUs by using the [list_available_configurations](/api-reference/ist-available-configurations-list-available-configurations-get) and [list_available_os_templates](/api-reference/list_available_os_templates-list_available_os_templates-get) endpoints. Alternatively
@@ -73,7 +71,7 @@ a walkthrough is provided [here](/list-of-available-configurations-and-operating
 curl -H "Content-Type: application/json" \
      -H "api-key: <api_key>" \
     --request POST 'https://platform.fluidstack.io/instances' \
-    --data '{"name": "myinstance", "operating_system_label": "ubuntu_20_04_lts", "ssh_keys": ["<ssh_key_id>"], "gpu_type": "RTX_A6000_48GB", "gpu_count": 1}'
+    --data '{"name": "myinstance", "operating_system_label": "ubuntu_20_04_lts", "ssh_keys": ["<ssh_key_name>"], "gpu_type": "RTX_A6000_48GB", "gpu_count": 1}'
 ```
 
 You will get a response with an instance id and the instance status will be `pending`. The status will change to `running` after the instance is created and available. 
