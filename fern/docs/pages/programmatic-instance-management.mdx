@@ -1,53 +1,72 @@
-## Script Steps
+The [Python script on this page](#script) provides an example of how the [FluidStack API](/api-reference) can be used to manage instances programmatically.
+
+## Requirements
+  - <Markdown src="../snippets/api-key.mdx" />
+  - A [public/private key pair](/authentication#public-key)
+  - [Python 3+](https://python.org)
+
+## Summary of script steps
+
+<Steps>
+    ### Create an SSH key
+
+      The script reads the public key from the default location (`~/.ssh/id_rsa.pub`) and sends a POST request to create a new SSH key named `"my_key"`.
+
+    ### Create an instance
+
+      The script creates an instance, specifying the API and SSH keys, GPU Type, GPU count, and operating system.
+
+    ### Check the instance status
+
+      The script checks the status of the created instance until it is running.
+
+    ### Print the instance IP
+
+      Once the instance is running, the script prints the instance IP.
+
+    ### Delete the instance
+
+      Finally, the script deletes the created instance.
+</Steps>
  
-1. **Create an SSH key**: If no SSH keys exist, it reads the public key from the default location (`~/.ssh/id_rsa.pub`) and sends a POST request to the same endpoint to create a new SSH key.
 
-2. **Launch Instance**: Launche instances, specifying SSH keys, GPU Type, GPU count, and OS.
-
-3. **Check instance Status**: Check the status of the created instance until they are running.
-
-4. **Printing instance Details**: Once the instance is running, the script prints the instance IP.
-
-5. **Deleting instance**: Finally, delete the created instance.
+<Tip>To run this script, make sure to replace `<your_api_key>` in line 7 with your own API key.</Tip>
 
 ## Script 
 
-```python maxLines=30
+```python maxLines=30 title="Python"
 import requests
-from base64 import b64encode
-import random
 from pathlib import Path
 import os
 import time
 
 api_url = "https://platform.fluidstack.io/"
-api_key = "<api_key>"
+api_key = "<your_api_key>"
 
-
-# Set API Key header
+# Provide the API key in a header
 headers = {
     "api-key": api_key
 }
 
-# Create SSH Key
-print("Creating SSH Key")
+# 1: Create an SSH key
+print("Creating SSH key")
 public_key = open(os.path.join(Path.home(), ".ssh", "id_rsa.pub")).read().strip() # Read the public key from the home directory
 r = requests.post(
     url + "ssh_keys",
     headers=headers,
-    json={"name": "my_key", "public_key": public_key}, # Create a new SSH key with the name "my_key" and the public key from the home directory
+    json={"name": "my_key", "public_key": public_key}, # Create a new SSH key with the name "my_key", using the provided public key
 )
 if not r.ok:
-    raise Exception("Could not create ssh key")
+    raise Exception("Could not create SSH key")
 
 ssh_key_names = [r.json()["name"]]
 
 gpu_type = "RTX_A6000_48GB"
 gpu_count = 4
-operating_system_label ='ubuntu_20_04_lts'
+operating_system_label = 'ubuntu_20_04_lts'
 
-# create an instance 
-print("Creating Instance")
+# 2: Create an instance 
+print("Creating instance")
 r = requests.post(
     url + "instances",
     headers=headers,
@@ -66,10 +85,11 @@ r = requests.post(
 	
 instance_id = r.json()['id']
 
-# Wait for instance to start
 instance_status = "pending"
 print("Waiting for instance to start")
 
+# 3: Check the instance status
+# This while loop checks the instance status every 10 seconds and exits when the status is "running"
 while instance_status != "running":
     if instance_status in ["unhealthy"]:
         print("Could not create instance")
@@ -88,16 +108,15 @@ while instance_status != "running":
     print("\t [" + str(count) + "] Status: " + instance_status)
     time.sleep(10)
 
-# Instance is running
-
+# 4: Print the instance IP
 print("Instance IP address: " + instance['public_ip'])
 
-# Delete instance
+# 5: Delete the instance
 print("Deleting instance")
 r = requests.delete(url + f"instances/{instance_id}", headers=headers)
 if not r.ok:
     print(r.json())
     raise Exception("Could not delete instance")
-print("Instance Deleted")
+print("Instance deleted")
 
 ```

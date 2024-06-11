@@ -1,82 +1,89 @@
-The documentation for the FluidStack API is available at [API Reference](/api-reference).
+## Requirements
 
-To interact with our API, you will need an `api_key`. Please contact [support](mailto:support@fluidstack.io) to get one.
+ - <Markdown src="../snippets/api-key.mdx" />
+ - A [public/private key pair](/authentication#public-key)
+ - To create an instance, you must provide values for `gpu_type`, `operating_system_label`, and `ssh_key_name`. 
 
-# Authentication Method
+## Authentication
 
-You can pass your `api_key`  as url parameters using the following format:
+Whenever you make a call to the FluidStack API, include your API key in the request headers.
 
-```bash maxLines=0
-curl -H "Content-Type: application/json" \
-     -H "api-key: <api_key>" \
-    --request GET 'https://platform.fluidstack.io/instances'
-```
+The example below uses cURL to call the [`GET /instances`](/api-reference/instances/list) endpoint. The second line demonstrates how to include your API key in the headers:
 
-# Creating an Instance
+<EndpointRequestSnippet endpoint="GET /instances" />
 
-To create an instance, first you need to get the `gpu_type`, `operating_system_label` and `ssh_key_name`. You can get the `ssh_key_name` by creating a new SSH key or using an existing one.
 
-## Creating an SSH Key
+## Create an SSH key
 
-You can create an SSH key by using the following endpoint:
 
-```bash maxLines=0
-curl -H "Content-Type: application/json" \
-     -H "api-key: <api_key>" \
-    --request POST 'https://platform.fluidstack.io/ssh_keys' \
-    --data '{"name": "mykey", "public_key": "<public_key>"}'
-```
+When creating an instance, you must provide an SSH key. The SSH key is used for command-line access to the instance, once the instance is running. 
 
-the endpoint will return the ssh key name
+Existing SSH keys are listed in your [FluidStack Dashboard](https://dashboard.fluidstack.io/dashboard/ssh-keys). If there are none listed, or you want to use a new SSH key, you can create one through the Dashboard. 
 
-```json
+Alternatively, you can create an SSH key by calling the [`POST /ssh_keys`](/api-reference/ssh-keys/create) endpoint:
+
+You must provide a unique name for the SSH key, along with a public key. If you don't have a public key, see: [Create a public key](/).
+
+
+<Note>
+  Supported public key formats: 
+    - ssh-rsa
+    - ssh-dss (DSA)
+    - ssh-ed25519
+    - ecdsa keys with NIST curves
+</Note>
+
+
+<EndpointRequestSnippet endpoint="POST /ssh_keys" />
+
+If your POST request is successful, the endpoint responds by echoing the `name` and `public_key` that you sent.
+
+```json title="Response"
 {
     "name": "mykey",
-    "public_key": "<public_key>"
+    "public_key": "<your_public_key>"
 }
 ```
-Alternatively, if you have an SSH Key already, you can use the following endpoint:
-```bash maxLines=0
-curl -H "Content-Type: application/json" \
-     -H "api-key: <api_key>" \
-    --request GET 'https://platform.fluidstack.io/ssh_keys'
-```
-which will return a list of ssh keys
 
+## List existing SSH keys
 
-```json
+The following endpoint responds with a list of SSH keys:
+
+<EndpointRequestSnippet endpoint="GET /ssh_keys" />
+
+Each object in the list represents an SSH key, including its `name` and `public_key`. 
+
+```json title="Response"
 [
     {
         "name": "mykey",
         "public_key": "<public_key>"
-    }
+    },
     ...
 ]
-
 ```
-
-
 
 ## Create the instance 
 
-You can create an instance by using the following endpoint. Replace `<ssh_key_name>` with the value you got from the previous steps. We will use `RTX_A6000_48GB` GPU instance type with exactly 1 GPU. 
-We will also use the `ubuntu_20_04_lts` operating system template. 
-
-You can get the list of available operating systems and GPUs by using the [list_available_configurations](/api-reference/ist-available-configurations-list-available-configurations-get) and [list_available_os_templates](/api-reference/list_available_os_templates-list_available_os_templates-get) endpoints. Alternatively
-a walkthrough is provided [here](/list-of-available-configurations-and-operating-systems).
+Use the cURL command below to create a new endpoint. Replace `<api_key>` with your API key, and `<ssh_key_name>` with the `name` of your SSH key. 
 
 
+The example below is configured with a `"gpu_type"` of `"RTX_A6000_48GB"`, a `"gpu_count"` of `1`, and an `"operating_system_label"` of `"ubuntu_20_04_lts"`. 
 
-```bash maxLines=0
-curl -H "Content-Type: application/json" \
+If you prefer, you can use a different configuration and/or operating system. [View your options.](/list-of-available-configurations-and-operating-systems)
+
+```bash title="bash"
+curl -X POST https://platform.fluidstack.io/instances \
      -H "api-key: <api_key>" \
-    --request POST 'https://platform.fluidstack.io/instances' \
-    --data '{"name": "myinstance", "operating_system_label": "ubuntu_20_04_lts", "ssh_keys": ["<ssh_key_name>"], "gpu_type": "RTX_A6000_48GB", "gpu_count": 1}'
+     -H "Content-Type: application/json" \
+    --d '{"name": "myinstance", "operating_system_label": "ubuntu_20_04_lts", "ssh_keys": ["<ssh_key_name>"], "gpu_type": "RTX_A6000_48GB", "gpu_count": 1}'
 ```
 
-You will get a response with an instance id and the instance status will be `pending`. The status will change to `running` after the instance is created and available. 
+If your request is sent successfully, the endpoint responds with the created instance's details, including its `id` and `status`.
 
-```json
+Initially, the instance `status` will be `pending`. The `status` changes to `running` once the instance is created and available. 
+
+```json title="JSON response"
 {
     "id": "<instance_id>",
     "status": "pending",
@@ -94,10 +101,11 @@ You will get a response with an instance id and the instance status will be `pen
     "created_at": "<created_at>"
 }
 ```
+
 ## Access your instance 
 
-When the instance is running, you can connect to it SSH using the following command:
+When the instance is running, you can connect to it using SSH. Use the private key that corresponds to the public key you used when creating the SSH key for this instance.
 
-```bash maxLines=0
-ssh -i <private_key> -p <ssh_port> <username>@<ip_address>
+```bash title="bash"
+ssh -i <your_private_key> -p <ssh_port> <username>@<ip_address>
 ```

@@ -4,6 +4,12 @@
     "title": "Fluidstack API Service",
     "version": "0.1.0"
   },
+  "servers": [
+    {
+      "url": "https://platform.fluidstack.io",
+      "description": "Production server"
+    }
+  ],
   "paths": {
     "/healthcheck": {
       "get": {
@@ -57,7 +63,8 @@
             "required": false,
             "schema": {
               "type": "string",
-              "title": "Api-Key"
+              "title": "Api-Key",
+              "example": "your-api-key"
             }
           },
           {
@@ -599,7 +606,34 @@
                     "$ref": "#/components/schemas/ConfigurationResponse"
                   },
                   "title": "Response List Available Configurations List Available Configurations Get"
-                }
+                },
+                "example": [
+                  {
+                    "id": "c-bd6a5e05-a3fd-4642-a82b-9da5fa784401",
+                    "gpu_model": {
+                      "name": "RTX_A6000_48GB", "memory_size_mb": 48
+                    },
+                    "cpu_model": "generic",
+                    "gpu_count": 1,
+                    "cpu_count":16,
+                    "nvme_storage_size_gb": 425,
+                    "memory_size_mb": 59.0,
+                    "estimated_provisioning_time_minutes": 0
+                  },
+                  {
+                    "id":"c-31078703-a4b2-4bfb-803c-abf887378e31",
+                    "gpu_model": {
+                      "name": "RTX_A6000_48GB",
+                      "memory_size_mb": 48
+                    },
+                    "cpu_model": "generic",
+                    "gpu_count": 1,
+                    "cpu_count": 16,
+                    "nvme_storage_size_gb": 425,
+                    "memory_size_mb": 59.0,
+                    "estimated_provisioning_time_minutes": 0
+                  }
+                ]
               }
             }
           },
@@ -662,7 +696,19 @@
                     "$ref": "#/components/schemas/OperatingSystemResponse"
                   },
                   "title": "Response List Available Os Templates List Available Os Templates Get"
-                }
+                },
+                "example": [
+                  {
+                    "name": "Ubuntu 22.04 LTS",
+                    "description": "Ubuntu 22.04 LTS plain",
+                    "label": "ubuntu_22_04_lts"
+                  },
+                  {
+                    "name": "Ubuntu 20.04 LTS",
+                    "description": "Ubuntu 20.04 LTS plain",
+                    "label": "ubuntu_20_04_lts"
+                  }
+                ]
               }
             }
           },
