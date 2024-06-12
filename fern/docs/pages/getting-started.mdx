@@ -4,11 +4,16 @@
  - A [public/private key pair](/authentication#public-key)
  - To create an instance, you must provide values for `gpu_type`, `operating_system_label`, and `ssh_key_name`. 
 
+
+<Info>    The FluidStack API base URL is `https://platform.fluidstack.io`</Info>
+    
+    
+
 ## Authentication
 
-Whenever you make a call to the FluidStack API, include your API key in the request headers.
+Whenever you make a call to the FluidStack API, include your API key in the request headers. If you are using any of our SDKs, you can provider the API key as a parameter. 
 
-The example below uses cURL to call the [`GET /instances`](/api-reference/instances/list) endpoint. The second line demonstrates how to include your API key in the headers:
+The example below shows how to call the [`GET /instances`](/api-reference/instances/list) endpoint, which returns the list of instances on your account. The second line demonstrates how to include your API key in the headers:
 
 <EndpointRequestSnippet endpoint="GET /instances" />
 
@@ -81,7 +86,7 @@ curl -X POST https://platform.fluidstack.io/instances \
 
 If your request is sent successfully, the endpoint responds with the created instance's details, including its `id` and `status`.
 
-Initially, the instance `status` will be `pending`. The `status` changes to `running` once the instance is created and available. 
+Initially, the instance `status` will be `pending`. The `status` changes to `running` and an IP address is assigned once the instance is created and available.
 
 ```json title="JSON response"
 {
@@ -104,7 +109,7 @@ Initially, the instance `status` will be `pending`. The `status` changes to `run
 
 ## Access your instance 
 
-When the instance is running, you can connect to it using SSH. Use the private key that corresponds to the public key you used when creating the SSH key for this instance.
+Once the instance is running, you can connect to it using SSH. Use the instance's IP address and the private key that corresponds to the public key you used when creating the SSH key for this instance.
 
 ```bash title="bash"
 ssh -i <your_private_key> -p <ssh_port> <username>@<ip_address>
