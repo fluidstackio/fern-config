@@ -840,7 +840,7 @@
                 "$ref": "#/components/schemas/SupportedOperatingSystem"
               }
             ],
-            "description": "The operating system label to be used to create the instance",
+            "description": "The operating system label to be used to create the instance"
           }
         },
         "type": "object",
@@ -1202,7 +1202,7 @@
               }
             ],
             "title": "Public Key",
-            "description": "The public key",
+            "description": "The public key"
           }
         },
         "example": {
