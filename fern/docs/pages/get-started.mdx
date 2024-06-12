@@ -4,10 +4,10 @@ subtitle: Learn how to use GPU instances through FluidStack's Dashboard or API
 
 ## Overview
 
-On this page, you will learn how to:
-1. create a public/private key pair
-2. create an instance
-3. access your instance using the SSH (Secure Shell) protocol
+On this page, you will learn to do the following:
+1. How to create a public/private key pair
+2. How to create an instance
+3. How to access your instance using the SSH (Secure Shell) protocol
 
 ## Prerequisites
 
@@ -25,33 +25,62 @@ On this page, you will learn how to:
 
 You can skip this step if you already have a public/private key pair that uses a supported format from the list above.
 
-FluidStack grants you command-line access to your instances via SSH. SSH uses public-key cryptography for secure communication. This means that you must locally generate a public/private key pair, then store your public key on the instance. You can then use your private key to access the instance.
+FluidStack grants you command-line access to your instances via [SSH](https://en.wikipedia.org/wiki/Secure_Shell), using [public-key cryptography](https://www.ssh.com/academy/ssh/public-key-authentication) instead of a login password for greater security. This means that you must locally generate a public/private key pair, then store your public key on your instances. You can then use your private key to access the instances.
 
 You can generate a public/private key pair with a command-line tool called **ssh-keygen**. This tool comes pre-installed on most operating systems.
 
 <Tip>If you are unable to use **ssh-keygen**, a popular alternative is [PuttyGen](https://www.puttygen.com/). Refer to the instructions on PuttyGen's website to generate a key pair with that tool.</Tip>
 
-In your CLI shell, enter one of the commands shown in the two tabs below:
+Below are tabs containing instructions for creating a key pair with either RSA format, or ECDSA with NIST curves format. Complete the instructions in one of the tabs only.
 
-<CodeBlocks>
+<Frame>
+<Tabs>
+
+  <Tab title="RSA">
+    Enter the following command in your CLI shell:
 ```bash Use ssh-keygen for RSA
 ssh-keygen
 ```
+    If prompted to enter a filename, press `Enter` to save the key to the default location. When prompted to enter a passphrase, you can optionally do so to increase security.
+
+    Enter the following command to confirm that your keypair was created:
+```bash 
+ls ~/.ssh
+```
+    In the output, you should see `id_rsa` (the file that contains your private key) and `id_rsa.pub` (the file that contains your public key).
+    
+    To view your public key, enter the command below:
+```bash
+cat ~/.ssh/id_rsa.pub
+```
+    Copy the output; this is your public key.
+
+  </Tab>
+
+  <Tab title="ECDSA with NIST curves">
+    Enter the following command in your CLI shell:
 ```bash Use ssh-keygen for ECDSA with NIST curves
 ssh-keygen -t ecdsa -b 256 -f ~/.ssh/id_ecdsa_256
 ```
-</CodeBlocks>
+    If prompted to enter a filename, press `Enter` to save the key to the default location. When prompted to enter a passphrase, you can optionally do so to increase security.
 
-If prompted to enter a filename, press `Enter` to save the key to the default location.
-
-When prompted to enter a passphrase, you can optionally add a passphrase to increase security.
-
-Enter the following command to confirm that your keypair has been created:
-```bash bash
+    Enter the following command to confirm that your keypair was created:
+```bash 
 ls ~/.ssh
 ```
+    In the output, you should see `id_ecdsa_256` (the file that contains your private key) and `id_ecdsa_256.pub` (the file that contains your public key).
+    
+    To view your public key, enter the command below:
 
-In the output, you should see either `id_ecdsa_256` and `id_ecdsa_256.pub`, or `id_rsa` and `id_rsa.pub`, depending on which encryption format you used. The file that ends in `.pub` is your public key. The file with the corresponding name is your private key.
+```bash 
+cat ~/.ssh/id_ecdsa_256.pub
+```
+    Copy the output; this is your public key.
+
+  </Tab>
+
+</Tabs>
+</Frame>
 
 <Warning>
   With any public/private key pair that you generate, your public key can be shared freely. Your private key should be just that—private! Do not share it with others, or in public repositories such as in GitHub. 
@@ -64,7 +93,7 @@ Once you have generated a key pair locally, use its public key to create an SSH 
 <AccordionGroup>
 
   <Accordion title="Use the FluidStack Dashboard">
-    1. Visit the [SSH Keys page on the FluidStack Dashboard](https://dashboard.fluidstack.io/dashboard/ssh-keys).
+    1. Open the [SSH Keys page on the FluidStack Dashboard](https://dashboard.fluidstack.io/dashboard/ssh-keys).
     2. Select **Add SSH key** from the top right corner.
     3. In the popup form's **Name** field, input a unique name for this SSH key. 
     4. Paste your public key in the field labeled **Public SSH key**. Click **Confirm**.
@@ -91,11 +120,11 @@ Once you have generated a key pair locally, use its public key to create an SSH 
 
 ### Create an instance
 
-When creating an instance, you must specify one or more SSH keys. You can use the same SSH key for multiple instances. However, if more than one person intends to have access to instances, a different SSH key should be used for each person.
+When creating an instance, you must specify one or more SSH keys. You can use the same SSH key for multiple instances. However, if more than one person intends to have access to an instance, use a different SSH key for each person.
 
 <AccordionGroup>
   <Accordion title="Use the FluidStack Dashboard">
-    1. Visit the [GPU Instances page on the FluidStack Dashboard](https://dashboard.fluidstack.io/dashboard/instances).
+    1. Open the [GPU Instances page on the FluidStack Dashboard](https://dashboard.fluidstack.io/dashboard/instances).
     2. Select **Deploy GPUs** from the top right corner.
     3. In the popup form, select the instance's GPU type, then click **Configure**.
     4. Set the **Instance Name** and select an **OS Image** from the dropdown.
@@ -113,8 +142,8 @@ When creating an instance, you must specify one or more SSH keys. You can use th
     - the `ssh_key_name`
     
     These values are optional:
-    - `gpu_count` (Defaults to `1`)
-    - `operating_system_label` (See the `label` field from [Operating Systems](/api-reference/templates/list). Defaults to `"ubuntu_20_04_lts"`)
+    - `gpu_count` (Default: `1`)
+    - `operating_system_label` (See the `label` field from [Operating Systems](/api-reference/templates/list). Default: `"ubuntu_20_04_lts"`)
 
     If you prefer, you can use a different [configuration](/api-reference/configurations/list) and/or [operating system](/api-reference/templates/list). 
 
@@ -140,7 +169,7 @@ When creating an instance, you must specify one or more SSH keys. You can use th
 
     <EndpointRequestSnippet endpoint="GET /instances" />
 
-    Initially, the instance's `status` will be `pending`. The `status` updates to `running` and an IP address is assigned once the instance is created and available.
+    Initially, the instance's `status` will be `pending`. Once the instance is created and available, its `status` updates to `running` and an IP address is assigned.
 
     Example:
     <EndpointResponseSnippet endpoint="GET /instances" />
@@ -166,4 +195,4 @@ ssh -i <your_private_key> <username>@<ip_address>
 
 - View the [FluidStack API Reference](/api-reference)
 - Learn how to [programmatically manage instances](/programmatic-instance-management)
-- View all [available configurations and operating systems](/list-available)
+- View all [available configurations and operating systems](/list-available#list-of-available-configurations)
