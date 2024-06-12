@@ -14,8 +14,7 @@ fern check
 
 ## Updating your SDKs
 
-To update your SDKs, simply run the `Release Python SDK` or `Release TypeScript SDK` GitHub Action with the desired version 
-for the release. Under the hood, this leverages the Fern CLI: 
+To update your SDKs, simply run the `Release Python SDK` or `Release TypeScript SDK` GitHub Action with the desired version for the release. Under the hood, this leverages the Fern CLI: 
 
 ```sh
 npm install -g fern-api # only required once
