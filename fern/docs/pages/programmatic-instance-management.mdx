@@ -3,31 +3,36 @@ The Python script on this page provides an example of how the [FluidStack API](/
 ## Prerequisites
   - <Markdown src="../snippets/api-key.mdx" />
   - A [public/private key pair](/get-started#create-a-publicprivate-key-pair)
-  - [Python 3+](https://python.org)
+  - Basic familiarity with [Python](https://python.org), and Python 3+ installed
+  - The `requests` module installed in your Python environment
 
 ## Script overview
 
 <Steps>
   ### Create an SSH key
 
-    The script reads the public key located at `~/.ssh/id_rsa.pub` and sends a POST request to create a new SSH key named `"python_testkey"`.
+    The script reads the public key located at `~/.ssh/id_rsa.pub`, then sends a request to the [`POST /ssh_keys`](/api-reference/ssh_keys/create) endpoint to create a new SSH key named `"python_testkey"`. This SSH key is a copy of the public key that was read.
 
     <Warning>
-      - If you already have a SSH key named `python_testkey`, change the script to use a different, unique name.
+      - If you already have an SSH key named `python_testkey`, change the script to use a different, unique name.
       - If your public key is in a different location or filename, make sure to update this part of the script.
     </Warning>
 
   ### Create an instance
 
-    The script creates an instance, specifying the API and SSH keys, GPU Type, GPU count, and operating system.
+    The script creates an instance by sending a request to the [`POST /instances`](/api-reference/ssh_keys/create) endpoint.
+    
+    The API key is sent in the request as a header. The SSH key name, configuration, and operating system template are sent in the JSON body of the request.
 
   ### Check the instance status
 
-    The script checks the status of the created instance until it is `running`.
+    Initially, the `status` of the instance is `pending`. The script repeatedly checks its `status` until it returns `running`, by sending requests to the [`GET /instances`](/api-reference/instances/list) endpoint and parsing the result. 
+
+    This status-checking loop stops once the instance's `status` returns as `running`, or if its `status` indicates that it has been `terminated` or is otherwise unable to run.
 
   ### Print the instance IP
 
-    Once the instance is `running`, the script prints the instance's IP address.
+    Once the instance's status is `running`, the script prints the instance's IP address.
 
   ### Delete the instance
 
@@ -56,12 +61,15 @@ headers = {
 
 # 1: Create an SSH key
 print("Creating SSH key")
-public_key = open(os.path.join(Path.home(), ".ssh", "id_rsa.pub")).read().strip() # Read the public key from ~/.ssh/id_rsa.pub - change this if your public key is somewhere different
+
+# The next line reads the public key from ~/.ssh/id_rsa.pub - change this if your public key is somewhere different
+public_key = open(os.path.join(Path.home(), ".ssh", "id_rsa.pub")).read().strip() 
 r = requests.post(
     api_url + "ssh_keys",
     headers=headers,
     json={"name": "python_testkey", "public_key": public_key}, # Create a new SSH key with the name "python_testkey", using the provided public key
 )
+
 if not r.ok:
     print("Response body: " + json.dumps(r.json(), indent=2))
     raise Exception("Could not create SSH key")
