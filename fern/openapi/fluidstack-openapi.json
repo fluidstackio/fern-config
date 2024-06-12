@@ -1030,7 +1030,7 @@
             ],
             "title": "Username",
             "description": "The username used to connect to the instance\n\nFor example, to connect to the instance via SSH, use; \"ssh <username>@<ip_address> -p <ssh_port>\".",
-            "default": "fsuser"
+            "default": "ubuntu"
           },
           "ssh_port": {
             "anyOf": [
@@ -1124,7 +1124,7 @@
         },
         "example": {
           "id": "i-8f0af088-282e-4fcb-8090-c57a71f1f111",
-          "username": "fsuser",
+          "username": "ubuntu",
           "ssh_port": "22",
           "ssh_keys": ["my_key1", "my_key2"],
           "ip_address": "192.0.2.0",

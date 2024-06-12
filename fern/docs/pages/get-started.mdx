@@ -1,6 +1,8 @@
-## Overview
+---
+subtitle: Learn how to use GPU instances through FluidStack's Dashboard or API
+---
 
-Get started using GPU instances through [FluidStack's Dashboard](https://dashboard.fluidstack.io) or [API](/api-reference/instances/create). 
+## Overview
 
 On this page, you will learn how to:
 1. create a public/private key pair
@@ -9,7 +11,7 @@ On this page, you will learn how to:
 
 ## Prerequisites
 
- - A [FluidStack](https://dashboard.fluidstack.io) account
+ - Access to the [FluidStack Dashboard](https://dashboard.fluidstack.io)
  - <Markdown src="../snippets/api-key.mdx" />
 
  <Tip>Find out more about using API keys on the [Authentication](/authentication) page.</Tip>
@@ -40,7 +42,7 @@ ssh-keygen -t ecdsa -b 256 -f ~/.ssh/id_ecdsa_256
 ```
 </CodeBlocks>
 
-If prompted to enter a filename, press Enter to save the key to the default location.
+If prompted to enter a filename, press `Enter` to save the key to the default location.
 
 When prompted to enter a passphrase, you can optionally add a passphrase to increase security.
 
@@ -104,23 +106,23 @@ When creating an instance, you must specify one or more SSH keys. You can use th
   </Accordion>
 
   <Accordion title="Use the FluidStack API">
-    To create an instance, you must provide:
+    The following values are required to create an instance:
 
-    1. `name` of the instance
-    2. `gpu_type` (See `gpu_model` field from [Configurations](/api-reference/configurations/list))
-    3. `ssh_key_name` (See `name` field from [SSH Keys](/api-reference/ssh-keys/list))
-
-    You can also provide values for:
-    1. `gpu_count` (Defaults to `1`)
-    2. `operating_system_label` (See `label` field from [Operating Systems](/api-reference/templates/list). Defaults to `"ubuntu_20_04_lts"`)
+    - the `name` of the instance
+    - the`gpu_type` (See the `gpu_model` field from [Configurations](/api-reference/configurations/list).)
+    - the `ssh_key_name`
+    
+    These values are optional:
+    - `gpu_count` (Defaults to `1`)
+    - `operating_system_label` (See the `label` field from [Operating Systems](/api-reference/templates/list). Defaults to `"ubuntu_20_04_lts"`)
 
     If you prefer, you can use a different [configuration](/api-reference/configurations/list) and/or [operating system](/api-reference/templates/list). 
 
-    Use the cURL command below to create a new instance. Replace `<api_key>` with your API key, and `<ssh_key_name>` with your SSH key's name:
+    Call the endpoint below to create a new instance. Replace `<api_key>` with your API key, and `<ssh_key_name>` with your SSH key's name:
 
     <EndpointRequestSnippet endpoint="POST /instances" />
 
-    If you have multiple SSH keys you wish to associate with this endpoint, use a comma-separated list:
+    If you have multiple SSH keys you wish to associate with this instance, use a comma-separated list:
 
     ```bash Multiple SSH keys example {2-4}
         "ssh_keys": [
@@ -138,25 +140,25 @@ When creating an instance, you must specify one or more SSH keys. You can use th
 
     <EndpointRequestSnippet endpoint="GET /instances" />
 
-    Initially, the instance's `status` will be `pending`. The `status` updates to `running` once the instance is created and available. 
+    Initially, the instance's `status` will be `pending`. The `status` updates to `running` and an IP address is assigned once the instance is created and available.
 
     Example:
     <EndpointResponseSnippet endpoint="GET /instances" />
 
-    Take note of your instance's values for `username` and `ip_address` for the next step.
+    This endpoint returns all the instances on your account. Locate the instance with the `id` of your newly created instance. Take note of your instance's values for `username` and `ip_address` for the next step.
 
   </Accordion>
 </AccordionGroup>
 
 ### Access your instance 
 
-When the instance is running, you can connect to it using SSH. Use the private key that corresponds to the public key you used when creating the SSH key for this instance.
+Once the instance's status is `running`, you can connect to it using SSH. Use the private key that corresponds to the public key you used when creating the SSH key for this instance, and the `username` and `ip_address` values you noted in the previous step. 
 
 ```bash title="bash"
 ssh -i <your_private_key> <username>@<ip_address>
 ```
 
-<Note>The first time you connect to your instance, you will see a message that says "The authenticity of host `x.x.x.x` can't be established ... Are you sure you want to continue connecting". This is normal for the first connection. Type `yes` and press Enter.</Note>
+<Note>The first time you connect to your instance, you will see a message that says "The authenticity of host `x.x.x.x` can't be established ... Are you sure you want to continue connecting". This is normal for the first connection. Type `yes` and press `Enter`.</Note>
 
 </Steps>
 
