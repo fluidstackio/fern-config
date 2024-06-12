@@ -31,7 +31,7 @@ groups:
   ts-local: 
     generators:
       - name: fernapi/fern-typescript-node-sdk
-        version: 0.22.0
+        version: 0.23.0
         output:
           location: local-file-system
           path: ../generated
@@ -40,11 +40,14 @@ groups:
   ts-sdk:
     generators:
       - name: fernapi/fern-typescript-node-sdk
-        version: 0.22.0
+        version: 0.23.0
         output:
           location: npm
           package-name: fluidstack
           token: ${NPM_TOKEN}
         github: 
           repository: fluidstackio/fluidstack-typescript-sdk
+          mode: pull-request
         smart-casing: true
+        config: 
+          includeApiReference: true
