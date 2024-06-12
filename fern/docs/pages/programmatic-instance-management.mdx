@@ -5,40 +5,46 @@ The [Python script on this page](#script) provides an example of how the [FluidS
   - A [public/private key pair](/authentication#public-key)
   - [Python 3+](https://python.org)
 
-## Summary of script steps
+## Script overview
 
 <Steps>
-    ### Create an SSH key
+  ### Create an SSH key
 
-      The script reads the public key located at `~/.ssh/id_rsa.pub` and sends a POST request to create a new SSH key named `"my_key"`. If your public key is in a different location or filename, update this part of the script before you use it.
+    The script reads the public key located at `~/.ssh/id_rsa.pub` and sends a POST request to create a new SSH key named `"python_testkey"`.
 
-    ### Create an instance
+    <Warning>
+      - If you already have a SSH key named `python_testkey`, change the script to use a different, unique name.
+      - If your public key is in a different location or filename, make sure to update this part of the script.
+    </Warning>
 
-      The script creates an instance, specifying the API and SSH keys, GPU Type, GPU count, and operating system.
+  ### Create an instance
 
-    ### Check the instance status
+    The script creates an instance, specifying the API and SSH keys, GPU Type, GPU count, and operating system.
 
-      The script checks the status of the created instance until it is running.
+  ### Check the instance status
 
-    ### Print the instance IP
+    The script checks the status of the created instance until it is running.
 
-      Once the instance is running, the script prints the instance IP.
+  ### Print the instance IP
 
-    ### Delete the instance
+    Once the instance is running, the script prints the instance IP.
 
-      Finally, the script deletes the created instance.
+  ### Delete the instance
+
+    Finally, the script deletes the created instance.
 </Steps>
  
 
 <Tip>To run this script, make sure to replace `<your_api_key>` in line 7 with your own API key.</Tip>
 
-## Script 
+## Example script 
 
-```python maxLines=30 title="Python"
+```python maxLines=30 title="Python" {15,33,55,77,80}
 import requests
 from pathlib import Path
 import os
 import time
+import json
 
 api_url = "https://platform.fluidstack.io/"
 api_key = "<your_api_key>"
@@ -52,36 +58,36 @@ headers = {
 print("Creating SSH key")
 public_key = open(os.path.join(Path.home(), ".ssh", "id_rsa.pub")).read().strip() # Read the public key from ~/.ssh/id_rsa.pub - change this if your public key is somewhere different
 r = requests.post(
-    url + "ssh_keys",
+    api_url + "ssh_keys",
     headers=headers,
-    json={"name": "my_key", "public_key": public_key}, # Create a new SSH key with the name "my_key", using the provided public key
+    json={"name": "python_testkey", "public_key": public_key}, # Create a new SSH key with the name "python_testkey", using the provided public key
 )
 if not r.ok:
+    print("Response body: " + json.dumps(r.json(), indent=2))
     raise Exception("Could not create SSH key")
 
 ssh_key_names = [r.json()["name"]]
 
-gpu_type = "RTX_A6000_48GB"
+gpu_type = "RTX_A4000_16GB"
 gpu_count = 4
-operating_system_label = 'ubuntu_20_04_lts'
+operating_system_label = "ubuntu_20_04_lts"
 
 # 2: Create an instance 
 print("Creating instance")
 r = requests.post(
-    url + "instances",
+    api_url + "instances",
     headers=headers,
     json={
-        "name" : "myinstance",
+        "name": "python_testinstance",
         "ssh_keys": ssh_key_names,
         "gpu_type": gpu_type,
         "gpu_count": gpu_count,
-        "operating_system_label": operating_system_label,
-    },
+        "operating_system_label": operating_system_label
+    }
 )
-	if not r.ok:
-	    print(r.json())
-	else:
-		raise Exception("Could not create instance")
+print("Response body: " + json.dumps(r.json(), indent=2))
+if not r.ok:
+    raise Exception("Could not create instance")
 	
 instance_id = r.json()['id']
 
@@ -90,12 +96,13 @@ print("Waiting for instance to start")
 
 # 3: Check the instance status
 # This while loop checks the instance status every 10 seconds and exits when the status is "running"
+count = 1
 while instance_status != "running":
-    if instance_status in ["unhealthy"]:
+    if instance_status in ["unhealthy", "terminated", "shutting_down", "stopping", "stopped"]:
         print("Could not create instance")
         raise Exception("Could not create instance")
-    try
-        r = requests.get(url + "instances", headers=headers)
+    try:
+        r = requests.get(api_url + "instances", headers=headers)
         instances = r.json()
         instance = None
         for instance in instances:
@@ -107,16 +114,16 @@ while instance_status != "running":
         print(e)
     print("\t [" + str(count) + "] Status: " + instance_status)
     time.sleep(10)
+    count += 1
 
 # 4: Print the instance IP
-print("Instance IP address: " + instance['public_ip'])
+print("Instance IP address: " + instance['ip_address'])
 
 # 5: Delete the instance
 print("Deleting instance")
-r = requests.delete(url + f"instances/{instance_id}", headers=headers)
+r = requests.delete(api_url + f"instances/{instance_id}", headers=headers)
 if not r.ok:
-    print(r.json())
+    print("Response body: " + json.dumps(r.json(), indent=2))
     raise Exception("Could not delete instance")
 print("Instance deleted")
-
 ```
