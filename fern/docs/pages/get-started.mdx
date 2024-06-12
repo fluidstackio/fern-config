@@ -25,7 +25,7 @@ On this page, you will learn to do the following:
 
 You can skip this step if you already have a public/private key pair that uses a supported format from the list above.
 
-FluidStack grants you command-line access to your instances via [SSH](https://en.wikipedia.org/wiki/Secure_Shell), using [public-key cryptography](https://www.ssh.com/academy/ssh/public-key-authentication) instead of a login password for greater security. This means that you must locally generate a public/private key pair, then store your public key on your instances. You can then use your private key to access the instances.
+FluidStack grants you command-line access to your instances via [SSH](https://en.wikipedia.org/wiki/Secure_Shell), using [public-key cryptography](https://www.ssh.com/academy/ssh/public-key-authentication) instead of a login password for higher security. This means that you must locally generate a public/private key pair, then store your public key on your instances. You can then use your private key to access the instances.
 
 You can generate a public/private key pair with a command-line tool called **ssh-keygen**. This tool comes pre-installed on most operating systems.
 
@@ -86,7 +86,7 @@ cat ~/.ssh/id_ecdsa_256.pub
   With any public/private key pair that you generate, your public key can be shared freely. Your private key should be just that—private! Do not share it with others, or in public repositories such as in GitHub. 
 </Warning>
 
-### Create a SSH key on your FluidStack account
+### Create an SSH key on your FluidStack account
 
 Once you have generated a key pair locally, use its public key to create an SSH key on your FluidStack account. In this context, _creating an SSH key_ means _storing a copy of your public key on your FluidStack account_. The stored SSH key is identical to your public key.
 
@@ -184,8 +184,18 @@ When creating an instance, you must specify one or more SSH keys. You can use th
 Once the instance's status is `running`, you can connect to it using SSH. Use the private key that corresponds to the public key you used when creating the SSH key for this instance, and the `username` and `ip_address` values you noted in the previous step. 
 
 ```bash title="bash"
-ssh -i <your_private_key> <username>@<ip_address>
+ssh -i <path_to_your_private_key> <username>@<ip_address>
 ```
+
+Example:
+<CodeBlocks>
+```bash title="RSA"
+ssh -i ~/.ssh/id_rsa ubuntu@192.0.2.0
+```
+```bash title="ECDSA"
+ssh -i ~/.ssh/id_ecdsa_256 ubuntu@192.0.2.0
+```
+</CodeBlocks>
 
 <Note>The first time you connect to your instance, you will see a message that says "The authenticity of host `x.x.x.x` can't be established ... Are you sure you want to continue connecting". This is normal for the first connection. Type `yes` and press `Enter`.</Note>
 
