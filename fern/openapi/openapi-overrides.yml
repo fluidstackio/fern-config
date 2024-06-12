@@ -73,3 +73,7 @@ paths:
 x-fern-global-headers:
   - header: api-key
     env: FLUIDSTACK_API_KEY
+
+servers: 
+- url: https://platform.fluidstack.io
+  x-fern-server-name: Production
