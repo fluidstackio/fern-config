@@ -23,11 +23,11 @@ The Python script on this page provides an example of how the [FluidStack API](/
 
   ### Check the instance status
 
-    The script checks the status of the created instance until it is running.
+    The script checks the status of the created instance until it is `running`.
 
   ### Print the instance IP
 
-    Once the instance is running, the script prints the instance IP.
+    Once the instance is `running`, the script prints the instance's IP address.
 
   ### Delete the instance
 
@@ -89,7 +89,7 @@ print("Response body: " + json.dumps(r.json(), indent=2))
 if not r.ok:
     raise Exception("Could not create instance")
 	
-instance_id = r.json()['id']
+instance_id = r.json()["id"]
 
 instance_status = "pending"
 print("Waiting for instance to start")
@@ -106,10 +106,10 @@ while instance_status != "running":
         instances = r.json()
         instance = None
         for instance in instances:
-            if instance['id'] == instance_id:
-                instance_status = instance['status']
+            if instance["id"] == instance_id:
+                instance_status = instance["status"]
                 break
-        instance_status = instance['status']
+        instance_status = instance["status"]
     except Exception as e:
         print(e)
     print("\t [" + str(count) + "] Status: " + instance_status)
@@ -117,7 +117,7 @@ while instance_status != "running":
     count += 1
 
 # 4: Print the instance IP
-print("Instance IP address: " + instance['ip_address'])
+print("Instance IP address: " + instance["ip_address"])
 
 # 5: Delete the instance
 print("Deleting instance")
