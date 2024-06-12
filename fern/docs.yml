@@ -6,8 +6,8 @@ favicon: ./docs/assets/logo.png
 navigation:
   - page: Home
     path: ./docs/pages/home.mdx
-  - page: Getting Started
-    path: ./docs/pages/getting-started.mdx
+  - page: Get Started
+    path: ./docs/pages/get-started.mdx
   - page: Authentication 
     path: ./docs/pages/authentication.mdx
   - page: Programmatic Instance Management

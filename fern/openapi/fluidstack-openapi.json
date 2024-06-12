@@ -827,7 +827,8 @@
           },
           "ssh_keys": {
             "items": {
-              "type": "string"
+              "type": "string",
+              "example": "<ssh_key_name>"
             },
             "type": "array",
             "minItems": 1,
