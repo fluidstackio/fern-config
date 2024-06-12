@@ -23,37 +23,27 @@ Example:
 
 ## SSH keys
 
-The SSH (Secure SHell) protocol is used for command-line access to a running instance. It uses public-key cryptography for authentication.
+An **SSH key** is required to create an instance, and to log into an instance remotely using the SSH (Secure Shell) protocol. 
 
-Access requires a public/private key pair. You must [generate a key pair locally](https://www.ssh.com/academy/ssh/keygen), then use its public key to create an SSH key on your FluidStack account. In this context, _creating an SSH key_ means _storing a copy of a public key on your FluidStack account_. The stored SSH key is identical to your public key.
+Instead of a login password, FluidStack requires [public-key cryptography](https://en.wikipedia.org/wiki/Public-key_cryptography) for authentication. This means that you must have a public/private key pair for encryption.
+
+### Create an SSH key
+
+If you do not already have a public/private key pair, you must [generate one locally](/get-started#create-a-publicprivate-key-pair), then use its public key to [create an SSH key on your FluidStack account](/get-started#create-a-ssh-key-on-your-fluidstack-account). In this context, _creating an SSH key_ means _storing a copy of a public key on your FluidStack account_. The stored SSH key is identical to the public key.
 
 <Markdown src="../snippets/public-key-formats.mdx" />
 
-You can create an SSH key from the FluidStack Dashboard, or with the FluidStack API.
-
-### Create an SSH key from the FluidStack Dashboard
-
-1. Open the [SSH Keys page on the FluidStack Dashboard](https://dashboard.fluidstack.io/dashboard/ssh-keys).
-2. Select **Add SSH key** from the top right corner.
-3. In the popup form's **Name** field, input a unique name for this SSH key. 
-4. Paste your public key in the field labeled **Public SSH key**. Click **Confirm**.
-
-### Create an SSH key using the FluidStack API
-
-You can create an SSH key on your FluidStack account by using the [`POST /ssh_keys`](/api-reference/ssh-keys/create) endpoint. You can call this endpoint programmatically, or by using a command-line tool such as [cURL](https://curl.se/):
-
-<EndpointRequestSnippet endpoint="POST /ssh_keys" />
-
-If your POST request is successful, the endpoint responds with a JSON object that echoes the `name` and `public_key` that you sent.
-
-```json title="Response example"
-{
-    "name": "mykey",
-    "public_key": "<your_public_key>"
-}
-```
-
 ### Use your SSH key
 
-Whenever you create a new instance, you must provide one or more SSH keys. Once the instance is running, use the SSH key to authenticate when connecting to the instance via an SSH client.
+Whenever you create a new instance, you must provide one or more SSH keys. If more than one person will need remote access to the instance, provide a different SSH key for each person.
 
+Once the instance is running, use your private key to authenticate when connecting to the instance. The private key should correspond to a public key that you used for one of the SSH keys associated with that instance.
+
+```bash title="Connect to your instance with SSH"
+ssh -i <path_to_your_private_key> <username>@<ip_address>
+```
+
+Example:
+```bash 
+ssh -i ~/.ssh/id_rsa ubuntu@192.0.2.0
+```
