@@ -1,6 +1,6 @@
 The [Python script on this page](#script) provides an example of how the [FluidStack API](/api-reference) can be used to manage instances programmatically.
 
-## Requirements
+## Prerequisites
   - <Markdown src="../snippets/api-key.mdx" />
   - A [public/private key pair](/authentication#public-key)
   - [Python 3+](https://python.org)
@@ -10,7 +10,7 @@ The [Python script on this page](#script) provides an example of how the [FluidS
 <Steps>
     ### Create an SSH key
 
-      The script reads the public key from the default location (`~/.ssh/id_rsa.pub`) and sends a POST request to create a new SSH key named `"my_key"`.
+      The script reads the public key located at `~/.ssh/id_rsa.pub` and sends a POST request to create a new SSH key named `"my_key"`. If your public key is in a different location or filename, update this part of the script before you use it.
 
     ### Create an instance
 
@@ -50,7 +50,7 @@ headers = {
 
 # 1: Create an SSH key
 print("Creating SSH key")
-public_key = open(os.path.join(Path.home(), ".ssh", "id_rsa.pub")).read().strip() # Read the public key from the home directory
+public_key = open(os.path.join(Path.home(), ".ssh", "id_rsa.pub")).read().strip() # Read the public key from ~/.ssh/id_rsa.pub - change this if your public key is somewhere different
 r = requests.post(
     url + "ssh_keys",
     headers=headers,

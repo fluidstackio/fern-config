@@ -1,0 +1,157 @@
+## Overview
+
+Get started using GPU instances through FluidStack's Dashboard or API. 
+
+On this page, you will learn how to create a public/private key pair, create an instance, and access your instance using the SSH (Secure SHell) protocol. 
+
+## Prerequisites
+
+ - A [FluidStack](https://www.fluidstack.io/) account
+ - <Markdown src="../snippets/api-key.mdx" />
+
+ <Tip>Find out more about using API keys on the [Authentication](/authentication) page.</Tip>
+
+## Steps
+
+<Steps>
+### Create a public/private key pair
+
+<Markdown src="../snippets/public-key-formats.mdx" />
+
+You can skip this step if you already have a public/private key pair that uses a supported format from the list above.
+
+FluidStack grants you command-line access to your instances via SSH. SSH uses public-key cryptography for secure communication. This means that you must locally generate a public/private key pair, then store your public key on the instance. You can then use your private key to access the instance.
+
+You can generate a public/private key pair with a command-line tool called **ssh-keygen**. This tool comes pre-installed on most operating systems.
+
+<Tip>If you are unable to use **ssh-keygen**, a popular alternative is [PuttyGen](https://www.puttygen.com/). Refer to the instructions on PuttyGen's website to generate a key pair with that tool.</Tip>
+
+In your CLI shell, enter one of the commands shown in the two tabs below:
+
+<CodeBlocks>
+```bash Use ssh-keygen for RSA
+ssh-keygen
+```
+```bash Use ssh-keygen for ECDSA with NIST curves
+ssh-keygen -t ecdsa -b 256 -f ~/.ssh/id_ecdsa_256
+```
+</CodeBlocks>
+
+If prompted to enter a filename, press enter to save the key to the default location.
+
+When prompted to enter a passphrase, you can optionally add a passphrase to increase security.
+
+Enter the following command to confirm that your keypair has been created:
+```bash bash
+ls ~/.ssh
+```
+
+In the output, you should see either `id_ecdsa_256` and `id_ecdsa_256.pub`, or `id_rsa` and `id_rsa.pub`, depending on which encryption format you used. The file that ends in `.pub` is your public key. The file with the corresponding name, but no extension, is your private key. 
+
+<Warning>
+  With any public/private key pair that you generate, your public key can be shared freely. Your private key should be just that—private! Do not share it with others, or in public repositories such as in GitHub. 
+</Warning>
+
+### Create a FluidStack SSH key
+
+Once you have generated a key pair locally, use its public key to create an SSH key on your FluidStack account. In this context, _creating an SSH key_ means _storing a copy of a public key on your FluidStack account_. The stored SSH key is identical to your public key.
+
+<AccordionGroup>
+  <Accordion title="Use the FluidStack Dashboard">
+    1. Visit the [SSH Keys page on the FluidStack Dashboard](https://dashboard.fluidstack.io/dashboard/ssh-keys).
+    2. Select **Add SSH key** from the top right corner.
+    3. In the popup form's **Name** field, input a unique name for this SSH key. 
+    4. Paste your public key in the field labeled **Public SSH key**. Click **Confirm**.
+  </Accordion>
+  <Accordion title="Use the FluidStack API">
+    You can create an SSH key on your FluidStack account by using the [`POST /ssh_keys`](/api-reference/ssh-keys/create) endpoint. You can call this endpoint programmatically, or by using a command-line tool such as [cURL](https://curl.se/):
+
+    <EndpointRequestSnippet endpoint="POST /ssh_keys" />
+
+    <Tip>Make sure to replace the `<api-key>` value with your own API key.</Tip>
+
+    If your POST request is successful, the endpoint responds with a JSON object that echoes the `name` and `public_key` that you sent.
+
+    ```json title="Response example"
+    {
+        "name": "mykey",
+        "public_key": "<your_public_key>"
+    }
+    ```
+  </Accordion>
+  
+</AccordionGroup>
+
+### Create an instance
+
+When creating an instance, you must provide one or more SSH keys. You can use the same SSH key for multiple instances. However, if more than one person intends to have access to instances, a different SSH key should be used for each person.
+
+<AccordionGroup>
+  <Accordion title="Use the FluidStack Dashboard">
+    1. Visit the [GPU Instances page on the FluidStack Dashboard](https://dashboard.fluidstack.io/dashboard/instances).
+    2. Select **Deploy GPUs** from the top right corner.
+    3. In the popup form, select the instance's GPU type, then click **Configure**.
+    4. Set the **Instance Name** and select an **OS Image** from the dropdown.
+    5. Choose one or more SSH keys to associate with the instance. 
+  </Accordion>
+  <Accordion title="Use the FluidStack API">
+    To create an instance, you must provide values for the `name` of the instance, its `gpu_type`, and `ssh_key_name`. You can also provide values for `"gpu_count"` and `"operating_system_label"`; if you do not provide them, the default values of `1` and `"ubuntu_20_04_lts"` are used respectively.
+
+    If you prefer, you can use a different configuration and/or operating system. [View your options.](/list-of-available-configurations-and-operating-systems)
+
+    Use the cURL command below to create a new endpoint. Replace `<api_key>` with your API key, and `<ssh_key_name>` with the your SSH key's name. 
+
+    <EndpointRequestSnippet endpoint="POST /instances" />
+
+    If you have multiple SSH keys you wish to associate with this endpoint, use a comma-separated list:
+
+    ```bash Multiple SSH keys example
+        "ssh_keys": [
+          "my_key1",
+          "my_key2",
+          "my_key3"
+        ]
+    ```
+
+    If your request is sent successfully, the endpoint responds with the created instance's details, including its `id` and `status`.
+
+    Initially, the instance `status` will be `pending`. The `status` changes to `running` once the instance is created and available. 
+
+    ```json title="JSON response"
+    {
+        "id": "<instance_id>",
+        "status": "pending",
+        "username": "<username>",
+        "ssh_port": "<ssh_port>",
+        "ssh_keys": [ ],
+        "ip_address": "<ip_address>",
+        "name": "<instance_name>",
+        "term": "hourly",
+        "current_rate": 0,
+        "configuration": {},
+        "region": {},
+        "volumes": [ ],
+        "operating_system": {},
+        "created_at": "<created_at>"
+    }
+    ```
+
+    Take note of the values for `ssh_port`, `username`, and `ip_address` for the next step.
+
+  </Accordion>
+</AccordionGroup>
+
+### Access your instance 
+
+When the instance is running, you can connect to it using SSH. Use the private key that corresponds to the public key you used when creating the SSH key for this instance.
+
+```bash title="bash"
+ssh -i <your_private_key> -p <ssh_port> <username>@<ip_address>
+```
+</Steps>
+
+## What's next
+
+- View the [FluidStack API Reference](/api-reference)
+- Learn how to [programmatically manage instances](/programmatic-instance-management)
+- View all [available configurations and operating systems](/list-available)
