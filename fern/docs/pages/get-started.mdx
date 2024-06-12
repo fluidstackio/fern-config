@@ -106,23 +106,23 @@ When creating an instance, you must specify one or more SSH keys. You can use th
   </Accordion>
 
   <Accordion title="Use the FluidStack API">
-    To create an instance, you must provide:
+    The following values are required to create an instance:
 
-    1. `name` of the instance
-    2. `gpu_type` (You need the `gpu_model` field from [Configurations](/api-reference/configurations/list))
-    3. `ssh_key_name` 
+    - the `name` of the instance
+    - the`gpu_type` (See the `gpu_model` field from [Configurations](/api-reference/configurations/list).)
+    - the `ssh_key_name`
     
-    You can also provide values for:
-    1. `gpu_count` (default `1`)
-    2. `operating_system_label` (default `"ubuntu_20_04_lts"`)
+    These values are optional:
+    - `gpu_count` (Defaults to `1`)
+    - `operating_system_label` (See the `label` field from [Operating Systems](/api-reference/templates/list). Defaults to `"ubuntu_20_04_lts"`)
 
     If you prefer, you can use a different [configuration](/api-reference/configurations/list) and/or [operating system](/api-reference/templates/list). 
 
-    Use the cURL command below to create a new instance. Replace `<api_key>` with your API key, and `<ssh_key_name>` with your SSH key's name:
+    Call the endpoint below to create a new instance. Replace `<api_key>` with your API key, and `<ssh_key_name>` with your SSH key's name:
 
     <EndpointRequestSnippet endpoint="POST /instances" />
 
-    If you have multiple SSH keys you wish to associate with this endpoint, use a comma-separated list:
+    If you have multiple SSH keys you wish to associate with this instance, use a comma-separated list:
 
     ```bash Multiple SSH keys example {2-4}
         "ssh_keys": [
