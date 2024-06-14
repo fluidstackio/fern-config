@@ -47,7 +47,6 @@ groups:
           token: ${NPM_TOKEN}
         github: 
           repository: fluidstackio/fluidstack-typescript-sdk
-          mode: pull-request
         smart-casing: true
         config: 
           includeApiReference: true
