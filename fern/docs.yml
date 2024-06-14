@@ -23,6 +23,7 @@ navigation:
       - page: SSH Keys
         path: ./docs/pages/ssh/ssh-keys.mdx
   - section: SDKs
+    slug: sdks
     contents:
       - page: Python SDK
         path: ./docs/pages/sdks/python-sdk.mdx
