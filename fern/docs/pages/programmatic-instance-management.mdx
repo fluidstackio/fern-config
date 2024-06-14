@@ -3,7 +3,7 @@ The Python script on this page provides an example of how the [FluidStack API](/
 ## Prerequisites
   - <Markdown src="../snippets/api-key.mdx" />
   - A [public/private key pair](/ssh/ssh-keys#generate-a-publicprivate-key-pair)
-  - Basic familiarity with [Python](https://python.org), and Python 3+ installed
+  - Basic familiarity with [Python](https://python.org) and Python 3+ installed
   - The `requests` module installed in your Python environment
 
 ## Script overview
@@ -11,7 +11,7 @@ The Python script on this page provides an example of how the [FluidStack API](/
 <Steps>
   ### Create an SSH key
 
-    The script reads the public key located at `~/.ssh/id_rsa.pub`, then sends a request to the [`POST /ssh_keys`](/api-reference/ssh_keys/create) endpoint to create a SSH key named `"python_testkey"`. This SSH key is a copy of the public key that was read.
+    The script reads the public key located at `~/.ssh/id_rsa.pub`, then sends a request to the [`POST /ssh_keys`](/api-reference/ssh-keys/create) endpoint to create a SSH key named `"python_testkey"`. This SSH key is a copy of the public key that was read.
 
     <Warning>
       - If you already have an SSH key named `python_testkey`, change the script to use a different, unique name.
@@ -20,13 +20,13 @@ The Python script on this page provides an example of how the [FluidStack API](/
 
   ### Create an instance
 
-    The script creates an instance by sending a request to the [`POST /instances`](/api-reference/ssh_keys/create) endpoint.
+    The script creates an instance by sending a request to the [`POST /instances`](/api-reference/ssh-keys/create) endpoint.
     
     The API key is sent in the request as a header. The SSH key name, configuration, and operating system template are sent in the JSON body of the request.
 
   ### Check the instance status
 
-    Initially, the `status` of the instance is `pending`. The script repeatedly checks its `status` until it returns `running`, by sending requests to the [`GET /instances`](/api-reference/instances/list) endpoint and parsing the result. 
+    Initially, the instance's `status` is `pending`. The script repeatedly checks this `status` until it is `running` by sending requests to the [`GET /instances`](/api-reference/instances/list) endpoint and parsing the response. 
 
     This status-checking loop stops once the instance's `status` returns as `running`, or if its `status` indicates that it has been `terminated` or is otherwise unable to run.
 
