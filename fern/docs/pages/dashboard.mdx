@@ -1,0 +1,85 @@
+---
+title: The FluidStack Dashboard
+subtitle: Manage your instances, authentication keys, and billing
+---
+## Overview
+
+The FluidStack Dashboard provides a browser-based interface for managing your account:
+
+- View and delete your [GPU instances](#manage-gpu-instances)
+- View, add, and delete [SSH keys](#manage-ssh-keys)
+- View, add, and delete [API keys](#manage-api-keys)
+- View your [credit balance, deposit funds, and billing history](#billing)
+
+## Access the Dashboard
+
+Log in to the FluidStack Dashboard [here](https://dashboard.fluidstack.io/).
+
+Having trouble accessing the Dashboard? Contact [support](mailto:support@fluidstack.io).
+
+## Manage GPU instances
+
+From the left sidebar of the Dashboard, select [GPU Instances](https://dashboard.fluidstack.io/dashboard/instances) to display all instances on your account. For each instance, the name, configuration, IP address, username for SSH login, associated SSH keys, SSH port, and instance status is displayed.
+
+<Tip>You can also manage instances through our API. See the [Instances API reference](/api-reference/instances).</Tip>
+
+### Add a GPU instance
+
+Creating instances is performed through our API. See the [Get Started] tutorial for a walk-through of creating an instance, or view the [`POST /instances](/api-reference/create) endpoint in our [API reference](/api-reference).
+
+### Start and stop an instance
+
+Starting and stopping existing instances is performed through our API. View the [`PUT/instances/:instance_id/start`] endpoint for details on starting an instance, or the [`PUT /instances/:instance_id/stop`] endpoint for details on stopping an instance.
+
+### Delete a GPU instance
+
+<Markdown src="../snippets/delete-instance-dashboard.mdx" />
+
+## Manage SSH keys
+
+SSH keys are used to authenticate for command-line access to instances
+
+<Tip>You can also manage SSH keys through our API. See the [SSH Keys API reference](/api-reference/ssh-keys/).</Tip>
+
+### View SSH keys
+
+From the left sidebar of the Dashboard, select [SSH Keys](https://dashboard.fluidstack.io/dashboard/ssh-keys).
+
+### Add (create) an SSH key
+
+<Markdown src="../snippets/create-ssh-key-dashboard.mdx" />
+
+### Delete an SSH key
+
+<Markdown src="../snippets/delete-ssh-key-warning.mdx" />
+
+1. From the left sidebar of the Dashboard, select [SSH Keys](https://dashboard.fluidstack.io/dashboard/ssh-keys).
+2. Click the red `delete` button next to the SSH key you want to delete.
+
+## Manage API keys
+
+### View API keys
+
+From the left sidebar of the Dashboard, select [API Keys](https://dashboard.fluidstack.io/dashboard/api-keys).
+
+### Add an API key
+
+1. From the left sidebar of the Dashboard, select [API Keys](https://dashboard.fluidstack.io/dashboard/api-keys).
+2. Click the **Add API key** button in the upper-right corner. A dialog will appear.
+3. In the dialog's **Name** field, input a unique name for this API key. 
+5. Click **Create API key**.
+
+### Delete an API key
+
+1. From the left sidebar of the Dashboard, select [API Keys](https://dashboard.fluidstack.io/dashboard/api-keys).
+2. Click the red `delete` button next to the API key you want to delete.
+
+## Billing
+
+From the left sidebar of the Dashboard, select [Billing](https://dashboard.fluidstack.io/dashboard/billing).
+
+From the **Overview** tab, you can view your credit balance and deposit funds. 
+
+From the **Billing history** tab, access your detailed billing history, including the date, type, amount, and instance ID for every instance charge. Deposited funds are also shown in this tab.
+
+

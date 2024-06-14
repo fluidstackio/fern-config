@@ -1,0 +1,173 @@
+An **SSH key** is required to create a cloud-based GPU instance with FluidStack. Once the instance is running, use the SSH key for remote command-line access to the instance.
+
+## What is an SSH key?
+
+FluidStack allows [Secure Shell (SSH)](/what-is-ssh) access to instances. For improved security, we use [public-key cryptography](https://en.wikipedia.org/wiki/Public-key_cryptography) for authentication instead of a password. This method requires that you provide your own **public/private key pair**. 
+
+Your public key is stored on your instance as your SSH key. Its corresponding private key is stored locally on the computer that you use to access your instance. SSH access is granted by verifying that your private key corresponds to the public key. As an analogy, you can think of a public key as a lock that only your private key can unlock.
+
+<Tip>Public/private key pairs are used for many purposes, not only SSH. For example, they are used in file encryption, digital signatures, and cryptocurrency transactions.</Tip>
+
+## Generate a public/private key pair
+
+<Markdown src="../../snippets/public-key-formats.mdx" />
+
+If you already have a public/private key pair of a supported format, you can use it instead of generating a new pair.
+
+You can generate a public/private key pair for authenticating SSH connections by using a command-line tool called **ssh-keygen**. This tool comes pre-installed on nearly all operating systems.
+
+The tabs below contain instructions for creating a key pair with either the [RSA](https://en.wikipedia.org/wiki/RSA_(cryptosystem)) algorithm or [ECDSA](https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm) algorithm.
+
+<Frame>
+<Tabs>
+
+  <Tab title="RSA">
+    <Steps>
+      ### Generate the key pair
+      Enter the following command in your CLI shell:
+```bash
+ssh-keygen
+```
+      If prompted to enter a filename, press `Enter` to save the key pair to the default location (`~/.ssh/`). When prompted to enter a passphrase, you can optionally do so to increase security.
+
+      <br />
+      ### Confirm that your key pair was created
+      Enter the following command to confirm that your key pair was created:
+```bash 
+ls ~/.ssh
+```
+    In the output, you should see `id_rsa` (the file that contains your private key) and `id_rsa.pub` (the file that contains your public key).
+    
+      <br />
+      ### View your public key
+      Open the `id_rsa.pub` file in a plaintext editor, or enter the command below to output it to your terminal:
+```bash
+cat ~/.ssh/id_rsa.pub
+```
+    </Steps>
+  </Tab>
+
+  <Tab title="ECDSA with NIST curves">
+    <Steps>
+    ### Generate the key pair
+    Enter the following command in your CLI shell:
+```bash
+ssh-keygen -t ecdsa -b 256 -f ~/.ssh/id_ecdsa_256
+```
+    If prompted to enter a filename, press `Enter` to save the key pair to the default location (`~/.ssh/`). When prompted to enter a passphrase, you can optionally do so to increase security.
+
+    <br />
+
+    ### Confirm that your key pair was created
+
+    Enter the following command to confirm that your key pair was created:
+```bash 
+ls ~/.ssh
+```
+
+    In the output, you should see `id_ecdsa_256` (the file that contains your private key) and `id_ecdsa_256.pub` (the file that contains your public key).
+    <br />
+
+    ### View your public key
+
+    Open the `id_ecdsa_256.pub` file in a plaintext editor, or enter the command below to output it to your terminal:
+
+```bash 
+cat ~/.ssh/id_ecdsa_256.pub
+```
+    </Steps>
+    
+
+  </Tab>
+
+</Tabs>
+</Frame>
+
+<Warning>
+  With any public/private key pair that you generate, your public key can be shared freely. Your private key should be just that—private! Do not share it with others, or in public repositories such as in GitHub. 
+</Warning>
+
+## Create an SSH key
+
+Use your public key to create an SSH key on your FluidStack account. In this context, _creating an SSH key_ means _storing (adding) a copy of your public key on your FluidStack account_. The stored SSH key is identical to your public key.
+
+<AccordionGroup>
+
+  <Accordion title="Use the FluidStack Dashboard">
+    1. Open the [SSH Keys page on the FluidStack Dashboard](https://dashboard.fluidstack.io/dashboard/ssh-keys).
+    2. Select **Add SSH key** from the upper-right corner.
+    3. In the dialog's **Name** field, input a unique name for this SSH key. 
+    4. Paste your public key in the field labeled **Public SSH key**. Click **Confirm**.
+  </Accordion>
+
+  <Accordion title="Use the FluidStack API">
+    Create an SSH key by using the [`POST /ssh_keys`](/api-reference/ssh-keys/create) endpoint. You can call this endpoint programmatically, or by using a command-line tool such as [cURL](https://curl.se/):
+
+    <EndpointRequestSnippet endpoint="POST /ssh_keys" />
+
+    <Tip>Make sure to replace the `<api-key>` value with your API key, the `<public-key>` value with your public key, and the `name` of `mykey` with the unique SSH key name you'd like to use.</Tip>
+
+    If your POST request is successful, the endpoint responds with a JSON object that echoes the `name` and `public_key` that you sent:
+
+    ```json title="Response example"
+    {
+        "name": "mykey",
+        "public_key": "<your_public_key>"
+    }
+    ```
+  </Accordion>
+  
+</AccordionGroup>
+
+## View existing SSH keys
+
+<AccordionGroup>
+  <Accordion title="Use the FluidStack Dashboard">
+    See [Dashboard - View SSH keys](/dashboard#view-ssh-keys).
+  </Accordion>
+
+  <Accordion title="Use the FluidStack API">
+
+    The following endpoint responds with a JSON array of objects:
+
+    <EndpointRequestSnippet endpoint="GET /ssh_keys" />
+
+    Each object in the JSON array represents an SSH key, including its `name` and `public_key`. 
+
+```json title="Example response"
+[
+    {
+        "name": "mykey",
+        "public_key": "<public_key>"
+    },
+    {
+        "name": "myotherkey",
+        "public_key": "<public_key>"
+    }
+]
+```
+  </Accordion>
+</AccordionGroup>
+
+## Delete an SSH key
+
+<Markdown src="../../snippets/delete-ssh-key-warning.mdx" />
+<AccordionGroup>
+  <Accordion title="Use the FluidStack Dashboard">
+    See [Dashboard - Delete an SSH key](/dashboard#delete-an-ssh-key).
+  </Accordion>
+
+  <Accordion title="Use the FluidStack API">
+
+   To delete an SSH key, call the API using the cURL command below. Replace the text `ssh_key_name` with the name of the key you want to delete.
+
+    <EndpointRequestSnippet endpoint="DELETE /ssh_keys/:ssh_key_name" />
+
+    Example:
+
+```bash title="Example request"
+  curl -X DELETE https://platform.fluidstack.io/ssh_keys/mykey \
+  -H "api-key: api_key_j8FaG34rGUFDig1111qerdP1f5MfEeW9AI"
+```
+  </Accordion>
+</AccordionGroup>

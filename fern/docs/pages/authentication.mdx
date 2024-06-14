@@ -1,18 +1,16 @@
 ---
-subtitle: How to authenticate with API and SSH keys
+subtitle: API and SSH keys
 ---
 
 ## API keys
 
-An **API key** is required for authentication to use the FluidSpring API. The API key is connected to your FluidSpring account. Conceptually, it is similar to a password that is sent with every API call. 
+An **API key** is required for authentication to use the [FluidStack API](/api-reference). Your API key is unique to your FluidStack account. Conceptually, it is similar to a password that is sent with every API call. 
+
+[View, add, and delete your API keys](/dashboard#manage-api-keys) from the FluidStack Dashboard.
 
 <Warning>
   Keep your API keys secure! Treat them like you would any other password. Do not share them with others, or in public repositories such as in GitHub. 
 </Warning>
-
-### Create an API key
-
-Create, view, and delete your API keys from the [FluidStack Dashboard](https://dashboard.fluidstack.io/dashboard/api-keys).
 
 ### Use your API key
 
@@ -23,27 +21,12 @@ Example:
 
 ## SSH keys
 
-An **SSH key** is required to create an instance, and to log into an instance remotely using the SSH (Secure Shell) protocol. 
-
-Instead of a login password, FluidStack requires [public-key cryptography](https://en.wikipedia.org/wiki/Public-key_cryptography) for authentication. This means that you must have a public/private key pair for encryption.
-
-### Create an SSH key
-
-If you do not already have a public/private key pair, you must [generate one locally](/get-started#create-a-publicprivate-key-pair), then use its public key to [create an SSH key on your FluidStack account](/get-started#create-a-ssh-key-on-your-fluidstack-account). In this context, _creating an SSH key_ means _storing a copy of a public key on your FluidStack account_. The stored SSH key is identical to the public key.
-
-<Markdown src="../snippets/public-key-formats.mdx" />
+An **SSH key** is required to create and log into an instance. [Learn how to create and manage SSH keys.](/ssh/ssh-keys)
 
 ### Use your SSH key
 
-Whenever you create a new instance, you must provide one or more SSH keys. If more than one person will need remote access to the instance, provide a different SSH key for each person.
+Whenever you create an instance, you must provide one or more SSH keys. If more than one person will need remote access to the instance, provide a different SSH key for each person.
 
-Once the instance is running, use your private key to authenticate when connecting to the instance. The private key should correspond to a public key that you used for one of the SSH keys associated with that instance.
+Once the instance is running, use your private key to authenticate when connecting to the instance. The private key must correspond to a public key that you used for one of the SSH keys associated with that instance.
 
-```bash title="Connect to your instance with SSH"
-ssh -i <path_to_your_private_key> <username>@<ip_address>
-```
-
-Example:
-```bash 
-ssh -i ~/.ssh/id_rsa ubuntu@192.0.2.0
-```
+<Markdown src="../snippets/connect-with-ssh.mdx" />

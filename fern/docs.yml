@@ -8,12 +8,30 @@ navigation:
     path: ./docs/pages/home.mdx
   - page: Get Started
     path: ./docs/pages/get-started.mdx
-  - page: Authentication 
+  - page: Dashboard
+    path: ./docs/pages/dashboard.mdx
+  - page: API Overview
+    path: ./docs/pages/api-overview.mdx
+  - page: Authentication
     path: ./docs/pages/authentication.mdx
   - page: Programmatic Instance Management
     path: ./docs/pages/programmatic-instance-management.mdx
-  - page: Configurations and Operating Systems
-    path: ./docs/pages/list-available.mdx
+  - section: SSH
+    contents:
+      - page: What is SSH?
+        path: ./docs/pages/ssh/what-is-ssh.mdx
+      - page: SSH Keys
+        path: ./docs/pages/ssh/ssh-keys.mdx
+  - section: SDKs
+    contents:
+      - page: Python SDK
+        path: ./docs/pages/sdks/python-sdk.mdx
+  - section: Configurations and Operating Systems
+    contents:
+      - page: Instance Configurations
+        path: ./docs/pages/configurations-and-operating-systems/configurations.mdx
+      - page: Operating Systems
+        path: ./docs/pages/configurations-and-operating-systems/operating-systems.mdx
   - api: API Reference
     snippets:
       python: fluidstack
