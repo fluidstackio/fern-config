@@ -1,0 +1,21 @@
+## The Secure Shell (SSH) protocol
+SSH is a cryptographic network protocol used for secure access to a networked computer. The data transmitted between the client and server is protected with strong encryption algorithms, ensuring privacy and data integrity.
+
+FluidStack instances have SSH servers enabled, with authentication through [SSH keys](/ssh/ssh-keys).
+
+## SSH clients
+
+You can use an SSH client to remotely connect to an instance. Nearly all computers have an SSH client installed by default. To verify if you have one installed, enter the following command in your CLI shell:
+
+```shell
+ssh -v
+```
+
+Expected output: a list of usage options. 
+
+If you see an output indicating that the command was not found, you will need to install an SSH client. Two popular options are [OpenSSH](https://wiki.openssl.org/index.php/Binaries) and [Putty](https://www.putty.org/).
+
+### Connecting to an instance
+
+
+ 

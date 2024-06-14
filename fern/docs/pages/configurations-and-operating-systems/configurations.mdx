@@ -11,7 +11,7 @@ Example request using cURL:
 The endpoint returns a list of configuration objects, as shown in this example response:
 <EndpointResponseSnippet endpoint="GET /list_available_configurations" />
 
-Whenever you create a new instance, a value for `"gpu_type"` is required. To find the available options, see the values for `"gpu_model.name"` returned by this endpoint. 
+Whenever you create an instance, a value for `"gpu_type"` is required. To find the available options, see the values for `"gpu_model.name"` returned by this endpoint. 
 
 ### List of available configurations
 
@@ -41,23 +41,3 @@ Whenever you create a new instance, a value for `"gpu_type"` is required. To fin
 | H100_PCIE_80GB   | 1         | 32        | 180           | 750                    |
 | H100_PCIE_80GB   | 2         | 64        | 360           | 1500                   |
 | L40_48GB         | 4         | 126       | 240           | 3300                   |
-
-## Operating systems
-
-A variety of operating system software is available for your instances.
-
-### Get the list of available operating systems
-
-For the most up-to-date list, call the [`GET /list_available_os_templates`](/api-reference/templates/list) endpoint.
-
-Example request using cURL:
-<EndpointRequestSnippet endpoint="GET /list_available_os_templates" />
-
-The endpoint returns a list of operating systems, as shown in this example response:
-<EndpointResponseSnippet 
-  endpoint="GET /list_available_os_templates"
-/>
-
-Whenever you create a new instance, you can optionally include a value for `"operating_system_label"`. To find the available options, see the values for `"label"` returned by this endpoint.
-
-<Note>If you do not provide an `"operating_system_label"` value when creating an instance, `"ubuntu_20_04_lts"` is used as the default.</Note>
