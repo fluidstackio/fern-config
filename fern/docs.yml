@@ -20,8 +20,9 @@ navigation:
     contents:
       - page: What is SSH?
         path: ./docs/pages/ssh/what-is-ssh.mdx
-      - page: SSH Keys
-        path: ./docs/pages/ssh/ssh-keys.mdx
+      - page: How to use SSH Keys
+        path: ./docs/pages/ssh/use-ssh-keys.mdx
+        slug: use-ssh-keys
   - section: SDKs
     slug: sdks
     contents:
@@ -31,6 +32,7 @@ navigation:
     contents:
       - page: Instance Configurations
         path: ./docs/pages/configurations-and-operating-systems/configurations.mdx
+        slug: configurations
       - page: Operating Systems
         path: ./docs/pages/configurations-and-operating-systems/operating-systems.mdx
   - api: API Reference

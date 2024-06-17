@@ -1,22 +1,18 @@
-An **SSH key** is required to create a cloud-based GPU instance with FluidStack. Once the instance is running, use the SSH key for remote command-line access to the instance.
+---
+subtitle: Connect to an instance using an SSH key
+---
 
-## What is an SSH key?
-
-FluidStack allows [Secure Shell (SSH)](/ssh/what-is-ssh) access to instances. For improved security, we use [public-key cryptography](https://en.wikipedia.org/wiki/Public-key_cryptography) for authentication instead of a password. This method requires that you provide your own **public/private key pair**. 
-
-Your public key is stored on your instance as your SSH key. Its corresponding private key is stored locally on the computer that you use to access your instance. SSH access is granted by verifying that your private key corresponds to the public key. As an analogy, you can think of a public key as a lock that only your private key can unlock.
-
-<Tip>Public/private key pairs are used for many purposes, not only SSH. For example, they are used in file encryption, digital signatures, and cryptocurrency transactions.</Tip>
+You must provide at least one [SSH key](/ssh/what-is-ssh#ssh-keys) when you create a cloud-based GPU instance with FluidStack. Once the instance is running, use one of the provided keys for remote command-line access to the instance.
 
 ## Generate a public/private key pair
 
 <Markdown src="../../snippets/public-key-formats.mdx" />
 
-If you already have a public/private key pair of a supported format, you can use it instead of generating a new pair.
+If you already have a public/private key pair of a supported format, you can use that pair instead of generating a new one.
 
-You can generate a public/private key pair for authenticating SSH connections by using a command-line tool called **ssh-keygen**. This tool comes pre-installed on nearly all operating systems.
+Follow the steps below to generate a key pair with a command-line tool called **ssh-keygen**. This tool is pre-installed on nearly all operating systems.
 
-You can use any supported format for your key pair. The tabs below contain instructions for generating a key pair with either the [RSA](https://en.wikipedia.org/wiki/RSA_(cryptosystem)) algorithm or [ECDSA](https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm) algorithm.
+Use any supported format for your key pair. The tabs below contain instructions for generating a key pair with either the [RSA](https://en.wikipedia.org/wiki/RSA_(cryptosystem)) algorithm or [ECDSA](https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm) algorithm.
 
 <Frame>
 <Tabs>
@@ -76,8 +72,6 @@ ls ~/.ssh
 cat ~/.ssh/id_ecdsa_256.pub
 ```
     </Steps>
-    
-
   </Tab>
 
 </Tabs>
@@ -89,16 +83,19 @@ cat ~/.ssh/id_ecdsa_256.pub
 
 ## Create an SSH key
 
-Use your public key to create an SSH key on your FluidStack account. In this context, _creating an SSH key_ means _storing (adding) a copy of your public key on your FluidStack account_. The stored SSH key is identical to your public key.
+Use your public key to create an SSH key on your FluidStack account. If you don't have a public key, see: [Generate a public/private key pair](#generate-a-publicprivate-key-pair).
+
+<Tip>In this context, "creating an SSH key" means "storing (adding) a copy of your public key on your FluidStack account." The stored SSH key is identical to your public key.</Tip>
 
 <AccordionGroup>
 
   <Accordion title="Use the FluidStack Dashboard">
-    See [Dashboard - Create an SSH key](/dashboard#create-an-ssh-key).
+    <Markdown src="../../snippets/open-dashboard.mdx" />
+    <Markdown src="../../snippets/add-ssh-key-dashboard.mdx" />
   </Accordion>
 
   <Accordion title="Use the FluidStack API">
-    Create an SSH key by using the [`POST /ssh_keys`](/api-reference/ssh-keys/create) endpoint. You can call this endpoint programmatically, or by using a command-line tool such as [cURL](https://curl.se/):
+    Create an SSH key by using the [`POST /ssh_keys`](/api-reference/ssh-keys/create) endpoint.
 
     <EndpointRequestSnippet endpoint="POST /ssh_keys" />
 
@@ -120,11 +117,12 @@ Use your public key to create an SSH key on your FluidStack account. In this con
 
 <AccordionGroup>
   <Accordion title="Use the FluidStack Dashboard">
-    See [Dashboard - View SSH keys](/dashboard#view-ssh-keys).
+    <Markdown src="../../snippets/open-dashboard.mdx" />
+
+    <Markdown src="../../snippets/view-ssh-keys-dashboard.mdx" />
   </Accordion>
 
   <Accordion title="Use the FluidStack API">
-
     View SSH keys on your FluidStack account by using the [`GET /ssh_keys`](/api-reference/ssh-keys/list) endpoint:
 
     <EndpointRequestSnippet endpoint="GET /ssh_keys" />
@@ -151,7 +149,8 @@ Use your public key to create an SSH key on your FluidStack account. In this con
 <Markdown src="../../snippets/delete-ssh-key-warning.mdx" />
 <AccordionGroup>
   <Accordion title="Use the FluidStack Dashboard">
-    See [Dashboard - Delete an SSH key](/dashboard#delete-an-ssh-key).
+    <Markdown src="../../snippets/open-dashboard.mdx" />
+    <Markdown src="../../snippets/delete-ssh-key-dashboard.mdx" />
   </Accordion>
 
   <Accordion title="Use the FluidStack API">
@@ -166,3 +165,9 @@ Use your public key to create an SSH key on your FluidStack account. In this con
 ```
   </Accordion>
 </AccordionGroup>
+
+## Connect to an instance with an SSH key
+
+Use your private key to authenticate when connecting to a running instance via SSH. The instance has a list of SSH keys associated with it, provided at the time that the instance was created. The private key must correspond to one of those SSH keys.
+
+<Markdown src="../../snippets/connect-with-ssh.mdx" />

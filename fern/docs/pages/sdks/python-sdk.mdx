@@ -45,7 +45,7 @@ client.ssh_keys.create(
 
 ## Async client
 
-The SDK exports an async client so that you can make non-blocking calls to our API.
+The SDK exports an async client for making non-blocking calls to our API.
 
 ```python 
 from fluidstack.client import AsyncFluidStack
@@ -66,7 +66,7 @@ asyncio.run(main())
 
 ### Timeouts
 
-By default, requests time out after 60 seconds. You can configure this with the `timeout_in_seconds` option at the client or request level.
+By default, requests will time out after 60 seconds. Configure the timeout duration with the `timeout_in_seconds` option at the client or request level.
 
 ```python
 from fluidstack.client import FluidStack
