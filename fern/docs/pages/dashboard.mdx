@@ -21,7 +21,7 @@ Having trouble accessing the Dashboard? Contact [support](mailto:support@fluidst
 
 From the left sidebar of the Dashboard, select [GPU Instances](https://dashboard.fluidstack.io/dashboard/instances) to display all instances on your account. For each instance, the name, configuration, IP address, username for SSH login, associated SSH keys, SSH port, and instance status is displayed.
 
-<Tip>You can also manage instances through our API. See the [Instances API reference](/api-reference/instances).</Tip>
+<Note>You can also manage instances through our API. See the [Instances API reference](/api-reference/instances).</Note>
 
 ### Add a GPU instance
 
@@ -39,26 +39,24 @@ Starting and stopping existing instances is performed through our API. View the 
 
 SSH keys are used to authenticate for command-line access to instances.
 
-<Tip>You can also manage SSH keys through our API. See the [SSH Keys](/ssh/ssh-keys) page and the [SSH Keys API reference](/api-reference/ssh-keys/).</Tip>
+<Note>You can also manage SSH keys through our API. See the [How to use SSH Keys](/ssh/use-ssh-keys) page and the [SSH Keys API reference](/api-reference/ssh-keys/).</Note>
 
 ### View SSH keys
 
-From the left sidebar of the Dashboard, select [SSH Keys](https://dashboard.fluidstack.io/dashboard/ssh-keys).
+<Markdown src="../snippets/view-ssh-keys-dashboard.mdx" />
 
 ### Add (create) an SSH key
 
-1. From the left sidebar of the Dashboard, select [SSH Keys](https://dashboard.fluidstack.io/dashboard/ssh-keys).
-2. Click the **Add SSH key** button in the upper-right corner. A dialog will appear.
-3. In the dialog's **Name** field, input a unique name for this SSH key. 
-4. Paste your public key in the field labeled **Public SSH key**.
-5. Click **Confirm**.
+<Markdown src="../snippets/add-ssh-key-dashboard.mdx" />
+
+<Tip>
+  Don't have a public key? See: [Generate a public/private key pair](/ssh/use-ssh-keys#generate-a-publicprivate-key-pair).
+</Tip>
 
 ### Delete an SSH key
 
 <Markdown src="../snippets/delete-ssh-key-warning.mdx" />
-
-1. From the left sidebar of the Dashboard, select [SSH Keys](https://dashboard.fluidstack.io/dashboard/ssh-keys).
-2. Click the red `delete` button next to the SSH key you want to delete.
+<Markdown src="../snippets/delete-ssh-key-dashboard.mdx" />
 
 ## Manage API keys
 
@@ -82,7 +80,7 @@ From the left sidebar of the Dashboard, select [API Keys](https://dashboard.flui
 
 From the left sidebar of the Dashboard, select [Billing](https://dashboard.fluidstack.io/dashboard/billing).
 
-From the **Overview** tab, you can view your credit balance and deposit funds. 
+From the **Overview** tab, view your credit balance and deposit funds. 
 
 From the **Billing history** tab, access your detailed billing history, including the date, type, amount, and instance ID for every instance charge. Deposited funds are also shown in this tab.
 

@@ -12,7 +12,7 @@ This tutorial leads you through the following steps:
 
 ## Prerequisites
 
- - An SSH key added to your FluidStack account. See: [Create an SSH key](/ssh/ssh-keys#create-an-ssh-key).
+ - An SSH key added to your FluidStack account. See: [Create an SSH key](/ssh/use-ssh-keys#create-an-ssh-key).
  - <Markdown src="../snippets/api-key.mdx" />
 
 ## Steps
@@ -38,20 +38,20 @@ When creating a GPU instance, you must specify one or more SSH keys. You can use
     The following values are required to create an instance:
 
     - the `name` of the instance
-    - the`gpu_type` (See the `gpu_model` field from [Configurations](/configurations-and-operating-systems/configurations).)
+    - the`gpu_type` (See the `gpu_model` field from [Instance Configurations](/configurations-and-operating-systems/configurations).)
     - the `ssh_key_name`
     
     These values are optional:
     - `gpu_count` (Default: `1`)
-    - `operating_system_label` (See the `label` field from [Operating Systems](/api-reference/templates/list). Default: `"ubuntu_20_04_lts"`)
+    - `operating_system_label` (See the `label` field from [Operating Systems](/configurations-and-operating-systems/operating-systems). Default: `"ubuntu_20_04_lts"`)
 
-    If you prefer, you can use a different [configuration](/configurations-and-operating-systems/configurations) and/or [operating system](/configurations-and-operating-systems/operating-systems). 
+    If you prefer, you can use a different [instance configuration](/configurations-and-operating-systems/configurations) and/or [operating system](/configurations-and-operating-systems/operating-systems). 
 
     To create an instance, call the API using the cURL command below. Replace `<api_key>` with your API key, and `<ssh_key_name>` with your SSH key's name:
 
     <EndpointRequestSnippet endpoint="POST /instances" />
 
-    If you have multiple SSH keys you'd like to associate with this instance, use a comma-separated list:
+    If you have multiple SSH keys you'd like to associate with this instance, provide a comma-separated list in the cURL command:
 
     ```bash Multiple SSH keys example {2-4}
         "ssh_keys": [
@@ -61,17 +61,17 @@ When creating a GPU instance, you must specify one or more SSH keys. You can use
         ]
     ```
 
-    If your request is sent successfully, the endpoint responds with the created instance's details, including its `id`, `name`, `gpu_type`, and `operating_system_label`:
+    If your request succeeds, the endpoint responds with the created instance's details, including its `id`, `name`, `gpu_type`, and `operating_system_label`:
 
     <EndpointResponseSnippet endpoint="POST /instances" />
 
     Take note of the `id` of your instance. 
 
-    Check the instance's status using the [`GET /instances`](/api-reference/instances/list) endpoint:
+    Request the instance's status using the [`GET /instances`](/api-reference/instances/list) endpoint:
 
     <EndpointRequestSnippet endpoint="GET /instances" />
 
-    Initially, the instance's `status` will be `pending`. Once the instance is created and available, its `status` updates to `running` and an IP address is assigned.
+    Initially, the instance's `status` will be `pending`. Once the instance is created and available, its `status` updates to `running` and it is assigned an IP address.
 
     Example:
     <EndpointResponseSnippet endpoint="GET /instances" />
@@ -95,6 +95,7 @@ To close your connection and log out from the instance, type `exit` into your SS
 
 <AccordionGroup>
   <Accordion title="Use the FluidStack Dashboard">
+    <Markdown src="../snippets/open-dashboard.mdx" />
     <Markdown src="../snippets/delete-instance-dashboard.mdx" />
   </Accordion>
 
@@ -109,13 +110,14 @@ To close your connection and log out from the instance, type `exit` into your SS
   curl -X DELETE https://platform.fluidstack.io/instances/i-d02e976e-29e4-4857-8787-2ebe17fa4972 \
   -H "api-key: api_key_j8FaG34rGUFDig1111qerdP1f5MfEeW9AI"
 ```
-    To confirm that your instance was deleted, you can call the [`GET /instances`](/api-reference/instances/list) endpoint again as you did at the end of Step 1.
-
+    To confirm that your instance was deleted, call the [`GET /instances`](/api-reference/instances/list) endpoint again as you did at the end of Step 1.
 
   </Accordion>
 </AccordionGroup>
 
 </Steps>
+
+Congratulations! You have successfully created an instance, accessed it using SSH, and (optionally) deleted the instance. 
 
 ## What's next
 

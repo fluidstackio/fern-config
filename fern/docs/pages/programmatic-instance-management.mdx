@@ -2,7 +2,7 @@ The Python script on this page provides an example of how the [FluidStack API](/
 
 ## Prerequisites
   - <Markdown src="../snippets/api-key.mdx" />
-  - A [public/private key pair](/ssh/ssh-keys#generate-a-publicprivate-key-pair)
+  - A [public/private key pair](/ssh/use-ssh-keys#generate-a-publicprivate-key-pair)
   - Basic familiarity with [Python](https://python.org) and Python 3+ installed
   - The [`requests`](https://pypi.org/project/requests/) module installed in your Python environment
 
@@ -44,7 +44,7 @@ The Python script on this page provides an example of how the [FluidStack API](/
 
 ## Example script 
 
-```python maxLines=30 title="Python" {15,33,55,77,80}
+```python maxLines=30 title="Python" {14,35,57,79,82}
 import requests
 from pathlib import Path
 import os
@@ -54,7 +54,6 @@ import json
 api_url = "https://platform.fluidstack.io/"
 api_key = "<your_api_key>"
 
-# Provide the API key in a header
 headers = {
     "api-key": api_key
 }
