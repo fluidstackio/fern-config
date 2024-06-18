@@ -11,7 +11,7 @@
           "General"
         ],
         "summary": "Healthcheck",
-        "operationId": "healthcheck_healthcheck_head",
+        "operationId": "healthcheck_healthcheck_get",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -57,7 +57,8 @@
             "required": false,
             "schema": {
               "type": "string",
-              "title": "Api-Key"
+              "title": "Api-Key",
+              "example": "your-api-key"
             }
           },
           {
@@ -109,7 +110,7 @@
       },
       "post": {
         "summary": "Create a new instance",
-        "description": "This endpoint is used to create a new instance. You must provide a name, gpu_type and a list of ssh_key names. The default GPU count is 1.",
+        "description": "This endpoint is used to create a new instance. You must provide a name for the instance, the gpu_type, and a list of SSH key names.\n\nIf you do not provide values for gpu_count and operating_system_label when calling this endpoint, the default values of 1 and 'ubuntu_20_04_lts' are used respectively.",
         "operationId": "create_instance_instances_post",
         "parameters": [
           {
@@ -381,7 +382,7 @@
           {
             "name": "api-key",
             "in": "header",
-            "required": false,
+            "required": true,
             "schema": {
               "type": "string",
               "title": "Api-Key"
@@ -436,7 +437,7 @@
       },
       "post": {
         "summary": "Create an SSH key",
-        "description": "Create a new SSH Key for the authenticated user. A unique name must be provided for the SSH key and a public key. The public key must be a valid SSH key with supported formats ssh-rsa, ssh-dss (DSA), ssh-ed25519 and ecdsa keys with NIST curves.",
+        "description": "Create a new SSH key for the authenticated user.\n\nYou must provide a unique name for the SSH key, along with a public key. The public key you provide will be duplicated on your FluidStack account for use as as an SSH key.\n\n<Note>Supported public key formats: ssh-rsa, ssh-dss (DSA), ssh-ed25519, ecdsa keys with NIST curves</Note>",
         "operationId": "create_ssh_key_ssh_keys_post",
         "parameters": [
           {
@@ -505,7 +506,7 @@
     "/ssh_keys/{ssh_key_name}": {
       "delete": {
         "summary": "Delete an SSH key",
-        "description": "Delete an existing SSH key using the SSH key ID.",
+        "description": "Delete an existing SSH key using the SSH key name.",
         "operationId": "delete_ssh_key_ssh_keys__ssh_key_name__delete",
         "parameters": [
           {
@@ -514,7 +515,8 @@
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Ssh Key Name"
+              "title": "Ssh Key Name",
+              "example": "my_key"
             }
           },
           {
@@ -599,7 +601,34 @@
                     "$ref": "#/components/schemas/ConfigurationResponse"
                   },
                   "title": "Response List Available Configurations List Available Configurations Get"
-                }
+                },
+                "example": [
+                  {
+                    "id": "c-bd6a5e05-a3fd-4642-a82b-9da5fa784401",
+                    "gpu_model": {
+                      "name": "RTX_A6000_48GB", "memory_size_mb": 48
+                    },
+                    "cpu_model": "generic",
+                    "gpu_count": 1,
+                    "cpu_count": 16,
+                    "nvme_storage_size_gb": 425,
+                    "memory_size_mb": 59.0,
+                    "estimated_provisioning_time_minutes": 0
+                  },
+                  {
+                    "id":"c-31078703-a4b2-4bfb-803c-abf887378e31",
+                    "gpu_model": {
+                      "name": "RTX_A6000_48GB",
+                      "memory_size_mb": 48
+                    },
+                    "cpu_model": "generic",
+                    "gpu_count": 1,
+                    "cpu_count": 16,
+                    "nvme_storage_size_gb": 425,
+                    "memory_size_mb": 59.0,
+                    "estimated_provisioning_time_minutes": 0
+                  }
+                ]
               }
             }
           },
@@ -662,7 +691,19 @@
                     "$ref": "#/components/schemas/OperatingSystemResponse"
                   },
                   "title": "Response List Available Os Templates List Available Os Templates Get"
-                }
+                },
+                "example": [
+                  {
+                    "name": "Ubuntu 22.04 LTS",
+                    "description": "Ubuntu 22.04 LTS plain",
+                    "label": "ubuntu_22_04_lts"
+                  },
+                  {
+                    "name": "Ubuntu 20.04 LTS",
+                    "description": "Ubuntu 20.04 LTS plain",
+                    "label": "ubuntu_20_04_lts"
+                  }
+                ]
               }
             }
           },
@@ -706,7 +747,7 @@
                 "type": "null"
               }
             ],
-            "description": "The GPU model of the configuration."
+            "description": "The GPU model of the configuration"
           },
           "cpu_model": {
             "anyOf": [
@@ -800,7 +841,7 @@
           "name": {
             "type": "string",
             "title": "Name",
-            "description": "A custom name of the instance.",
+            "description": "The name of the instance.",
             "default": ""
           },
           "gpu_type": {
@@ -819,7 +860,7 @@
             "type": "array",
             "minItems": 1,
             "title": "Ssh Keys",
-            "description": "The list of SSH key IDs to add to the instance. These SSH keys will be used to connect to the instance."
+            "description": "The list of SSH key names to add to the instance\n\nThese SSH keys are used to connect to the instance."
           },
           "operating_system_label": {
             "allOf": [
@@ -897,7 +938,8 @@
       },
       "EntityId": {
         "type": "string",
-        "title": "EntityId"
+        "title": "EntityId",
+        "example": "c-36ba4b56-fd30-4fc1-bb90-7c9493bab123"
       },
       "GPUModelResponse": {
         "properties": {
@@ -1013,7 +1055,7 @@
               }
             ],
             "title": "Username",
-            "description": "The username to be used to connect to the instance. For instance, to connect to the instance via SSH use; \"ssh <username>@<ip_address> -p <ssh_port>\".",
+            "description": "The username used to connect to the instance\n\nFor example, to connect to the instance via SSH, use; \"ssh <username>@<ip_address> -p <ssh_port>\".",
             "default": "ubuntu"
           },
           "ssh_port": {
@@ -1193,14 +1235,22 @@
         },
         "type": "object",
         "required": [
-          "name"
+          "name",
+          "public_key"
         ],
         "title": "SSHKeyResponse"
       },
       "SupportedOperatingSystem": {
         "type": "string",
-        "const": "ubuntu_20_04_lts_nvidia",
-        "title": "SupportedOperatingSystem"
+        "enum": [
+          "ubuntu_22_04_lts",
+          "ubuntu_20_04_lts",
+          "ubuntu_20_04_lts_nvidia",
+          "ubuntu_22_04_lts_nvidia"
+        ],
+        "title": "SupportedOperatingSystem",
+        "example": "ubuntu_20_04_lts",
+        "default": "ubuntu_20_04_lts"
       },
       "ValidationError": {
         "properties": {
