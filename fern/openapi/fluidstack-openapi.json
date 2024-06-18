@@ -4,6 +4,12 @@
     "title": "Fluidstack API Service",
     "version": "0.1.0"
   },
+  "servers": [
+    {
+      "url": "https://platform.fluidstack.io",
+      "description": "Production server"
+    }
+  ],
   "paths": {
     "/healthcheck": {
       "get": {
