@@ -4,12 +4,6 @@
     "title": "Fluidstack API Service",
     "version": "0.1.0"
   },
-  "servers": [
-    {
-      "url": "https://platform.fluidstack.io",
-      "description": "Production server"
-    }
-  ],
   "paths": {
     "/healthcheck": {
       "get": {
@@ -36,7 +30,7 @@
           "General"
         ],
         "summary": "Healthcheck",
-        "operationId": "healthcheck_healthcheck_get",
+        "operationId": "healthcheck_healthcheck_head",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -521,7 +515,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Ssh Key name",
+              "title": "Ssh Key Name",
               "example": "my_key"
             }
           },
@@ -739,15 +733,19 @@
   },
   "components": {
     "schemas": {
-      "ConfigurationResponse": {
+      "ConfigurationInstanceResponse": {
         "properties": {
           "id": {
-            "$ref": "#/components/schemas/ConfigId"
+            "$ref": "#/components/schemas/EntityId"
           },
           "gpu_model": {
             "anyOf": [
-              { "$ref": "#/components/schemas/GPUModelResponse" },
-              { "type": "null" }
+              {
+                "$ref": "#/components/schemas/GPUModelResponse"
+              },
+              {
+                "type": "null"
+              }
             ],
             "description": "The GPU model of the configuration"
           },
@@ -761,42 +759,34 @@
               }
             ],
             "title": "Cpu Model",
-            "description": "The CPU model of the configuration",
+            "description": "The CPU model of the configuration.",
             "default": "generic"
           },
           "gpu_count": {
             "type": "integer",
             "title": "Gpu Count",
-            "description": "The number of GPUs in the configuration"
+            "description": "The number of GPUs in the configuration."
           },
           "cpu_count": {
             "type": "integer",
             "title": "Cpu Count",
-            "description": "The number of CPUs in the configuration"
+            "description": "The number of CPUs in the configuration."
           },
           "nvme_storage_size_gb": {
             "type": "integer",
             "title": "Nvme Storage Size Gb",
-            "description": "The size of NVMe in the configuration"
+            "description": "The size of NVMe in the configuration."
           },
-          "memory_size_mb": {
+          "memory_size_gb": {
             "type": "number",
-            "title": "Memory Size Mb",
-            "description": "The amount of RAM memory in the configuration"
+            "title": "Memory Size Gb",
+            "description": "The amount of RAM memory in the configuration."
           },
           "estimated_provisioning_time_minutes": {
             "type": "integer",
             "title": "Estimated Provisioning Time Minutes",
-            "default": 0
+            "default": 5
           }
-        },
-        "example": {
-          "cpu_model": "generic",
-          "gpu_count": 1,
-          "cpu_count": 6,
-          "nvme_storage_size_gb": 160,
-          "memory_size_mb": 24.0,
-          "estimated_provisioning_time_minutes": 0
         },
         "type": "object",
         "required": [
@@ -805,7 +795,44 @@
           "gpu_count",
           "cpu_count",
           "nvme_storage_size_gb",
-          "memory_size_mb"
+          "memory_size_gb"
+        ],
+        "title": "ConfigurationInstanceResponse"
+      },
+      "ConfigurationResponse": {
+        "properties": {
+          "gpu_type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GPUType"
+              }
+            ],
+            "description": "The GPU type of the configuration."
+          },
+          "gpu_counts": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Gpu Counts",
+            "description": "The number of GPUs in the configuration."
+          },
+          "price_per_gpu_hr": {
+            "type": "string",
+            "title": "Price Per Gpu Hr",
+            "description": "The price per GPU hour of the configuration."
+          },
+          "estimated_provisioning_time_minutes": {
+            "type": "integer",
+            "title": "Estimated Provisioning Time Minutes",
+            "default": 5
+          }
+        },
+        "type": "object",
+        "required": [
+          "gpu_type",
+          "gpu_counts",
+          "price_per_gpu_hr"
         ],
         "title": "ConfigurationResponse"
       },
@@ -814,7 +841,8 @@
           "name": {
             "type": "string",
             "title": "Name",
-            "description": "The name of the instance"
+            "description": "The name of the instance.",
+            "default": ""
           },
           "gpu_type": {
             "$ref": "#/components/schemas/GPUType"
@@ -822,13 +850,12 @@
           "gpu_count": {
             "type": "integer",
             "title": "Gpu Count",
-            "description": "The number of GPUs to attach to the instance",
+            "description": "The number of GPUs to attach to the instance.",
             "default": 1
           },
           "ssh_keys": {
             "items": {
-              "type": "string",
-              "example": "<ssh_key_name>"
+              "type": "string"
             },
             "type": "array",
             "minItems": 1,
@@ -841,12 +868,23 @@
                 "$ref": "#/components/schemas/SupportedOperatingSystem"
               }
             ],
-            "description": "The operating system label to be used to create the instance"
+            "description": "The operating system label to be used to create the instance.",
+            "default": "ubuntu_20_04_lts_nvidia"
+          },
+          "region": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Region"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The region to create the instance in."
           }
         },
         "type": "object",
         "required": [
-          "name",
           "gpu_type",
           "ssh_keys"
         ],
@@ -869,10 +907,6 @@
             "$ref": "#/components/schemas/SupportedOperatingSystem"
           }
         },
-        "example": {
-          "id": "i-ac1356f2-2833-460d-95e1-2a5ce512345",
-          "name": "my_instance1"
-        },
         "type": "object",
         "required": [
           "id",
@@ -887,17 +921,13 @@
           "name": {
             "type": "string",
             "title": "Name",
-            "description": "The name of the SSH key"
+            "description": "The name of the SSH key."
           },
           "public_key": {
             "type": "string",
             "title": "Public Key",
-            "description": "The public key of the SSH key"
+            "description": "The public key of the SSH key."
           }
-        },
-        "example": {
-          "name": "mykey",
-          "public_key": "<public_key>"
         },
         "type": "object",
         "required": [
@@ -906,9 +936,9 @@
         ],
         "title": "CreateSSHKeyRequest"
       },
-      "ConfigId": {
+      "EntityId": {
         "type": "string",
-        "title": "ConfigId",
+        "title": "EntityId",
         "example": "c-36ba4b56-fd30-4fc1-bb90-7c9493bab123"
       },
       "GPUModelResponse": {
@@ -916,9 +946,9 @@
           "name": {
             "type": "string",
             "title": "Name",
-            "description": "The FluidStack name of the GPU model"
+            "description": "The FluidStack unique name of the GPU model."
           },
-          "memory_size_mb": {
+          "memory_size_gb": {
             "anyOf": [
               {
                 "type": "integer"
@@ -927,13 +957,9 @@
                 "type": "null"
               }
             ],
-            "title": "Memory Size Mb",
-            "description": "Memory capacity of the GPU in megabytes"
+            "title": "Memory Size Gb",
+            "description": "Memory capacity of the GPU in megabytes."
           }
-        },
-        "example": {
-          "name": "RTX_A4000_16GB",
-          "memory_size_mb": 16
         },
         "type": "object",
         "required": [
@@ -1008,7 +1034,7 @@
           "id": {
             "type": "string",
             "title": "Id",
-            "description": "The unique identifier of the instance"
+            "description": "The unique identifier of the instance."
           },
           "status": {
             "allOf": [
@@ -1016,7 +1042,7 @@
                 "$ref": "#/components/schemas/InstanceStatus"
               }
             ],
-            "description": "The current status of the instance",
+            "description": "The current status of the instance.",
             "default": "pending"
           },
           "username": {
@@ -1042,7 +1068,7 @@
               }
             ],
             "title": "Ssh Port",
-            "description": "The SSH port used to connect to the instance",
+            "description": "The SSH port to be used to connect to the instance.",
             "default": "22"
           },
           "ssh_keys": {
@@ -1058,7 +1084,7 @@
               }
             ],
             "title": "Ssh Keys",
-            "description": "A list of the SSH key names that can be used for logging into the instance with an SSH client",
+            "description": "This is the list of the SSH keys of the instance with which you can login.",
             "default": []
           },
           "ip_address": {
@@ -1071,7 +1097,7 @@
               }
             ],
             "title": "Ip Address",
-            "description": "The IP address of the instance"
+            "description": "The IP address of the instance."
           },
           "name": {
             "anyOf": [
@@ -1083,7 +1109,7 @@
               }
             ],
             "title": "Name",
-            "description": "The name provided when the instance was created"
+            "description": "The name provided when the instance was created."
           },
           "current_rate": {
             "anyOf": [
@@ -1095,18 +1121,18 @@
               }
             ],
             "title": "Current Rate",
-            "description": "The current hourly price of the instance per processor based on its current status"
+            "description": "The current hourly price of the instance per processor based on its current status."
           },
           "configuration": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/ConfigurationResponse"
+                "$ref": "#/components/schemas/ConfigurationInstanceResponse"
               },
               {
                 "type": "null"
               }
             ],
-            "description": "The configuration used to create the instance"
+            "description": "The configuration used to create the instance."
           },
           "created_at": {
             "anyOf": [
@@ -1119,17 +1145,8 @@
               }
             ],
             "title": "Created At",
-            "description": "The creation date and time of the instance"
+            "description": "The creation date and time of the instance."
           }
-        },
-        "example": {
-          "id": "i-8f0af088-282e-4fcb-8090-c57a71f1f111",
-          "username": "ubuntu",
-          "ssh_port": "22",
-          "ssh_keys": ["my_key1", "my_key2"],
-          "ip_address": "192.0.2.0",
-          "name": "my_instance1",
-          "current_rate": 0.64
         },
         "type": "object",
         "required": [
@@ -1156,7 +1173,7 @@
           "name": {
             "type": "string",
             "title": "Name",
-            "description": "The friendly name of the operating system"
+            "description": "The friendly name of the operating system."
           },
           "description": {
             "anyOf": [
@@ -1168,7 +1185,7 @@
               }
             ],
             "title": "Description",
-            "description": "A description of the operating system, detailing the list of pre-installed packages and customizations, if any"
+            "description": "The description of the operating system detailing the list of pre-installed packages and customisations, if any."
           },
           "label": {
             "allOf": [
@@ -1176,7 +1193,7 @@
                 "$ref": "#/components/schemas/SupportedOperatingSystem"
               }
             ],
-            "description": "The unique slug identifier of the operating system"
+            "description": "The unique slug identifier of the operating system."
           }
         },
         "type": "object",
@@ -1186,12 +1203,22 @@
         ],
         "title": "OperatingSystemResponse"
       },
+      "Region": {
+        "type": "string",
+        "enum": [
+          "NORWAY",
+          "CANADA",
+          "SWEDEN",
+          "NETHERLANDS"
+        ],
+        "title": "Region"
+      },
       "SSHKeyResponse": {
         "properties": {
           "name": {
             "type": "string",
             "title": "Name",
-            "description": "The name of the SSH key"
+            "description": "The name of the SSH key."
           },
           "public_key": {
             "anyOf": [
@@ -1203,12 +1230,8 @@
               }
             ],
             "title": "Public Key",
-            "description": "The public key"
+            "description": "The public key."
           }
-        },
-        "example": {
-          "name": "my_key",
-          "public_key": "<public_key>"
         },
         "type": "object",
         "required": [
