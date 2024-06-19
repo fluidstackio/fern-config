@@ -49,7 +49,12 @@ paths:
       x-fern-sdk-group-name: instances
       x-fern-sdk-method-name: create
       x-fern-examples:
-        - response:
+        - request:
+            name: my_instance_name
+            gpu_type: RTX_A5000_24GB
+            ssh_keys: ['my_ssh_key']
+            operating_system_label: ubuntu_20_04_lts_nvidia
+          response:
             body:
               id: i-1234567890
               name: my_instance_name
@@ -67,7 +72,9 @@ paths:
       x-fern-sdk-group-name: instances
       x-fern-sdk-method-name: stop
       x-fern-examples:
-        - response:
+        - path-parameters:
+            instance_id: '{instance_id}'
+          response:
             body:
               id: i-1234567890
               status: stopped
@@ -95,7 +102,9 @@ paths:
       x-fern-sdk-group-name: instances
       x-fern-sdk-method-name: start
       x-fern-examples:
-        - response:
+        - path-parameters:
+            instance_id: '{instance_id}'
+          response:
             body:
               id: i-1234567890
               status: running
@@ -118,7 +127,6 @@ paths:
                 memory_size_gb: 30
                 estimated_provisioning_time_minutes: 5
               created_at: '2024-06-19T21:01:42.660889'
-
   /ssh_keys:
     get:
       x-fern-sdk-group-name: ssh_keys
@@ -127,15 +135,18 @@ paths:
         - response:
             body:
               - name: my_ssh_key
-                public_key: <public_key>
+                public_key: <my_public_key>
     post:
       x-fern-sdk-group-name: ssh_keys
       x-fern-sdk-method-name: create
       x-fern-examples:
-        - response:
+        - request:
+            name: my_ssh_key
+            public_key: <my_public_key>
+          response:
             body:
               name: my_ssh_key
-              public_key: <public_key>
+              public_key: <my_public_key>
   /ssh_keys/{ssh_key_name}:
     delete:
       x-fern-sdk-group-name: ssh_keys
