@@ -63,8 +63,7 @@
             "required": false,
             "schema": {
               "type": "string",
-              "title": "Api-Key",
-              "example": "your-api-key"
+              "title": "Api-Key"
             }
           },
           {
@@ -521,8 +520,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "title": "Ssh Key Name",
-              "example": "my_key"
+              "title": "Ssh Key Name"
             }
           },
           {
@@ -607,34 +605,7 @@
                     "$ref": "#/components/schemas/ConfigurationResponse"
                   },
                   "title": "Response List Available Configurations List Available Configurations Get"
-                },
-                "example": [
-                  {
-                    "id": "c-bd6a5e05-a3fd-4642-a82b-9da5fa784401",
-                    "gpu_model": {
-                      "name": "RTX_A6000_48GB", "memory_size_mb": 48
-                    },
-                    "cpu_model": "generic",
-                    "gpu_count": 1,
-                    "cpu_count": 16,
-                    "nvme_storage_size_gb": 425,
-                    "memory_size_mb": 59.0,
-                    "estimated_provisioning_time_minutes": 0
-                  },
-                  {
-                    "id":"c-31078703-a4b2-4bfb-803c-abf887378e31",
-                    "gpu_model": {
-                      "name": "RTX_A6000_48GB",
-                      "memory_size_mb": 48
-                    },
-                    "cpu_model": "generic",
-                    "gpu_count": 1,
-                    "cpu_count": 16,
-                    "nvme_storage_size_gb": 425,
-                    "memory_size_mb": 59.0,
-                    "estimated_provisioning_time_minutes": 0
-                  }
-                ]
+                }
               }
             }
           },
@@ -697,19 +668,7 @@
                     "$ref": "#/components/schemas/OperatingSystemResponse"
                   },
                   "title": "Response List Available Os Templates List Available Os Templates Get"
-                },
-                "example": [
-                  {
-                    "name": "Ubuntu 22.04 LTS",
-                    "description": "Ubuntu 22.04 LTS plain",
-                    "label": "ubuntu_22_04_lts"
-                  },
-                  {
-                    "name": "Ubuntu 20.04 LTS",
-                    "description": "Ubuntu 20.04 LTS plain",
-                    "label": "ubuntu_20_04_lts"
-                  }
-                ]
+                }
               }
             }
           },
@@ -944,8 +903,7 @@
       },
       "EntityId": {
         "type": "string",
-        "title": "EntityId",
-        "example": "c-36ba4b56-fd30-4fc1-bb90-7c9493bab123"
+        "title": "EntityId"
       },
       "GPUModelResponse": {
         "properties": {
@@ -1061,7 +1019,7 @@
               }
             ],
             "title": "Username",
-            "description": "The username used to connect to the instance\n\nFor example, to connect to the instance via SSH, use; \"ssh <username>@<ip_address> -p <ssh_port>\".",
+            "description": "The username used to connect to the instance\n\nFor example, to connect to the instance via SSH, use `ssh <username>@<ip_address> -p <ssh_port>`.",
             "default": "ubuntu"
           },
           "ssh_port": {
@@ -1255,7 +1213,6 @@
           "ubuntu_22_04_lts_nvidia"
         ],
         "title": "SupportedOperatingSystem",
-        "example": "ubuntu_20_04_lts",
         "default": "ubuntu_20_04_lts"
       },
       "ValidationError": {
