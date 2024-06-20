@@ -7,21 +7,18 @@ subtitle: Create and access your first GPU instance
 This tutorial leads you through the following steps:
 
 1. [Create a GPU instance.](#create-a-gpu-instance)
-2. [Access your instance](#access-your-instance) using the SSH (Secure Shell) protocol and your SSH key.
+2. [Access your instance](#access-your-instance) using an SSH client and your SSH key.
 3. (Optional): [Delete your instance](#optional-delete-your-instance).
 
 ## Prerequisites
 
- - <Markdown src="../snippets/api-key.mdx" />
+ - <Markdown src="../../snippets/api-key.mdx" />
  - An SSH key must exist on your FluidStack account. See: [Create an SSH key](/ssh/use-ssh-keys#create-an-ssh-key).
-
 
 ## Steps
 
 <Steps>
 ### Create a GPU instance
-
-When creating a GPU instance, you must specify one or more SSH keys. You can use the same SSH key for multiple instances. However, if more than one person intends to have access to an instance, use a different SSH key for each person.
 
 {/* <AccordionGroup>
   <Accordion title="Use the FluidStack Dashboard">
@@ -52,7 +49,7 @@ When creating a GPU instance, you must specify one or more SSH keys. You can use
 
     <EndpointRequestSnippet endpoint="POST /instances" />
 
-    If you have multiple SSH keys you'd like to associate with this instance, provide a comma-separated list in the cURL command:
+    {/* If you have multiple SSH keys you'd like to associate with this instance, provide a comma-separated list in the cURL command:
 
     ```bash Multiple SSH keys example {2-4}
         "ssh_keys": [
@@ -60,7 +57,7 @@ When creating a GPU instance, you must specify one or more SSH keys. You can use
           "my_key2",
           "my_key3"
         ]
-    ```
+    ``` */}
 
     If your request succeeds, the endpoint responds with the created instance's details, including its `id`, `name`, `gpu_type`, and `operating_system_label`:
 
@@ -68,7 +65,7 @@ When creating a GPU instance, you must specify one or more SSH keys. You can use
 
     Take note of the `id` of your instance. 
 
-    Request the instance's status using the [`GET /instances`](/api-reference/instances/list) endpoint:
+    Request the instance's status using the [`List user instances`](/api-reference/instances/list) endpoint:
 
     <EndpointRequestSnippet endpoint="GET /instances" />
 
@@ -86,18 +83,20 @@ When creating a GPU instance, you must specify one or more SSH keys. You can use
 
 Once the instance's status is `running`, you can connect to it using SSH. Use the private key that corresponds to the public key you used when creating the SSH key for this instance, and the `username` and `ip_address` values you noted in the previous step. 
 
-<Markdown src="../snippets/connect-with-ssh.mdx" />
+<Markdown src="../../snippets/connect-with-ssh.mdx" />
 
 <Note>The first time you connect to your instance, you will see a message that says "The authenticity of host `x.x.x.x` can't be established ... Are you sure you want to continue connecting". This is normal for the first connection. Type `yes` and press `Enter`.</Note>
 
-To close your connection and log out from the instance, type `exit` into your SSH session's command prompt and press `Enter`.
+When you have successfully logged in, notice that your command prompt has changed. All commands that you enter into this command prompt are executed on your instance. The instance is ready for use!
+
+When you're ready to close your connection and log out from the instance, type `exit` into your SSH session's command prompt and press `Enter`. You should be returned to your local machine's command prompt. 
 
 ### (Optional): Delete your instance
 
 <AccordionGroup>
   <Accordion title="Use the FluidStack Dashboard">
-    <Markdown src="../snippets/open-dashboard.mdx" />
-    <Markdown src="../snippets/delete-instance-dashboard.mdx" />
+    <Markdown src="../../snippets/open-dashboard.mdx" />
+    <Markdown src="../../snippets/delete-instance-dashboard.mdx" />
   </Accordion>
 
   <Accordion title="Use the FluidStack API">
@@ -111,7 +110,7 @@ To close your connection and log out from the instance, type `exit` into your SS
   curl -X DELETE https://platform.fluidstack.io/instances/i-d02e976e-29e4-4857-8787-2ebe17fa4972 \
   -H "api-key: api_key_j8FaG34rGUFDig1111qerdP1f5MfEeW9AI"
 ```
-    To confirm that your instance was deleted, call the [`GET /instances`](/api-reference/instances/list) endpoint again as you did at the end of Step 1.
+    To confirm that your instance was deleted, call the [`List user instances`](/api-reference/instances/list) endpoint again as you did at the end of Step 1.
 
   </Accordion>
 </AccordionGroup>
@@ -122,7 +121,7 @@ Congratulations! You have successfully created an instance, accessed it using SS
 
 ## What's next
 
-- View the [FluidStack API Reference](/api-reference)
-- Learn more about [SSH](/ssh/what-is-ssh)
-- Learn about the [Python SDK](/sdks/python-sdk)
-- Learn how to [programmatically manage instances](/programmatic-instance-management)
+- View the [FluidStack API Reference](/api-reference).
+- Learn more about [SSH](/ssh/what-is-ssh).
+- Learn about the [Python SDK](/sdks/python-sdk).
+- Learn how to [programmatically manage instances](/instances/programmatic-instance-management).

@@ -1,0 +1,38 @@
+---
+subtitle: About the FluidStack API
+---
+
+The FluidStack API is a RESTful API you can use for command-line and programmatic management of your instances and SSH keys. You can also retrieve information about available configurations and operating system templates.
+
+[View the full API reference.](/api-reference)
+
+## Base URL
+
+`https://platform.fluidstack.io/`
+
+## Authentication
+
+An **API key** is required for authentication to use the [FluidStack API](/api-reference). Your API key is unique to your FluidStack account. Conceptually, it is similar to a password that is sent with every API call. 
+
+[View, add, and delete your API keys](/dashboard/api-keys) from the FluidStack Dashboard.
+
+<Warning>
+  Keep your API keys secure! Treat them like you would any other password. Do not share them with others, or in public repositories such as in GitHub. 
+</Warning>
+
+### How to use your API key
+
+Whenever you make a call to the FluidStack API, include your API key in the request headers. Otherwise, your call will fail. 
+
+Example:
+<EndpointRequestSnippet endpoint="GET /instances" />
+
+## Programmatic API use
+
+### Instance management
+
+See an example of [how to use Python to manage instances](/instances/programmatic-instance-management).
+
+### Python SDK
+
+Use our [Python SDK](/sdks/python-sdk) to interface with our API in your Python applications.
