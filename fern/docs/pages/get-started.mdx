@@ -15,7 +15,6 @@ This tutorial leads you through the following steps:
  - <Markdown src="../snippets/api-key.mdx" />
  - An SSH key must exist on your FluidStack account. See: [Create an SSH key](/ssh/use-ssh-keys#create-an-ssh-key).
 
-
 ## Steps
 
 <Steps>
@@ -51,7 +50,7 @@ When creating a GPU instance, you must specify one or more SSH keys. You can use
     To create an instance, call the API using the cURL command below. Replace `<api_key>` with your API key, and `<ssh_key_name>` with your SSH key's name:
 
     <EndpointRequestSnippet endpoint="POST /instances" />
-
+{/* 
     If you have multiple SSH keys you'd like to associate with this instance, provide a comma-separated list in the cURL command:
 
     ```bash Multiple SSH keys example {2-4}
@@ -60,7 +59,7 @@ When creating a GPU instance, you must specify one or more SSH keys. You can use
           "my_key2",
           "my_key3"
         ]
-    ```
+    ``` */}
 
     If your request succeeds, the endpoint responds with the created instance's details, including its `id`, `name`, `gpu_type`, and `operating_system_label`:
 
@@ -89,6 +88,8 @@ Once the instance's status is `running`, you can connect to it using SSH. Use th
 <Markdown src="../snippets/connect-with-ssh.mdx" />
 
 <Note>The first time you connect to your instance, you will see a message that says "The authenticity of host `x.x.x.x` can't be established ... Are you sure you want to continue connecting". This is normal for the first connection. Type `yes` and press `Enter`.</Note>
+
+When you have successfully logged in, notice that your command prompt has changed. All commands that you enter into this command prompt are executed on your instance. The instance is ready for use!
 
 To close your connection and log out from the instance, type `exit` into your SSH session's command prompt and press `Enter`.
 

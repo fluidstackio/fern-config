@@ -53,6 +53,7 @@ import json
 
 api_url = "https://platform.fluidstack.io/"
 api_key = "<your_api_key>"
+ssh_key_name = "python_testkey"
 
 headers = {
     "api-key": api_key
@@ -66,14 +67,12 @@ public_key = open(os.path.join(Path.home(), ".ssh", "id_rsa.pub")).read().strip(
 r = requests.post(
     api_url + "ssh_keys",
     headers=headers,
-    json={"name": "python_testkey", "public_key": public_key}, # Create a SSH key with the name "python_testkey", using the provided public key
+    json={"name": ssh_key_name, "public_key": public_key}, # Create a SSH key using the provided public key
 )
 
 if not r.ok:
     print("Response body: " + json.dumps(r.json(), indent=2))
     raise Exception("Could not create SSH key")
-
-ssh_key_names = [r.json()["name"]]
 
 gpu_type = "RTX_A4000_16GB"
 gpu_count = 4
@@ -86,7 +85,7 @@ r = requests.post(
     headers=headers,
     json={
         "name": "python_testinstance",
-        "ssh_keys": ssh_key_names,
+        "ssh_key": ssh_key_name,
         "gpu_type": gpu_type,
         "gpu_count": gpu_count,
         "operating_system_label": operating_system_label
