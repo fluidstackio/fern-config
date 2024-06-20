@@ -52,7 +52,7 @@ paths:
         - request:
             name: my_instance_name
             gpu_type: RTX_A5000_24GB
-            ssh_keys: ['my_ssh_key']
+            ssh_key: 'my_ssh_key'
             operating_system_label: ubuntu_20_04_lts_nvidia
           response:
             body:
@@ -81,7 +81,7 @@ paths:
               username: ubuntu
               ssh_port: '22'
               ssh_keys:
-                - my_key
+                - my_ssh_key
               ip_address: 192.0.2.0
               name: my_instance_name
               current_rate: null

@@ -2,7 +2,7 @@
 subtitle: Connect to an instance using an SSH key
 ---
 
-You must provide at least one [SSH key](/ssh/what-is-ssh#ssh-keys) when you create a cloud-based GPU instance with FluidStack. Once the instance is running, use one of the provided keys for remote command-line access to the instance.
+You must provide an [SSH key](/ssh/what-is-ssh#about-ssh-keys) when you create a GPU instance with FluidStack. Once the instance is running, that SSH key is used to authenticate for remote command-line access to the instance.
 
 ## Generate a public/private key pair
 
@@ -78,7 +78,7 @@ cat ~/.ssh/id_ecdsa_256.pub
 </Frame>
 
 <Warning>
-  With any public/private key pair that you generate, your public key can be shared freely. Your private key should be just that—private! Do not share it with others, or in public repositories such as in GitHub. 
+  With any public/private key pair that you generate, your public key can be shared freely. Your private key should be just that—private! Take care not to share it with others, or in public repositories such as in GitHub. 
 </Warning>
 
 ## Create an SSH key
@@ -95,17 +95,17 @@ Use your public key to create an SSH key on your FluidStack account. If you don'
   </Accordion>
 
   <Accordion title="Use the FluidStack API">
-    Create an SSH key by using the [`POST /ssh_keys`](/api-reference/ssh-keys/create) endpoint.
+    Create an SSH key by using the [`Create an SSH key`](/api-reference/ssh-keys/create) endpoint.
 
     <EndpointRequestSnippet endpoint="POST /ssh_keys" />
 
-    <Tip>Make sure to replace the `<api-key>` value with your API key, the `<public-key>` value with your public key, and the `name` of `mykey` with the unique SSH key name you'd like to use.</Tip>
+    <Tip>Make sure to replace the `<api-key>` value with your API key, the `<public-key>` value with your public key, and the `name` of `my_ssh_key` with the unique SSH key name you'd like to use.</Tip>
 
     If your POST request is successful, the endpoint responds with a JSON object that echoes the `name` and `public_key` that you sent:
 
     ```json title="Response example"
     {
-        "name": "mykey",
+        "name": "my_ssh_key",
         "public_key": "<your_public_key>"
     }
     ```
@@ -123,7 +123,7 @@ Use your public key to create an SSH key on your FluidStack account. If you don'
   </Accordion>
 
   <Accordion title="Use the FluidStack API">
-    View SSH keys on your FluidStack account by using the [`GET /ssh_keys`](/api-reference/ssh-keys/list) endpoint:
+    View SSH keys that have been added to your FluidStack account by using the [`List SSH keys`](/api-reference/ssh-keys/list) endpoint:
 
     <EndpointRequestSnippet endpoint="GET /ssh_keys" />
 
@@ -132,11 +132,11 @@ Use your public key to create an SSH key on your FluidStack account. If you don'
 ```json title="Example response"
 [
     {
-        "name": "mykey",
+        "name": "my_ssh_key",
         "public_key": "<public_key>"
     },
     {
-        "name": "myotherkey",
+        "name": "another_ssh_key",
         "public_key": "<public_key>"
     }
 ]
@@ -155,19 +155,15 @@ Use your public key to create an SSH key on your FluidStack account. If you don'
 
   <Accordion title="Use the FluidStack API">
 
-    Delete an SSH key on your FluidStack account by using the [`DELETE /ssh_keys`](/api-reference/ssh-keys/delete) endpoint. Replace the text `ssh_key_name` with the name of the key you want to delete:
+    Delete an SSH key by using the [`Delete an SSH key`](/api-reference/ssh-keys/delete) endpoint. Replace the text `{ssh_key_name}` with the name of the key you want to delete:
 
     <EndpointRequestSnippet endpoint="DELETE /ssh_keys/:ssh_key_name" />
 
-```bash title="Example request"
-  curl -X DELETE https://platform.fluidstack.io/ssh_keys/mykey \
-  -H "api-key: api_key_j8FaG34rGUFDig1111qerdP1f5MfEeW9AI"
-```
   </Accordion>
 </AccordionGroup>
 
 ## Connect to an instance with an SSH key
 
-Use your private key to authenticate when connecting to a running instance via SSH. The instance has a list of SSH keys associated with it, provided at the time that the instance was created. The private key must correspond to one of those SSH keys.
+Use your private key to authenticate when connecting to a running instance via SSH. The instance has an SSH key associated with it, provided when that instance was created. The private key must correspond to that SSH key.
 
 <Markdown src="../../snippets/connect-with-ssh.mdx" />

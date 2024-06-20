@@ -1,7 +1,7 @@
 The Python script on this page provides an example of how the [FluidStack API](/api-reference) can be used to manage instances programmatically.
 
 ## Prerequisites
-  - <Markdown src="../snippets/api-key.mdx" />
+  - <Markdown src="../../snippets/api-key.mdx" />
   - A [public/private key pair](/ssh/use-ssh-keys#generate-a-publicprivate-key-pair)
   - Basic familiarity with [Python](https://python.org) and Python 3+ installed
   - The [`requests`](https://pypi.org/project/requests/) module installed in your Python environment
@@ -11,7 +11,7 @@ The Python script on this page provides an example of how the [FluidStack API](/
 <Steps>
   ### Create an SSH key
 
-    The script reads the public key located at `~/.ssh/id_rsa.pub`, then sends a request to the [`POST /ssh_keys`](/api-reference/ssh-keys/create) endpoint to create a SSH key named `"python_testkey"`. This SSH key is a copy of the public key that was read.
+    The script reads the public key located at `~/.ssh/id_rsa.pub`, then sends a request to the [`Create an SSH key`](/api-reference/ssh-keys/create) endpoint to create a SSH key named `"python_testkey"`. This SSH key is a copy of the public key that was read.
 
     <Warning>
       - If you already have an SSH key named `python_testkey`, change the script to use a different, unique name.
@@ -20,13 +20,13 @@ The Python script on this page provides an example of how the [FluidStack API](/
 
   ### Create an instance
 
-    The script creates an instance by sending a request to the [`POST /instances`](/api-reference/ssh-keys/create) endpoint.
+    The script creates an instance by sending a request to the [`Create a new instance`](/api-reference/instances/create) endpoint.
     
     The API key is sent in the request as a header. The SSH key name, configuration, and operating system template are sent in the JSON body of the request.
 
   ### Check the instance status
 
-    Initially, the instance's `status` is `pending`. The script repeatedly checks this `status` until it is `running` by sending requests to the [`GET /instances`](/api-reference/instances/list) endpoint and parsing the response. 
+    Initially, the instance's `status` is `pending`. The script repeatedly checks this `status` until it is `running` by sending requests to the [`List user instances`](/api-reference/instances/list) endpoint and parsing the response. 
 
     This status-checking loop stops once the instance's `status` returns as `running`, or if its `status` indicates that it has been `terminated` or is otherwise unable to run.
 
@@ -44,7 +44,7 @@ The Python script on this page provides an example of how the [FluidStack API](/
 
 ## Example script 
 
-```python maxLines=30 title="Python" {14,35,57,79,82}
+```python maxLines=30 title="Python" {14,34,56,78,81}
 import requests
 from pathlib import Path
 import os
@@ -60,20 +60,19 @@ headers = {
 
 # 1: Create an SSH key
 print("Creating SSH key")
+ssh_key_name = "python_testkey"
 
 # The next line reads the public key from ~/.ssh/id_rsa.pub - change this if your public key is somewhere different
 public_key = open(os.path.join(Path.home(), ".ssh", "id_rsa.pub")).read().strip() 
 r = requests.post(
     api_url + "ssh_keys",
     headers=headers,
-    json={"name": "python_testkey", "public_key": public_key}, # Create a SSH key with the name "python_testkey", using the provided public key
+    json={"name": ssh_key_name, "public_key": public_key}, # Create a SSH key using the provided public key
 )
 
 if not r.ok:
     print("Response body: " + json.dumps(r.json(), indent=2))
     raise Exception("Could not create SSH key")
-
-ssh_key_names = [r.json()["name"]]
 
 gpu_type = "RTX_A4000_16GB"
 gpu_count = 4
@@ -86,7 +85,7 @@ r = requests.post(
     headers=headers,
     json={
         "name": "python_testinstance",
-        "ssh_keys": ssh_key_names,
+        "ssh_key": ssh_key_name,
         "gpu_type": gpu_type,
         "gpu_count": gpu_count,
         "operating_system_label": operating_system_label

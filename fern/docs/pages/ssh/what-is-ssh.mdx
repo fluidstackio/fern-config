@@ -1,13 +1,13 @@
 ## The Secure Shell (SSH) protocol
 SSH is a cryptographic network protocol used for secure access to a networked computer. The data transmitted between the client and server is protected with strong encryption algorithms, ensuring privacy and data integrity.
 
-FluidStack instances have SSH servers enabled. These servers authenticate using [SSH keys](/ssh/use-ssh-keys).
+All FluidStack instances run SSH servers for remote access. These servers authenticate using [SSH keys](/ssh/use-ssh-keys).
 
-## SSH keys
+## About SSH keys
 
-FluidStack allows [Secure Shell (SSH)](/ssh/what-is-ssh) access to instances. For improved security, we use [public-key cryptography](https://en.wikipedia.org/wiki/Public-key_cryptography) for authentication instead of a password. This method requires that you provide your own **public/private key pair**. 
+For improved security, we use [public-key cryptography](https://en.wikipedia.org/wiki/Public-key_cryptography) for authentication instead of a password. This is also known as SSH key authentication. This method requires that you provide your own **public/private key pair**. 
 
-Your public key is stored on your instance as your SSH key. Its corresponding private key is stored locally on the computer that you use to access your instance. SSH access is granted by verifying that your private key corresponds to the public key. As an analogy, think of a public key as a lock that only your private key can unlock.
+Your public key is stored on your instance as your SSH key, when the instance is created. Its corresponding private key is stored locally on the computer that you use to access your instance. SSH access is granted by verifying that your private key corresponds to the public key. As an analogy, think of a public key as a lock that only your private key can unlock.
 
 <Tip>Public/private key pairs are used for many purposes, not only SSH. For example, they are used in file encryption, digital signatures, and cryptocurrency transactions.</Tip>
 
