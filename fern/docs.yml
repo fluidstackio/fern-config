@@ -5,42 +5,55 @@ title: Fluidstack Documentation
 favicon: ./docs/assets/logo.png
 
 navigation:
-  - section: Get Started
+  - section: Get started
     contents:
-      - page: Overview
-        path: ./docs/pages/get-started/overview.mdx
+      - page: Home
+        path: ./docs/pages/get-started/home.mdx
       - page: Quickstart
         path: ./docs/pages/get-started/quickstart.mdx
-      - page: API Overview
+      - page: API overview
         path: ./docs/pages/get-started/api-overview.mdx
-  - section: Account Management
+  - section: Account management
     contents:
       - section: Dashboard
         contents:
           - page: Overview
-            path: ./docs/pages/dashboard/dashboard-overview.mdx
+            path: ./docs/pages/dashboard/overview.mdx
           - page: Instances
-            path: ./docs/pages/dashboard/dashboard-instances.mdx
-          - page: API Keys
-            path: ./docs/pages/dashboard/dashboard-api.mdx
-          - page: SSH Keys
-            path: ./docs/pages/dashboard/dashboard-ssh.mdx
+            path: ./docs/pages/dashboard/instances.mdx
+          - page: API keys
+            path: ./docs/pages/dashboard/api-keys.mdx
+          - page: SSH keys
+            path: ./docs/pages/dashboard/ssh-keys.mdx
           - page: Billing
-            path: ./docs/pages/dashboard/dashboard-billing.mdx
+            path: ./docs/pages/dashboard/billing.mdx
   - section: Instances
     contents:
-      - page: Programmatic Instance Management
-        path: ./docs/pages/instances/programmatic-instance-management.mdx
-      - page: Instance Configurations
+      - section: Manage
+        contents:
+          - page: Overview
+            path: ./docs/pages/instances/manage/overview.mdx
+          - page: Create instances
+            path: ./docs/pages/instances/manage/create.mdx
+          - page: List instances
+            path: ./docs/pages/instances/manage/list.mdx
+          - page: Stop and start instances
+            path: ./docs/pages/instances/manage/stop-start.mdx
+          - page: Terminate instances
+            path: ./docs/pages/instances/manage/terminate.mdx
+          - page: Programmatic instance management
+            slug: programmatic
+            path: ./docs/pages/instances/manage/programmatic.mdx
+      - page: Configurations
         path: ./docs/pages/instances/configurations.mdx
         slug: configurations
-      - page: Operating Systems
+      - page: Operating systems
         path: ./docs/pages/instances/operating-systems.mdx
   - section: SSH
     contents:
       - page: What is SSH?
         path: ./docs/pages/ssh/what-is-ssh.mdx
-      - page: How to use SSH Keys
+      - page: How to use SSH keys
         path: ./docs/pages/ssh/use-ssh-keys.mdx
         slug: use-ssh-keys
   - section: SDKs
@@ -48,7 +61,7 @@ navigation:
     contents:
       - page: Python SDK
         path: ./docs/pages/sdks/python-sdk.mdx
-  - api: API Reference
+  - api: API reference
     snippets:
       python: fluidstack
       typescript: fluidstack

@@ -1,0 +1,28 @@
+---
+slug: dashboard/instances
+---
+
+## View instances
+
+From the left sidebar of the Dashboard, select [GPU Instances](https://dashboard.fluidstack.io/dashboard/instances) to display all instances on your account.
+
+For each instance, the name, configuration, IP address, username for SSH login, SSH key for remote access, SSH port, and instance status are displayed.
+
+## Add an instance
+
+1. From the left side of the Dashboard, select [GPU Instances](https://dashboard.fluidstack.io/dashboard/instances).
+2. Click the **Deploy GPUs** button in the upper-right corner. A dialog will appear.
+3. Select your desired Instance Type, then click **Configure**.
+4. Set the **GPU Count**, a custom **Instance Name**, the **OS Image**, and the **SSH Key** for remote access to the instance.
+5. Click **Confirm**.
+
+You should then see the newly created instance in the GPU Instances page. Initially, its status will be **pending**. The status will update to **running** once the instance is created and available.
+
+## Delete an instance
+
+<Markdown src="../../snippets/delete-instance-dashboard.mdx" />
+
+## Stop and start an instance
+
+You must use our API to [stop](/instances/manage/stop-and-start-instances#stop-an-instance) and [start](/instances/manage/stop-and-start-instances#start-an-instance) instances.
+

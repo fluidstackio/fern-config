@@ -1,8 +1,4 @@
----
-subtitle: About the FluidStack API
----
-
-The FluidStack API is a RESTful API you can use for command-line and programmatic management of your instances and SSH keys. You can also retrieve information about available configurations and operating system templates.
+The FluidStack API is a RESTful API you can use for command-line and programmatic management of your instances and SSH keys. You can also use it to retrieve information about available configurations and operating system templates.
 
 [View the full API reference.](/api-reference)
 
@@ -12,7 +8,7 @@ The FluidStack API is a RESTful API you can use for command-line and programmati
 
 ## Authentication
 
-An **API key** is required for authentication to use the [FluidStack API](/api-reference). Your API key is unique to your FluidStack account. Conceptually, it is similar to a password that is sent with every API call. 
+An **API key** is required for authentication to use the FluidStack API. Your API key is unique to your FluidStack account. Conceptually, it is similar to a password that is sent with every API call. 
 
 [View, add, and delete your API keys](/dashboard/api-keys) from the FluidStack Dashboard.
 
@@ -22,16 +18,20 @@ An **API key** is required for authentication to use the [FluidStack API](/api-r
 
 ### How to use your API key
 
-Whenever you make a call to the FluidStack API, include your API key in the request headers. Otherwise, your call will fail. 
+Whenever you make a call to the FluidStack API, include your API key in the request headers with a header name of `api-key`. Otherwise, your call will fail. 
 
 Example:
 <EndpointRequestSnippet endpoint="GET /instances" />
+
+### Requests and responses
+
+All request and response bodies are sent in JSON format. When sending data in the body of a request, always include the header `"Content-Type: application/json"`.
 
 ## Programmatic API use
 
 ### Instance management
 
-See an example of [how to use Python to manage instances](/instances/programmatic-instance-management).
+See an example of [how to use Python to manage instances](/instances/manage/programmatic).
 
 ### Python SDK
 
