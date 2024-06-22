@@ -1,12 +1,6 @@
-## Operating systems
-
-When you [create an instance](/api-reference/instances/create), you can specify an operating system (OS) template. To do so, provide one of the available template names as the value for `operating_system_label`.
-
-<Note>If you do not provide a value for `operating_system_label` when creating an instance, `"ubuntu_20_04_lts"` is used as the default.</Note>
-
 ### Get the list of available OS templates
 
-For the most up-to-date list, call the [`List available OS templates`](/api-reference/templates/list) endpoint.
+To see available OS templates, call the [List available OS templates](/api-reference/templates/list) endpoint.
 
 Example request:
 <EndpointRequestSnippet endpoint="GET /list_available_os_templates" />
@@ -14,13 +8,15 @@ Example request:
 Make sure to replace the `<api_key>` with your own [API key](/get-started/api-overview#authentication)
 
 The endpoint returns a list of operating systems, as shown in this example response:
-<EndpointResponseSnippet 
-  endpoint="GET /list_available_os_templates"
-/>
+<EndpointResponseSnippet endpoint="GET /list_available_os_templates" />
 
-Use one of the returned values for the `label` property as the value for `operating_system_label` when you create an instance.
+When you [create an instance](/api-reference/instances/create), you can optionally select an operating system template by specifying a value for `operating system label`. For this, use one of the values for `label` returned by this endpoint.
 
-### List of available OS templates
+<Note>If you do not provide a value for `operating_system_label` when creating an instance, `ubuntu_20_04_lts` is used as the default.</Note>
+
+### List of OS templates
+
+We support the following OS templates. Use our API to find out which are currently available. 
 
 | name                       | description                                               | label                    |
 |----------------------------|-----------------------------------------------------------|--------------------------|

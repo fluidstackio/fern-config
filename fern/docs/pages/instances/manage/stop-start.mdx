@@ -1,0 +1,55 @@
+---
+subtitle: How to stop and start an instance
+---
+
+You can only stop an instance that has the `status` of `running`, and you can only start an instance that has the `status` of `stopped`.  The instance's `id` is required to stop or start it. To find the `id` and `status` of an instance, see [List instances](/instances/manage/list).
+
+### Stop an instance
+
+Call the [Stop an instance](/api-reference/instances/stop) endpoint:
+
+<EndpointRequestSnippet endpoint="PUT /instances/:instance_id/stop" />
+
+<Markdown src="../../../snippets/api-key-header.mdx" /> 
+
+Also, replace the text `{instance_id}` in the endpoint's path with your instance's `id`. 
+
+Example request with cURL:
+```bash 
+curl -X PUT https://platform.fluidstack.io/instances/i-1234567890/stop \
+     -H "api-key: api_key_j123MyFakeAPIKey"
+```
+
+Example response:
+
+<EndpointResponseSnippet endpoint="PUT /instances/:instance_id/stop" />
+
+If your request succeeds, the endpoint will respond with a status code of `200` and JSON object containing your instance's details, including its current `status`.
+
+The instance `status` should show as either `stopping` or `stopped`. In this state, your instance is offline and cannot be used or reached until you restart it. 
+
+For further details, see the [API Reference](/api-reference/instances/stop).
+
+### Start an instance
+
+Call the [Start an instance](/api-reference/instances/start) endpoint:
+
+<EndpointRequestSnippet endpoint="PUT /instances/:instance_id/start" />
+
+<Markdown src="../../../snippets/api-key-header.mdx" /> 
+
+Also, replace the text `{instance_id}` in the endpoint's path with your instance's `id`. 
+
+Example request with cURL:
+```bash 
+curl -X PUT https://platform.fluidstack.io/instances/i-1234567890/start \
+     -H "api-key: api_key_j123MyFakeAPIKey"
+```
+
+Example response:
+
+<EndpointResponseSnippet endpoint="PUT /instances/:instance_id/start" />
+
+If your request succeeds, the endpoint will respond with a status code of `200` and an JSON object containing your instance's details, including its current `status`. The instance `status` should show as either `pending` or `running`. 
+
+For further details, see the [API Reference](/api-reference/instances/start).

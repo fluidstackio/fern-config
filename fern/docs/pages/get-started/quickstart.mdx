@@ -1,127 +1,162 @@
 ---
-subtitle: Create and access your first GPU instance
+subtitle: Create, access, and terminate your first GPU instance using the FluidStack API
 ---
 
 ## Overview
 
-This tutorial leads you through the following steps:
+This FluidStack API tutorial leads you through the following steps:
 
-1. [Create a GPU instance.](#create-a-gpu-instance)
+1. [Create your first GPU instance](#create-a-gpu-instance).
+2. [Check the status of your instance.](#check-the-status-of-your-instance)
 2. [Access your instance](#access-your-instance) using an SSH client and your SSH key.
-3. (Optional): [Delete your instance](#optional-delete-your-instance).
+3. [Terminate your instance](#terminate-your-instance).
+
+<Tip>If you'd rather use the FluidStack Dashboard UI to manage instances instead of the API, see: [Dashboard - Instances](/dashboard/instances).</Tip>
 
 ## Prerequisites
 
- - <Markdown src="../../snippets/api-key.mdx" />
- - An SSH key must exist on your FluidStack account. See: [Create an SSH key](/ssh/use-ssh-keys#create-an-ssh-key).
+- <Markdown src="../../snippets/api-key.mdx" />
+- An SSH key must exist on your FluidStack account. See: [Create an SSH key](/ssh/use-ssh-keys#create-an-ssh-key).
+- You should have familiarity with command-line tools.
 
 ## Steps
 
 <Steps>
 ### Create a GPU instance
 
-{/* <AccordionGroup>
-  <Accordion title="Use the FluidStack Dashboard">
-    1. Open the [GPU Instances page on the FluidStack Dashboard](https://dashboard.fluidstack.io/dashboard/instances).
-    2. Select **Deploy GPUs** from the upper-right corner.
-    3. In the dialog that appears, select the instance's GPU type, then click **Configure**.
-    4. Set the **Instance Name** and select an **OS Image** from the dropdown.
-    5. Choose one or more SSH keys to associate with the instance, then click **Confirm**.
+In this step, you will create an instance with the following configuration and operating system template:
 
-    You should now see the newly created instance in the GPU Instances page. Initially, its status is **pending**. The status updates to **running** once the instance is created and available. 
-    
-  </Accordion>
+| GPU Type         | GPU Count | CPU Count | RAM Size | NVME Storage Size | OS Template
+|------------------|-----------|-----------|----------|-------------------|-----------------
+| RTX_A6000_48GB   | 1         | 16        | 59GB     | 425 GB            | Ubuntu 20.04 LTS
 
-  <Accordion title="Use the FluidStack API"> */}
-    The following values are required to create an instance:
+<Note>
+  If you prefer, you can use a different [instance configuration](/instances/configurations) and/or [operating system](/instances/operating-systems).
+</Note>
 
-    - the `name` of the instance
-    - the`gpu_type` (See the `gpu_model` field from [Instance Configurations](/configurations-and-operating-systems/configurations).)
-    - the `ssh_key_name`
-    
-    These values are optional:
-    - `gpu_count` (Default: `1`)
-    - `operating_system_label` (See the `label` field from [Operating Systems](/configurations-and-operating-systems/operating-systems). Default: `"ubuntu_20_04_lts"`)
+Let's create your first instance! Copy this cURL command:
 
-    If you prefer, you can use a different [instance configuration](/configurations-and-operating-systems/configurations) and/or [operating system](/configurations-and-operating-systems/operating-systems). 
+```bash cURL command
+curl -X POST https://platform.fluidstack.io/instances \
+    -H "api-key: <api-key>" \
+    -H "Content-Type: application/json" \
+    -d '{
+  "gpu_type": "RTX_A6000_48GB",
+  "name": "my-test-instance",
+  "ssh_key": "my_ssh_key"
+}'
+```
 
-    To create an instance, call the API using the cURL command below. Replace `<api_key>` with your API key, and `<ssh_key_name>` with your SSH key's name:
+<Warning>The `$` and `>` characters are not intended to be copied.</Warning>
 
-    <EndpointRequestSnippet endpoint="POST /instances" />
+{/* If you have multiple SSH keys you'd like to associate with this instance, provide a comma-separated list in the cURL command:
 
-    {/* If you have multiple SSH keys you'd like to associate with this instance, provide a comma-separated list in the cURL command:
+```bash Multiple SSH keys example {2-4}
+    "ssh_keys": [
+      "my_key1",
+      "my_key2",
+      "my_key3"
+    ]
+``` */}
 
-    ```bash Multiple SSH keys example {2-4}
-        "ssh_keys": [
-          "my_key1",
-          "my_key2",
-          "my_key3"
-        ]
-    ``` */}
+Paste the command to a location where you can edit its text in plaintext format, such as a code editor. Replace the text `<api_key>` with your API key, and `my_ssh_key` with the name of an SSH key on your account. 
 
-    If your request succeeds, the endpoint responds with the created instance's details, including its `id`, `name`, `gpu_type`, and `operating_system_label`:
+If your request succeeds, the endpoint will respond with the created instance's `id`, `name`, `gpu_type`, and `operating_system_label`:
 
-    <EndpointResponseSnippet endpoint="POST /instances" />
+```json Example of a successful response
+{
+  "id": "i-1234567890",
+  "name": "my_test_instance",
+  "gpu_type": "RTX_A6000_48GB",
+  "operating_system_label": "ubuntu_20_04_lts"
+}
+```
+Take note of the `id` of your instance for the next step.
 
-    Take note of the `id` of your instance. 
+<Note>
+Did you notice that the cURL command you sent did not specify an `operating_system_label`? 
 
-    Request the instance's status using the [`List user instances`](/api-reference/instances/list) endpoint:
+When the operating system is not specified, a default value is used. The only values you're required to specify when creating an instance are the instance `name`, `gpu_type`, and `ssh_key`.
+</Note>
 
-    <EndpointRequestSnippet endpoint="GET /instances" />
+### Check the status of your instance
 
-    Initially, the instance's `status` will be `pending`. Once the instance is created and available, its `status` updates to `running` and it is assigned an IP address.
+Request the instance's status using the [List user instances](/api-reference/instances/list) endpoint:
 
-    Example:
-    <EndpointResponseSnippet endpoint="GET /instances" />
+<EndpointRequestSnippet endpoint="GET /instances" />
 
-    This endpoint returns all the instances on your account. Locate the instance with the `id` of your newly created instance. Take note of your instance's values for `username` and `ip_address` for the next step.
+Initially, the instance's `status` will be `pending`. Once the instance is created and available, its `status` will update to `running` and FluidStack will assign it an IP address.
 
-  {/* </Accordion> */}
- {/*</AccordionGroup> */}
+Example:
+```json A response that shows a running instance
+[
+  {
+    "id": "i-1234567890",
+    "status": "running",
+    "username": "ubuntu",
+    "ssh_port": "22",
+    "ssh_keys": [
+      "my_ssh_key"
+    ],
+    "ip_address": "192.0.2.0",
+    "name": "my_test_instance",
+    "current_rate": 1,
+    "configuration": {
+      "id": "c-1234567890",
+      "gpu_count": 1,
+      "cpu_count": 16,
+      "nvme_storage_size_gb": 425,
+      "memory_size_gb": 59,
+      "gpu_model": {
+        "name": "RTX_A6000_48GB",
+        "memory_size_gb": 48
+      },
+      "cpu_model": "generic",
+      "estimated_provisioning_time_minutes": 5
+    },
+    "created_at": "2024-01-15T09:30:00Z"
+  }
+]
+
+```
+
+This endpoint returns a JSON array of all the instances on your account, with each instance represented as an object in the array. 
+
+Locate the instance object with the `id` of your newly created instance. Take note of that instance's values for `username` and `ip_address` for the next step.
 
 ### Access your instance 
 
-Once the instance's status is `running`, you can connect to it using SSH. Use the private key that corresponds to the public key you used when creating the SSH key for this instance, and the `username` and `ip_address` values you noted in the previous step. 
+Once the instance's status is `running`, you can connect to it using SSH. Use the private key that corresponds to the public key you used when creating the SSH key for this instance, and the `username` and `ip_address` you noted in the previous step. 
 
 <Markdown src="../../snippets/connect-with-ssh.mdx" />
 
 <Note>The first time you connect to your instance, you will see a message that says "The authenticity of host `x.x.x.x` can't be established ... Are you sure you want to continue connecting". This is normal for the first connection. Type `yes` and press `Enter`.</Note>
 
-When you have successfully logged in, notice that your command prompt has changed. All commands that you enter into this command prompt are executed on your instance. The instance is ready for use!
+When you have successfully logged in, notice that your command prompt has changed. All commands that you enter into this command prompt are executed on your instance.
 
-When you're ready to close your connection and log out from the instance, type `exit` into your SSH session's command prompt and press `Enter`. You should be returned to your local machine's command prompt. 
+When you're ready to close your connection and log out from the instance, type `exit` into your SSH session's command prompt and press `Enter`. You should be returned to your local machine's command prompt.
 
-### (Optional): Delete your instance
+### Terminate your instance
 
-<AccordionGroup>
-  <Accordion title="Use the FluidStack Dashboard">
-    <Markdown src="../../snippets/open-dashboard.mdx" />
-    <Markdown src="../../snippets/delete-instance-dashboard.mdx" />
-  </Accordion>
+To terminate your instance, first close your SSH connection, then call the API using the cURL command below. Replace the text `instance_id` in the endpoint's path with the `id` you received when you created the endpoint, and `<api_key>` with your API key.
 
-  <Accordion title="Use the FluidStack API">
-    To delete your instance, close your SSH connection, then call the API using the cURL command below. Replace the text `instance_id` with the `id` value you received in the previous step when you created the endpoint, and use your API key.
+<EndpointRequestSnippet endpoint="DELETE /instances/:instance_id" />
 
-    <EndpointRequestSnippet endpoint="DELETE /instances/:instance_id" />
-
-    Example:
+Example:
 
 ```bash title="Example request"
-  curl -X DELETE https://platform.fluidstack.io/instances/i-d02e976e-29e4-4857-8787-2ebe17fa4972 \
-  -H "api-key: api_key_j8FaG34rGUFDig1111qerdP1f5MfEeW9AI"
+  curl -X DELETE https://platform.fluidstack.io/instances/i-1234567890 \
+  -H "api-key: api_key_j123MyFakeAPIKey"
 ```
-    To confirm that your instance was deleted, call the [`List user instances`](/api-reference/instances/list) endpoint again as you did at the end of Step 1.
 
-  </Accordion>
-</AccordionGroup>
+To confirm that your instance was deleted, call the [List user instances](/api-reference/instances/list) endpoint again as in Step 2.
 
 </Steps>
 
-Congratulations! You have successfully created an instance, accessed it using SSH, and (optionally) deleted the instance. 
+Congratulations! You have successfully created an instance, accessed it using SSH, and deleted the instance. 
 
 ## What's next
 
-- View the [FluidStack API Reference](/api-reference).
+- Learn more about [managing instances](/instances/manage).
 - Learn more about [SSH](/ssh/what-is-ssh).
-- Learn about the [Python SDK](/sdks/python-sdk).
-- Learn how to [programmatically manage instances](/instances/programmatic-instance-management).
+- View the [API Reference](/api-reference).

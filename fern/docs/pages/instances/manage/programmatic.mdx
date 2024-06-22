@@ -1,17 +1,17 @@
 The Python script on this page provides an example of how the [FluidStack API](/api-reference) can be used to manage instances programmatically.
 
 ## Prerequisites
-  - <Markdown src="../../snippets/api-key.mdx" />
+  - <Markdown src="../../../snippets/api-key.mdx" />
   - A [public/private key pair](/ssh/use-ssh-keys#generate-a-publicprivate-key-pair)
-  - Basic familiarity with [Python](https://python.org) and Python 3+ installed
-  - The [`requests`](https://pypi.org/project/requests/) module installed in your Python environment
+  - Basic familiarity with Python; Python 3+ installed
+  - The [requests](https://pypi.org/project/requests/) module installed in your Python environment
 
 ## Script overview
 
 <Steps>
   ### Create an SSH key
 
-    The script reads the public key located at `~/.ssh/id_rsa.pub`, then sends a request to the [`Create an SSH key`](/api-reference/ssh-keys/create) endpoint to create a SSH key named `"python_testkey"`. This SSH key is a copy of the public key that was read.
+    The script reads the public key located at `~/.ssh/id_rsa.pub`, then sends a request to the [Create an SSH key](/api-reference/ssh-keys/create) endpoint to create a SSH key named `python_testkey`. This SSH key is a copy of the public key that was read.
 
     <Warning>
       - If you already have an SSH key named `python_testkey`, change the script to use a different, unique name.
@@ -20,13 +20,13 @@ The Python script on this page provides an example of how the [FluidStack API](/
 
   ### Create an instance
 
-    The script creates an instance by sending a request to the [`Create a new instance`](/api-reference/instances/create) endpoint.
+    The script creates an instance by sending a request to the [Create a new instance](/api-reference/instances/create) endpoint.
     
     The API key is sent in the request as a header. The SSH key name, configuration, and operating system template are sent in the JSON body of the request.
 
   ### Check the instance status
 
-    Initially, the instance's `status` is `pending`. The script repeatedly checks this `status` until it is `running` by sending requests to the [`List user instances`](/api-reference/instances/list) endpoint and parsing the response. 
+    Initially, the instance's `status` is `pending`. The script repeatedly checks this `status` until it is `running` by sending requests to the [List user instances](/api-reference/instances/list) endpoint and parsing the response. 
 
     This status-checking loop stops once the instance's `status` returns as `running`, or if its `status` indicates that it has been `terminated` or is otherwise unable to run.
 
@@ -74,9 +74,9 @@ if not r.ok:
     print("Response body: " + json.dumps(r.json(), indent=2))
     raise Exception("Could not create SSH key")
 
-gpu_type = "RTX_A4000_16GB"
+gpu_type = "RTX_A6000_16GB"
 gpu_count = 4
-operating_system_label = "ubuntu_20_04_lts"
+operating_system_label = "ubuntu_20_04_lts_nvidia"
 
 # 2: Create an instance 
 print("Creating instance")

@@ -1,28 +1,27 @@
-## Configurations
 A configuration consists of the specific GPU, CPU, and storage settings for an instance.
 
 ### Get the list of available configurations
 
-For the most up-to-date list, call the [`List available configurations`](/api-reference/configurations/list) endpoint.
+To see available configurations, call the [List available configurations](/api-reference/configurations/list) endpoint.
 
 Example request:
 <EndpointRequestSnippet endpoint="GET /list_available_configurations" />
 
+Make sure to replace the `<api_key>` with your own [API key](/get-started/api-overview#authentication).
+
 The endpoint returns a list of configuration objects, as shown in this example response:
 <EndpointResponseSnippet endpoint="GET /list_available_configurations" />
 
-Whenever you create an instance, a value for `gpu_type` is required. To find the available options, see the values for `gpu_model.name` returned by this endpoint. 
+When you [create an instance](/api-reference/instances/create), you must specify a value for `gpu_type`. The value you specify for `gpu_count` determines the CPU count, as well as the RAM and NVME storage sizes.
 
-### List of available configurations
+<Note>If you do not provide a value for `gpu_count` when creating an instance, `1` is used as the default.</Note>
 
-| GPU Type         | GPU Count | CPU Count | RAM Size (MB) | NVME Storage Size (GB) |
+### List of configurations
+
+We support the following configurations. Use our API to find out which are currently available.
+
+| GPU Type         | GPU Count | CPU Count | RAM Size (GB) | NVME Storage Size (GB) |
 |------------------|-----------|-----------|---------------|------------------------|
-| RTX_A6000_48GB   | 1         | 16        | 59            | 425                    |
-| RTX_A6000_48GB   | 2         | 32        | 119           | 850                    |
-| RTX_A6000_48GB   | 4         | 64        | 238           | 1700                   |
-| A100_PCIE_80GB   | 1         | 32        | 120           | 200                    |
-| A100_PCIE_80GB   | 2         | 64        | 240           | 400                    |
-| A100_PCIE_80GB   | 4         | 128       | 480           | 800                    |
 | RTX_A4000_16GB   | 1         | 6         | 24            | 160                    |
 | RTX_A4000_16GB   | 2         | 12        | 48            | 320                    |
 | RTX_A4000_16GB   | 4         | 24        | 96            | 640                    |
@@ -32,12 +31,18 @@ Whenever you create an instance, a value for `gpu_type` is required. To find the
 | RTX_A5000_24GB   | 2         | 16        | 60            | 400                    |
 | RTX_A5000_24GB   | 4         | 32        | 120           | 800                    |
 | RTX_A5000_24GB   | 8         | 64        | 240           | 1600                   |
+| RTX_A6000_48GB   | 1         | 16        | 59            | 425                    |
+| RTX_A6000_48GB   | 2         | 32        | 119           | 850                    |
+| RTX_A6000_48GB   | 4         | 64        | 238           | 1700                   |
+| A100_PCIE_80GB   | 1         | 32        | 120           | 200                    |
+| A100_PCIE_80GB   | 1         | 32        | 120           | 850                    |
+| A100_PCIE_80GB   | 2         | 64        | 240           | 400                    |
+| A100_PCIE_80GB   | 4         | 128       | 480           | 800                    |
 | A100_PCIE_80GB   | 4         | 126       | 480           | 3300                   |
 | A100_PCIE_80GB   | 8         | 252       | 960           | 6600                   |
 | A100_NVLINK_80GB | 8         | 252       | 960           | 6500                   |
-| A100_PCIE_80GB   | 1         | 32        | 120           | 850                    |
-| H100_PCIE_80GB   | 4         | 126       | 720           | 3200                   |
-| H100_PCIE_80GB   | 8         | 252       | 1440          | 6500                   |
 | H100_PCIE_80GB   | 1         | 32        | 180           | 750                    |
 | H100_PCIE_80GB   | 2         | 64        | 360           | 1500                   |
+| H100_PCIE_80GB   | 4         | 126       | 720           | 3200                   |
+| H100_PCIE_80GB   | 8         | 252       | 1440          | 6500                   |
 | L40_48GB         | 4         | 126       | 240           | 3300                   |
