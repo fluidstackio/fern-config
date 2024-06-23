@@ -130,11 +130,11 @@ for instance in my_instances:
     ```
     | parameter              | type   | required | default                 |
     |------------------------|--------|----------|-------------------------|
-    | name                   | string |     y    |   n/a                   |
-    | gpu_type               | string |     y    |   n/a                   |
-    | ssh_key                | string |     y    |   n/a                   |
-    | gpu_count              | string |     n    |    1                    |
-    | operating_system_label | string |     n    | ubuntu_20_04_lts_nvidia |
+    | name                   | string |     yes  |   n/a                   |
+    | gpu_type               | string |     yes  |   n/a                   |
+    | ssh_key                | string |     yes  |   n/a                   |
+    | gpu_count              | string |     no   |    1                    |
+    | operating_system_label | string |     no   | ubuntu_20_04_lts_nvidia |
 
   </Tab>
 
@@ -146,7 +146,7 @@ for instance in my_instances:
     ```
     | parameter              | type   | required |
     |------------------------|--------|----------|
-    | instance_id            | string |     y    |
+    | instance_id            | string |     yes  |
   </Tab>
   
   <Tab title="Start an instance">
@@ -157,7 +157,7 @@ for instance in my_instances:
     ```
     | parameter              | type   | required |
     |------------------------|--------|----------|
-    | instance_id            | string |     y    |
+    | instance_id            | string |     yes  |
   </Tab>
 
   <Tab title="Terminate an instance">
@@ -168,7 +168,7 @@ for instance in my_instances:
     ```
     | parameter              | type   | required |
     |------------------------|--------|----------|
-    | instance_id            | string |     y    |
+    | instance_id            | string |     yes  |
   </Tab>
 </Tabs>
 
@@ -191,8 +191,8 @@ for instance in my_instances:
     ```
     | parameter              | type   | required |
     |------------------------|--------|----------|
-    | name                   | string |     y    |
-    | public_key             | string |     y    |
+    | name                   | string |     yes  |
+    | public_key             | string |     yes  |
   </Tab>
 
   <Tab title="Delete an SSH key">
@@ -203,7 +203,7 @@ for instance in my_instances:
     ```
     | parameter              | type   | required |
     |------------------------|--------|----------|
-    | ssh_key_name           | string |     y    |
+    | ssh_key_name           | string |     yes  |
   </Tab>
 </Tabs>
 
