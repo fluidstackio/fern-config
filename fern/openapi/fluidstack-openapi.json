@@ -1,40 +1,13 @@
 {
   "openapi": "3.1.0",
-  "info": {
-    "title": "Fluidstack API Service",
-    "version": "0.1.0"
-  },
+  "info": { "title": "Fluidstack API Service", "version": "0.1.0" },
   "servers": [
-    {
-      "url": "https://platform.fluidstack.io",
-      "description": "Production server"
-    }
+    { "url": "https://platform.fluidstack.io", "description": "Production server" }
   ],
   "paths": {
     "/healthcheck": {
       "get": {
-        "tags": [
-          "General"
-        ],
-        "summary": "Healthcheck",
-        "operationId": "healthcheck_healthcheck_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HealthCheckOutSchema"
-                }
-              }
-            }
-          }
-        }
-      },
-      "head": {
-        "tags": [
-          "General"
-        ],
+        "tags": ["General"],
         "summary": "Healthcheck",
         "operationId": "healthcheck_healthcheck_head",
         "responses": {
@@ -42,9 +15,22 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HealthCheckOutSchema"
-                }
+                "schema": { "$ref": "#/components/schemas/HealthCheckOutSchema" }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "tags": ["General"],
+        "summary": "Healthcheck",
+        "operationId": "healthcheck_healthcheck_head",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HealthCheckOutSchema" }
               }
             }
           }
@@ -55,25 +41,19 @@
       "get": {
         "summary": "List user instances",
         "description": "This endpoint is used to retrieve a list of all instances associated with the authenticated user.",
-        "operationId": "list_instances_instances_get",
+        "operationId": "list_user_instances_instances_get",
         "parameters": [
           {
             "name": "api-key",
             "in": "header",
             "required": false,
-            "schema": {
-              "type": "string",
-              "title": "Api-Key"
-            }
+            "schema": { "type": "string", "title": "Api-Key" }
           },
           {
             "name": "wos_session",
             "in": "cookie",
             "required": false,
-            "schema": {
-              "type": "string",
-              "title": "Wos Session"
-            }
+            "schema": { "type": "string", "title": "Wos Session" }
           }
         ],
         "responses": {
@@ -83,10 +63,8 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ListInstanceResponse"
-                  },
-                  "title": "Response List Instances Instances Get"
+                  "items": { "$ref": "#/components/schemas/ListInstanceResponse" },
+                  "title": "Response List User Instances Instances Get"
                 }
               }
             }
@@ -95,9 +73,7 @@
             "description": "Authentication Error",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Message"
-                }
+                "schema": { "$ref": "#/components/schemas/Message" }
               }
             }
           },
@@ -105,9 +81,7 @@
             "description": "Validation Error",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
               }
             }
           }
@@ -115,35 +89,27 @@
       },
       "post": {
         "summary": "Create a new instance",
-        "description": "This endpoint is used to create a new instance. You must provide a custom `name` for the instance, its `gpu_type`, and its `ssh_key`.\n\nIf no values are provided for the `gpu_count` and `operating_system_label`, the default values of `1` and `'ubuntu_20_04_lts'` are used respectively.",
+        "description": "This endpoint is used to create a new instance. You must provide a custom `name` for the instance, its `gpu_type`, and the name of its `ssh_key`. \n\nIf no values are provided for the `gpu_count` and `operating_system_label`, the default values of `1` and `ubuntu_20_04_lts_nvidia` are used respectively.",
         "operationId": "create_instance_instances_post",
         "parameters": [
           {
             "name": "api-key",
             "in": "header",
             "required": false,
-            "schema": {
-              "type": "string",
-              "title": "Api-Key"
-            }
+            "schema": { "type": "string", "title": "Api-Key" }
           },
           {
             "name": "wos_session",
             "in": "cookie",
             "required": false,
-            "schema": {
-              "type": "string",
-              "title": "Wos Session"
-            }
+            "schema": { "type": "string", "title": "Wos Session" }
           }
         ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateInstanceRequest"
-              }
+              "schema": { "$ref": "#/components/schemas/CreateInstanceRequest" }
             }
           }
         },
@@ -152,9 +118,7 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreateInstanceResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/CreateInstanceResponse" }
               }
             }
           },
@@ -162,9 +126,7 @@
             "description": "Authentication Error",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Message"
-                }
+                "schema": { "$ref": "#/components/schemas/Message" }
               }
             }
           },
@@ -172,9 +134,7 @@
             "description": "Validation Error",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
               }
             }
           }
@@ -184,35 +144,26 @@
     "/instances/{instance_id}/stop": {
       "put": {
         "summary": "Stop an instance",
-        "description": "This endpoint can be used to stop an existing instance by its ID.",
+        "description": "This endpoint is used to stop an existing instance by its ID.",
         "operationId": "stop_instance_instances__instance_id__stop_put",
         "parameters": [
           {
             "name": "instance_id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Instance Id"
-            }
+            "schema": { "type": "string", "title": "Instance Id" }
           },
           {
             "name": "api-key",
             "in": "header",
             "required": false,
-            "schema": {
-              "type": "string",
-              "title": "Api-Key"
-            }
+            "schema": { "type": "string", "title": "Api-Key" }
           },
           {
             "name": "wos_session",
             "in": "cookie",
             "required": false,
-            "schema": {
-              "type": "string",
-              "title": "Wos Session"
-            }
+            "schema": { "type": "string", "title": "Wos Session" }
           }
         ],
         "responses": {
@@ -220,9 +171,7 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ListInstanceResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ListInstanceResponse" }
               }
             }
           },
@@ -230,9 +179,7 @@
             "description": "Authentication Error",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Message"
-                }
+                "schema": { "$ref": "#/components/schemas/Message" }
               }
             }
           },
@@ -240,9 +187,7 @@
             "description": "Validation Error",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
               }
             }
           }
@@ -252,35 +197,26 @@
     "/instances/{instance_id}/start": {
       "put": {
         "summary": "Start an instance",
-        "description": "This endpoint can be used to start an existing instance by its ID.",
+        "description": "This endpoint is used to start an existing instance by its ID.",
         "operationId": "start_instance_instances__instance_id__start_put",
         "parameters": [
           {
             "name": "instance_id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Instance Id"
-            }
+            "schema": { "type": "string", "title": "Instance Id" }
           },
           {
             "name": "api-key",
             "in": "header",
             "required": false,
-            "schema": {
-              "type": "string",
-              "title": "Api-Key"
-            }
+            "schema": { "type": "string", "title": "Api-Key" }
           },
           {
             "name": "wos_session",
             "in": "cookie",
             "required": false,
-            "schema": {
-              "type": "string",
-              "title": "Wos Session"
-            }
+            "schema": { "type": "string", "title": "Wos Session" }
           }
         ],
         "responses": {
@@ -288,9 +224,7 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ListInstanceResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/ListInstanceResponse" }
               }
             }
           },
@@ -298,9 +232,7 @@
             "description": "Authentication Error",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Message"
-                }
+                "schema": { "$ref": "#/components/schemas/Message" }
               }
             }
           },
@@ -308,9 +240,7 @@
             "description": "Validation Error",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
               }
             }
           }
@@ -320,48 +250,35 @@
     "/instances/{instance_id}": {
       "delete": {
         "summary": "Terminate an instance",
-        "description": "This endpoint can be used to terminate an existing instance by its ID.",
+        "description": "This endpoint is used to terminate an existing instance by its ID.",
         "operationId": "terminate_instance_instances__instance_id__delete",
         "parameters": [
           {
             "name": "instance_id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Instance Id"
-            }
+            "schema": { "type": "string", "title": "Instance Id" }
           },
           {
             "name": "api-key",
             "in": "header",
             "required": false,
-            "schema": {
-              "type": "string",
-              "title": "Api-Key"
-            }
+            "schema": { "type": "string", "title": "Api-Key" }
           },
           {
             "name": "wos_session",
             "in": "cookie",
             "required": false,
-            "schema": {
-              "type": "string",
-              "title": "Wos Session"
-            }
+            "schema": { "type": "string", "title": "Wos Session" }
           }
         ],
         "responses": {
-          "204": {
-            "description": "Successful Response"
-          },
+          "204": { "description": "Successful Response" },
           "401": {
             "description": "Authentication Error",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Message"
-                }
+                "schema": { "$ref": "#/components/schemas/Message" }
               }
             }
           },
@@ -369,9 +286,7 @@
             "description": "Validation Error",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
               }
             }
           }
@@ -381,26 +296,20 @@
     "/ssh_keys": {
       "get": {
         "summary": "List SSH keys",
-        "description": "Fetch a list of SSH keys associated with the authenticated user.",
+        "description": "Fetch a list of SSH key names associated with the authenticated user.",
         "operationId": "list_user_ssh_keys_ssh_keys_get",
         "parameters": [
           {
             "name": "api-key",
             "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Api-Key"
-            }
+            "required": false,
+            "schema": { "type": "string", "title": "Api-Key" }
           },
           {
             "name": "wos_session",
             "in": "cookie",
             "required": false,
-            "schema": {
-              "type": "string",
-              "title": "Wos Session"
-            }
+            "schema": { "type": "string", "title": "Wos Session" }
           }
         ],
         "responses": {
@@ -410,9 +319,7 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/SSHKeyResponse"
-                  },
+                  "items": { "$ref": "#/components/schemas/SSHKeyResponse" },
                   "title": "Response List User Ssh Keys Ssh Keys Get"
                 }
               }
@@ -422,9 +329,7 @@
             "description": "Authentication Error",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Message"
-                }
+                "schema": { "$ref": "#/components/schemas/Message" }
               }
             }
           },
@@ -432,9 +337,7 @@
             "description": "Validation Error",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
               }
             }
           }
@@ -442,35 +345,27 @@
       },
       "post": {
         "summary": "Create an SSH key",
-        "description": "Create a new SSH key for the authenticated user.\n\nYou must provide a unique name for the SSH key, along with a public key. The public key you provide will be duplicated on your FluidStack account for use as as an SSH key.\n\n<Note>Supported public key formats: ssh-rsa, ssh-dss (DSA), ssh-ed25519, ecdsa keys with NIST curves</Note>",
+        "description": "Create a new SSH key for the authenticated user.\n\nA unique name must be provided for the SSH key, along with a public key. The public key you provide is stored on your FluidStack account for use in SSH authentication.\n\nSupported public key formats: ssh-rsa, ssh-dss (DSA), ssh-ed25519, and ecdsa keys with NIST curves.",
         "operationId": "create_ssh_key_ssh_keys_post",
         "parameters": [
           {
             "name": "api-key",
             "in": "header",
             "required": false,
-            "schema": {
-              "type": "string",
-              "title": "Api-Key"
-            }
+            "schema": { "type": "string", "title": "Api-Key" }
           },
           {
             "name": "wos_session",
             "in": "cookie",
             "required": false,
-            "schema": {
-              "type": "string",
-              "title": "Wos Session"
-            }
+            "schema": { "type": "string", "title": "Wos Session" }
           }
         ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateSSHKeyRequest"
-              }
+              "schema": { "$ref": "#/components/schemas/CreateSSHKeyRequest" }
             }
           }
         },
@@ -479,9 +374,7 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SSHKeyResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/SSHKeyResponse" }
               }
             }
           },
@@ -489,9 +382,7 @@
             "description": "Authentication Error",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Message"
-                }
+                "schema": { "$ref": "#/components/schemas/Message" }
               }
             }
           },
@@ -499,9 +390,7 @@
             "description": "Validation Error",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
               }
             }
           }
@@ -511,48 +400,35 @@
     "/ssh_keys/{ssh_key_name}": {
       "delete": {
         "summary": "Delete an SSH key",
-        "description": "Delete an existing SSH key using the SSH key name.",
+        "description": "Delete an existing SSH key by its name.",
         "operationId": "delete_ssh_key_ssh_keys__ssh_key_name__delete",
         "parameters": [
           {
             "name": "ssh_key_name",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Ssh Key Name"
-            }
+            "schema": { "type": "string", "title": "Ssh Key Name" }
           },
           {
             "name": "api-key",
             "in": "header",
             "required": false,
-            "schema": {
-              "type": "string",
-              "title": "Api-Key"
-            }
+            "schema": { "type": "string", "title": "Api-Key" }
           },
           {
             "name": "wos_session",
             "in": "cookie",
             "required": false,
-            "schema": {
-              "type": "string",
-              "title": "Wos Session"
-            }
+            "schema": { "type": "string", "title": "Wos Session" }
           }
         ],
         "responses": {
-          "204": {
-            "description": "Successful Response"
-          },
+          "204": { "description": "Successful Response" },
           "401": {
             "description": "Authentication Error",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Message"
-                }
+                "schema": { "$ref": "#/components/schemas/Message" }
               }
             }
           },
@@ -560,9 +436,7 @@
             "description": "Validation Error",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
               }
             }
           }
@@ -572,26 +446,20 @@
     "/list_available_configurations": {
       "get": {
         "summary": "List available configurations",
-        "description": "List available configurations including GPU type, GPU count, RAM size and disk size.",
+        "description": "List available configurations including GPU type, GPU count, RAM size, and disk size.",
         "operationId": "list_available_configurations_list_available_configurations_get",
         "parameters": [
           {
             "name": "api-key",
             "in": "header",
             "required": false,
-            "schema": {
-              "type": "string",
-              "title": "Api-Key"
-            }
+            "schema": { "type": "string", "title": "Api-Key" }
           },
           {
             "name": "wos_session",
             "in": "cookie",
             "required": false,
-            "schema": {
-              "type": "string",
-              "title": "Wos Session"
-            }
+            "schema": { "type": "string", "title": "Wos Session" }
           }
         ],
         "responses": {
@@ -613,9 +481,7 @@
             "description": "Authentication Error",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Message"
-                }
+                "schema": { "$ref": "#/components/schemas/Message" }
               }
             }
           },
@@ -623,9 +489,7 @@
             "description": "Validation Error",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
               }
             }
           }
@@ -635,26 +499,20 @@
     "/list_available_os_templates": {
       "get": {
         "summary": "List available OS template images",
-        "description": "List available OS template images. Use the label to create an instance.",
+        "description": "List available OS template images. Use the `label` for your desired template as the `operating_system_label` when you create an instance.",
         "operationId": "list_available_os_templates_list_available_os_templates_get",
         "parameters": [
           {
             "name": "api-key",
             "in": "header",
             "required": false,
-            "schema": {
-              "type": "string",
-              "title": "Api-Key"
-            }
+            "schema": { "type": "string", "title": "Api-Key" }
           },
           {
             "name": "wos_session",
             "in": "cookie",
             "required": false,
-            "schema": {
-              "type": "string",
-              "title": "Wos Session"
-            }
+            "schema": { "type": "string", "title": "Wos Session" }
           }
         ],
         "responses": {
@@ -676,9 +534,7 @@
             "description": "Authentication Error",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Message"
-                }
+                "schema": { "$ref": "#/components/schemas/Message" }
               }
             }
           },
@@ -686,9 +542,7 @@
             "description": "Validation Error",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
               }
             }
           }
@@ -700,29 +554,16 @@
     "schemas": {
       "ConfigurationInstanceResponse": {
         "properties": {
-          "id": {
-            "$ref": "#/components/schemas/EntityId"
-          },
+          "id": { "$ref": "#/components/schemas/EntityId" },
           "gpu_model": {
             "anyOf": [
-              {
-                "$ref": "#/components/schemas/GPUModelResponse"
-              },
-              {
-                "type": "null"
-              }
+              { "$ref": "#/components/schemas/GPUModelResponse" },
+              { "type": "null" }
             ],
-            "description": "The GPU model of the configuration"
+            "description": "The GPU model of the configuration."
           },
           "cpu_model": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
             "title": "Cpu Model",
             "description": "The CPU model of the configuration.",
             "default": "generic"
@@ -767,17 +608,11 @@
       "ConfigurationResponse": {
         "properties": {
           "gpu_type": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GPUType"
-              }
-            ],
+            "allOf": [{ "$ref": "#/components/schemas/GPUType" }],
             "description": "The GPU type of the configuration."
           },
           "gpu_counts": {
-            "items": {
-              "type": "integer"
-            },
+            "items": { "type": "integer" },
             "type": "array",
             "title": "Gpu Counts",
             "description": "The number of GPUs in the configuration."
@@ -794,11 +629,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "gpu_type",
-          "gpu_counts",
-          "price_per_gpu_hr"
-        ],
+        "required": ["gpu_type", "gpu_counts", "price_per_gpu_hr"],
         "title": "ConfigurationResponse"
       },
       "CreateInstanceRequest": {
@@ -806,10 +637,11 @@
           "name": {
             "type": "string",
             "title": "Name",
-            "description": "The name of the instance."
+            "description": "The custom name of the instance."
           },
           "gpu_type": {
-            "$ref": "#/components/schemas/GPUType"
+            "allOf": [{ "$ref": "#/components/schemas/GPUType" }],
+            "description": "The GPU type of the instance."
           },
           "gpu_count": {
             "type": "integer",
@@ -820,60 +652,36 @@
           "ssh_key": {
             "type": "string",
             "title": "Ssh Key",
-            "description": "The SSH key name to add to the instance\n\nThis SSH key is used to connect to the instance."
+            "description": "The SSH key name to add to the instance. This SSH key is used to connect to the instance."
           },
           "operating_system_label": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SupportedOperatingSystem"
-              }
-            ],
-            "description": "The operating system label to be used to create the instance.",
+            "allOf": [{ "$ref": "#/components/schemas/SupportedOperatingSystem" }],
+            "description": "The operating system label used to create the instance.",
             "default": "ubuntu_20_04_lts_nvidia"
           },
           "region": {
             "anyOf": [
-              {
-                "$ref": "#/components/schemas/Region"
-              },
-              {
-                "type": "null"
-              }
+              { "$ref": "#/components/schemas/Region" },
+              { "type": "null" }
             ],
-            "description": "The region to create the instance in."
+            "description": "The region in which to create the instance."
           }
         },
         "type": "object",
-        "required": [
-          "gpu_type",
-          "ssh_keys"
-        ],
+        "required": ["name", "gpu_type", "ssh_key"],
         "title": "CreateInstanceRequest"
       },
       "CreateInstanceResponse": {
         "properties": {
-          "id": {
-            "type": "string",
-            "title": "Id"
-          },
-          "name": {
-            "type": "string",
-            "title": "Name"
-          },
-          "gpu_type": {
-            "$ref": "#/components/schemas/GPUType"
-          },
+          "id": { "type": "string", "title": "Id" },
+          "name": { "type": "string", "title": "Name" },
+          "gpu_type": { "$ref": "#/components/schemas/GPUType" },
           "operating_system_label": {
             "$ref": "#/components/schemas/SupportedOperatingSystem"
           }
         },
         "type": "object",
-        "required": [
-          "id",
-          "name",
-          "gpu_type",
-          "operating_system_label"
-        ],
+        "required": ["id", "name", "gpu_type", "operating_system_label"],
         "title": "CreateInstanceResponse"
       },
       "CreateSSHKeyRequest": {
@@ -890,16 +698,10 @@
           }
         },
         "type": "object",
-        "required": [
-          "name",
-          "public_key"
-        ],
+        "required": ["name", "public_key"],
         "title": "CreateSSHKeyRequest"
       },
-      "EntityId": {
-        "type": "string",
-        "title": "EntityId"
-      },
+      "EntityId": { "type": "string", "title": "EntityId" },
       "GPUModelResponse": {
         "properties": {
           "name": {
@@ -908,22 +710,13 @@
             "description": "The FluidStack unique name of the GPU model."
           },
           "memory_size_gb": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "anyOf": [{ "type": "integer" }, { "type": "null" }],
             "title": "Memory Size Gb",
-            "description": "Memory capacity of the GPU in megabytes."
+            "description": "Memory capacity of the GPU in gigabytes."
           }
         },
         "type": "object",
-        "required": [
-          "name"
-        ],
+        "required": ["name"],
         "title": "GPUModelResponse"
       },
       "GPUType": {
@@ -954,9 +747,7 @@
       "HTTPValidationError": {
         "properties": {
           "detail": {
-            "items": {
-              "$ref": "#/components/schemas/ValidationError"
-            },
+            "items": { "$ref": "#/components/schemas/ValidationError" },
             "type": "array",
             "title": "Detail"
           }
@@ -966,11 +757,7 @@
       },
       "HealthCheckOutSchema": {
         "properties": {
-          "status": {
-            "type": "string",
-            "title": "Status",
-            "default": "ok"
-          }
+          "status": { "type": "string", "title": "Status", "default": "ok" }
         },
         "type": "object",
         "title": "HealthCheckOutSchema"
@@ -996,135 +783,69 @@
             "description": "The unique identifier of the instance."
           },
           "status": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/InstanceStatus"
-              }
-            ],
+            "allOf": [{ "$ref": "#/components/schemas/InstanceStatus" }],
             "description": "The current status of the instance.",
             "default": "pending"
           },
           "username": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
             "title": "Username",
-            "description": "The username used to connect to the instance\n\nFor example, to connect to the instance via SSH, use `ssh <username>@<ip_address> -p <ssh_port>`.",
+            "description": "The username used to connect to the instance. For example, to connect to the instance via SSH, use: \"ssh -i <path/to/private/key> <username>@<ip_address>\".",
             "default": "ubuntu"
           },
           "ssh_port": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
             "title": "Ssh Port",
-            "description": "The SSH port to be used to connect to the instance.",
+            "description": "The SSH port used to connect to the instance.",
             "default": "22"
           },
           "ssh_keys": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "string"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": { "type": "string" },
+            "type": "array",
             "title": "Ssh Keys",
-            "description": "This is the list of the SSH keys of the instance with which you can login.",
+            "description": "The names of the SSH keys used to login to the instance.",
             "default": []
           },
           "ip_address": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
             "title": "Ip Address",
             "description": "The IP address of the instance."
           },
           "name": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
             "title": "Name",
             "description": "The name provided when the instance was created."
           },
           "current_rate": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "anyOf": [{ "type": "number" }, { "type": "null" }],
             "title": "Current Rate",
             "description": "The current hourly price of the instance per processor based on its current status."
           },
           "configuration": {
             "anyOf": [
-              {
-                "$ref": "#/components/schemas/ConfigurationInstanceResponse"
-              },
-              {
-                "type": "null"
-              }
+              { "$ref": "#/components/schemas/ConfigurationInstanceResponse" },
+              { "type": "null" }
             ],
             "description": "The configuration used to create the instance."
           },
           "created_at": {
             "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
+              { "type": "string", "format": "date-time" },
+              { "type": "null" }
             ],
             "title": "Created At",
             "description": "The creation date and time of the instance."
           }
         },
         "type": "object",
-        "required": [
-          "id"
-        ],
+        "required": ["id"],
         "title": "ListInstanceResponse"
       },
       "Message": {
-        "properties": {
-          "message": {
-            "type": "string",
-            "title": "Message"
-          }
-        },
+        "properties": { "message": { "type": "string", "title": "Message" } },
         "additionalProperties": false,
         "type": "object",
-        "required": [
-          "message"
-        ],
+        "required": ["message"],
         "title": "Message"
       },
       "OperatingSystemResponse": {
@@ -1135,41 +856,22 @@
             "description": "The friendly name of the operating system."
           },
           "description": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
             "title": "Description",
-            "description": "The description of the operating system detailing the list of pre-installed packages and customisations, if any."
+            "description": "The description of the operating system, detailing the pre-installed packages and customisations, if any."
           },
           "label": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SupportedOperatingSystem"
-              }
-            ],
+            "allOf": [{ "$ref": "#/components/schemas/SupportedOperatingSystem" }],
             "description": "The unique slug identifier of the operating system."
           }
         },
         "type": "object",
-        "required": [
-          "name",
-          "label"
-        ],
+        "required": ["name", "label"],
         "title": "OperatingSystemResponse"
       },
       "Region": {
         "type": "string",
-        "enum": [
-          "NORWAY",
-          "CANADA",
-          "SWEDEN",
-          "NETHERLANDS"
-        ],
+        "enum": ["NORWAY", "CANADA", "SWEDEN", "NETHERLANDS"],
         "title": "Region"
       },
       "SSHKeyResponse": {
@@ -1180,67 +882,32 @@
             "description": "The name of the SSH key."
           },
           "public_key": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
             "title": "Public Key",
             "description": "The public key."
           }
         },
         "type": "object",
-        "required": [
-          "name",
-          "public_key"
-        ],
+        "required": ["name"],
         "title": "SSHKeyResponse"
       },
       "SupportedOperatingSystem": {
         "type": "string",
-        "enum": [
-          "ubuntu_22_04_lts",
-          "ubuntu_20_04_lts",
-          "ubuntu_20_04_lts_nvidia",
-          "ubuntu_22_04_lts_nvidia"
-        ],
-        "title": "SupportedOperatingSystem",
-        "default": "ubuntu_20_04_lts"
+        "enum": ["ubuntu_20_04_lts_nvidia", "ubuntu_22_04_lts_nvidia"],
+        "title": "SupportedOperatingSystem"
       },
       "ValidationError": {
         "properties": {
           "loc": {
-            "items": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "integer"
-                }
-              ]
-            },
+            "items": { "anyOf": [{ "type": "string" }, { "type": "integer" }] },
             "type": "array",
             "title": "Location"
           },
-          "msg": {
-            "type": "string",
-            "title": "Message"
-          },
-          "type": {
-            "type": "string",
-            "title": "Error Type"
-          }
+          "msg": { "type": "string", "title": "Message" },
+          "type": { "type": "string", "title": "Error Type" }
         },
         "type": "object",
-        "required": [
-          "loc",
-          "msg",
-          "type"
-        ],
+        "required": ["loc", "msg", "type"],
         "title": "ValidationError"
       }
     }

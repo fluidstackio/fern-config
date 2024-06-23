@@ -1,5 +1,5 @@
 ---
-subtitle: Software Development Kit for Python applications
+subtitle: About the FluidStack Software Development Kit for Python applications
 ---
 
 FluidStack's Python SDK assists in developing applications in Python using the FluidStack API.
@@ -12,54 +12,37 @@ It includes the following features:
 - Configurable [timeouts](#timeouts)
 - Automatic [retries](#retries) with exponential backoff
 
-## Installation
-
-Our Python SDK is hosted at the [Python Package Index (PyPI)](https://pypi.org/). You can use any Python package installer, such as [pip](https://pip.pypa.io/en/stable/) and [poetry](https://python-poetry.org/docs/). 
-
-For example, you can add this dependency to your project's build file:
-```python
-pip install fluidstack
-# or
-poetry add fluidstack
-```
-
-## Usage
-
-Import `FluidStack` and start making calls to our API. 
-
-<Markdown src="../../snippets/api-key.mdx" />
-<Markdown src="../../snippets/api-keys-moreinfo.mdx" />
-
-```python
-from fluidstack.client import FluidStack
-
-client = FluidStack(
-    api_key="YOUR_API_KEY", # defaults to FLUIDSTACK_API_KEY
-)
-
-client.ssh_keys.create(
-    name="my_ssh_key",
-    public_key="PUBLIC_KEY",
-)
-```
-
 ## Async client
 
 The SDK exports an async client for making non-blocking calls to our API.
 
-```python 
-from fluidstack.client import AsyncFluidStack
+```python Example
+from FluidStack.client import AsyncFluidStack
 
 client = AsyncFluidStack(
-    api_key="YOUR_API_KEY",
+    api_key = "<your_api_key>"
 )
 
 async def main() -> None:
     await client.ssh_keys.create(
-        name="name",
-        public_key="PUBLIC_KEY",
+        name = "my_ssh_key_name",
+        public_key = "<public key>",
     )
 asyncio.run(main())
+```
+
+## Exception handling
+
+All errors thrown by the SDK will be subclasses of ApiError.
+
+```python 
+import FluidStack
+
+try:
+    client.instance.list()
+except fluidstack.core.ApiError as e: # Handle all errors
+  print(e.status_code)
+  print(e.body)
 ```
 
 ## Advanced
@@ -68,8 +51,8 @@ asyncio.run(main())
 
 By default, requests will time out after 60 seconds. Configure the timeout duration with the `timeout_in_seconds` option at the client or request level.
 
-```python
-from fluidstack.client import FluidStack
+```python Example
+from FluidStack.client import FluidStack
 
 client = FluidStack(
     ...,
@@ -95,7 +78,7 @@ A request is deemed retriable when any of the following HTTP status codes is ret
 
 Use the `max_retries` request option to configure this behavior.
 
-```python
+```python Example
 client.auth.get_callback(..., {
      max_retries=1
 })
@@ -104,10 +87,10 @@ client.auth.get_callback(..., {
 ### Custom HTTP client
 You can override the httpx client to customize it for your use-case. Some common use-cases include support for proxies and transports.
 
-```python
+```python Example
 import httpx
 
-from fluidstack.client import FluidStack
+from FluidStack.client import FluidStack
 
 client = FluidStack(...,
     http_client=httpx.Client(

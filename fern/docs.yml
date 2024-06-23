@@ -59,8 +59,12 @@ navigation:
   - section: SDKs
     slug: sdks
     contents:
-      - page: Python SDK
-        path: ./docs/pages/sdks/python-sdk.mdx
+      - section: Python
+        contents:
+          - page: Overview
+            path: ./docs/pages/sdks/python/overview.mdx
+          - page: How to use the Python SDK
+            path: ./docs/pages/sdks/python/use-python-sdk.mdx
   - api: API reference
     snippets:
       python: fluidstack
