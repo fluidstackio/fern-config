@@ -1,7 +1,7 @@
 instances:
   - url:  fluidstack-openapi.docs.buildwithfern.com
     custom-domain : docs.fluidstack.io
-title: Fluidstack Documentation
+title: FluidStack Docs
 favicon: ./docs/assets/logo.png
 
 navigation:
@@ -65,6 +65,7 @@ navigation:
             path: ./docs/pages/sdks/python/overview.mdx
           - page: How to use the Python SDK
             path: ./docs/pages/sdks/python/use-python-sdk.mdx
+            slug: use-python-sdk
   - api: API reference
     snippets:
       python: fluidstack

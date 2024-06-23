@@ -3,7 +3,7 @@
 - Familiarity with command-line tools
 - Basic familiarity with Python; Python 3+ installed
 
-## Install the SDK
+## Installation
 
 Our Python SDK is hosted at the [Python Package Index](https://pypi.org/project/fluidstack/) (PyPI). You can use any Python package manager, such as [pip](https://pip.pypa.io/en/stable/) or [poetry](https://python-poetry.org/docs/). 
 
@@ -28,31 +28,7 @@ client = FluidStack(
 
 Now you can use the client to consume the API from your Python application.
 
-## Secure use of your API key
-
-For security, keep your API key outside of any file that could potentially be seen by others, now or in the future. 
-
-There are many ways to secure the use of your API key. One common approach is using an `.env` file. Create a file named `.env` or look for one that already exists in your project. Add your key to it, then use the `dotenv` module to import it into your Python file. 
-
-Example:
-
-```properties .env file
-FLUIDSTACK_API_KEY="api_key_j123YourAPIKey"
-```
-```python Python file
-from FluidStack.client import FluidStack
-from dotenv import load_dotenv
-import os
-
-load_dotenv() # loads the variables from your .env file
-
-client = FluidStack(
-  api_key = os.getenv('FLUIDSTACK_API_KEY')
-)
-```
-<Warning>
-  If your `.env` file is inside a git repository, make sure that it's added to the [`.gitignore`](https://git-scm.com/docs/gitignore) file for that repository.
-</Warning>
+<Markdown src='../../../snippets/api-security-warning.mdx' />
 
 ## Use the FluidStack client in your app
 

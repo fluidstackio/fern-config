@@ -1,3 +1,7 @@
+---
+description: An overview of the FluidStack API, including the base URL, authentication, how to use the API key, request and response format, and programmatic use of the API.
+---
+
 The FluidStack API is a RESTful API you can use for command-line and programmatic management of your instances and SSH keys. You can also use it to retrieve information about available configurations and operating system templates.
 
 [View the full API reference.](/api-reference)
@@ -35,4 +39,41 @@ See an example of [how to use Python to manage instances](/instances/manage/prog
 
 ### Python SDK
 
-Use our [Python SDK](/sdks/python-sdk) to interface with our API in your Python applications.
+Use our [Python SDK](/sdks/python/overview) to interface with our API in your Python applications.
+
+### Secure use of your API key
+
+For security, avoid placing your API key in any file that could potentially be seen by others.
+
+There are many ways to safeguard the privacy of your API key. One common approach is using an `.env` file. Create a file named `.env` or look for one that already exists in your project. Add your key to it, then use the `dotenv` module to import it into your Python file. 
+
+Example:
+
+```properties .env file
+FLUIDSTACK_API_KEY="api_key_j123YourAPIKey"
+```
+<CodeBlocks>
+```python Python
+from dotenv import load_dotenv
+import os
+
+load_dotenv() # load the variables from your .env file
+
+api_key = os.getenv('FLUIDSTACK_API_KEY') # Use your API key securely
+```
+
+```python Python SDK
+from FluidStack.client import FluidStack
+from dotenv import load_dotenv
+import os
+
+load_dotenv() # load the variables from your .env file
+
+client = FluidStack(
+  api_key = os.getenv('FLUIDSTACK_API_KEY') # Use your API key securely
+)
+```
+</CodeBlocks>
+<Warning>
+  If your `.env` file is inside a git repository, make sure that it's added to the [`.gitignore`](https://git-scm.com/docs/gitignore) file for that repository.
+</Warning>
