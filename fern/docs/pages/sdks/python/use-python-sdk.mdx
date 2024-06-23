@@ -100,8 +100,6 @@ For example, you could simply print the entire response to the terminal:
 ```python Print the entire response
 print(client.instances.list())
 ```
-Example output:
-![Screenshot of terminal output](../../../assets/instances-list-example1.png)
 
 Or you could loop through the list and print only the name and status for each instance:
 ```python Print each instance name and status
@@ -109,9 +107,6 @@ my_instances = client.instances.list()
 for instance in my_instances:
     print(f"Instance: {instance.name}, Status: {instance.status}")
 ```
-
-Example output:
-![Screenshot of terminal output](../../../assets/instances-list-example2.png)
 
 ## Instances 
 
