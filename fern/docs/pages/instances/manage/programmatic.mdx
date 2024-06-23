@@ -1,10 +1,9 @@
 The Python script on this page provides an example of how the [FluidStack API](/api-reference) can be used to manage instances programmatically.
 
 ## Prerequisites
-  - <Markdown src="../../../snippets/api-key.mdx" />
+  - An [API key](/dashboard/api-keys)
   - A [public/private key pair](/ssh/use-ssh-keys#generate-a-publicprivate-key-pair)
   - Basic familiarity with Python; Python 3+ installed
-  - The [requests](https://pypi.org/project/requests/) module installed in your Python environment
 
 ## Script overview
 
@@ -44,92 +43,102 @@ The Python script on this page provides an example of how the [FluidStack API](/
 
 ## Example script 
 
-```python maxLines=30 title="Python" {14,34,56,78,81}
+```python maxLines=30 title="Python" {12,35,63,86,89}
 import requests
 from pathlib import Path
-import os
 import time
 import json
 
-api_url = "https://platform.fluidstack.io/"
-api_key = "<your_api_key>"
+base_url = 'https://platform.fluidstack.io/'
+api_key = 'api_key_j7GaG3rGUFDigTkSE4GRmqwbdP1f5MfEeWgLA9AI'
 
-headers = {
-    "api-key": api_key
-}
+# Send the API key in a header
+headers = { 'api-key': api_key }
 
 # 1: Create an SSH key
-print("Creating SSH key")
-ssh_key_name = "python_testkey"
+print('Creating SSH key')
 
-# The next line reads the public key from ~/.ssh/id_rsa.pub - change this if your public key is somewhere different
-public_key = open(os.path.join(Path.home(), ".ssh", "id_rsa.pub")).read().strip() 
-r = requests.post(
-    api_url + "ssh_keys",
-    headers=headers,
-    json={"name": ssh_key_name, "public_key": public_key}, # Create a SSH key using the provided public key
+# Read the public key from ~/.ssh/id_rsa.pub
+public_key = Path.home().joinpath('.ssh', 'id_rsa.pub').read_text().strip() 
+
+ssh_key_name = 'python_ssh_key'
+
+# Send POST request to /ssh_keys
+response = requests.post(
+  base_url + 'ssh_keys',
+  headers=headers,
+  json={
+    'name': ssh_key_name,
+    'public_key': public_key
+  },
 )
 
-if not r.ok:
-    print("Response body: " + json.dumps(r.json(), indent=2))
-    raise Exception("Could not create SSH key")
-
-gpu_type = "RTX_A6000_16GB"
-gpu_count = 4
-operating_system_label = "ubuntu_20_04_lts_nvidia"
+# Print response body if the response status code is not OK
+if not response.ok:
+  print('Response: ' + json.dumps(response.json(), indent=2))
+  raise Exception('Could not create SSH key')
 
 # 2: Create an instance 
-print("Creating instance")
-r = requests.post(
-    api_url + "instances",
-    headers=headers,
-    json={
-        "name": "python_testinstance",
-        "ssh_key": ssh_key_name,
-        "gpu_type": gpu_type,
-        "gpu_count": gpu_count,
-        "operating_system_label": operating_system_label
-    }
-)
-print("Response body: " + json.dumps(r.json(), indent=2))
-if not r.ok:
-    raise Exception("Could not create instance")
-	
-instance_id = r.json()["id"]
+print('Creating instance')
 
-instance_status = "pending"
-print("Waiting for instance to start")
+gpu_type = 'RTX_A6000_48GB'
+gpu_count = 4
+instance_name = 'python_test_instance'
+
+# Send POST request to /instances
+response = requests.post(
+  base_url + 'instances',
+  headers = headers,
+  json = {
+    'name': instance_name,
+    'ssh_key': ssh_key_name,
+    'gpu_type': gpu_type,
+    'gpu_count': gpu_count
+  },
+)
+
+print('Response: ' + json.dumps(response.json(), indent=2))
+if not response.ok:
+  raise Exception('Could not create instance')
+
+instance_id = response.json()['id']
+
+status = 'pending'
+print('Waiting for instance to start')
 
 # 3: Check the instance status
-# This while loop checks the instance status every 10 seconds and exits when the status is "running"
+# Check status every 10 seconds, exit when status is 'running'
 count = 1
-while instance_status != "running":
-    if instance_status in ["unhealthy", "terminated", "shutting_down", "stopping", "stopped"]:
-        print("Could not create instance")
-        raise Exception("Could not create instance")
-    try:
-        r = requests.get(api_url + "instances", headers=headers)
-        instances = r.json()
-        instance = None
-        for instance in instances:
-            if instance["id"] == instance_id:
-                instance_status = instance["status"]
-                break
-        instance_status = instance["status"]
-    except Exception as e:
-        print(e)
-    print("\t [" + str(count) + "] Status: " + instance_status)
-    time.sleep(10)
-    count += 1
+while status != 'running':
+  if status != 'pending':
+    print('Could not create instance')
+    raise Exception('Could not create instance')
+  try:
+    # Send GET request to /instances
+    response = requests.get(base_url + 'instances', headers=headers)
+    instances = response.json()
+    instance = None
+    for instance in instances:
+      if instance['id'] == instance_id:
+        status = instance['status']
+        break
+    status = instance['status']
+  except Exception as e:
+    print(e)
+  print(f'\t [{count}] Status: {status}')
+  time.sleep(10)
+  count += 1
 
 # 4: Print the instance IP
-print("Instance IP address: " + instance["ip_address"])
+print('Instance IP address: ' + instance['ip_address'])
 
-# 5: Delete the instance
-print("Deleting instance")
-r = requests.delete(api_url + f"instances/{instance_id}", headers=headers)
-if not r.ok:
-    print("Response body: " + json.dumps(r.json(), indent=2))
-    raise Exception("Could not delete instance")
-print("Instance deleted")
+# 5: Terminate the instance
+print('Terminating instance')
+
+# Send DELETE request to /instances/{instance_id}
+response = requests.delete(base_url + f'instances/{instance_id}', headers=headers)
+if not response.ok:
+  print('Response: ' + json.dumps(response.json(), indent=2))
+  raise Exception('Could not delete instance')
+print('Instance deleted')
 ```
