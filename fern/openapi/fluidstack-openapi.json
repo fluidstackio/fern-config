@@ -668,7 +668,7 @@
           }
         },
         "type": "object",
-        "required": ["name", "gpu_type", "ssh_key"],
+        "required": ["gpu_type", "ssh_key"],
         "title": "CreateInstanceRequest"
       },
       "CreateInstanceResponse": {
