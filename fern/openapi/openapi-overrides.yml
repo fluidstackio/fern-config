@@ -177,12 +177,16 @@ paths:
                   - 8
                 price_per_gpu_hr: '5'
                 estimated_provisioning_time_minutes: 5
+                regions:
+                  - NORWAY
               - gpu_type: H100_PCIE_80GB
                 gpu_counts:
                   - 1
                   - 8
                 price_per_gpu_hr: '5'
                 estimated_provisioning_time_minutes: 5
+                regions:
+                  - CANADA
   /list_user_ssh_keys:
     get:
       x-fern-ignore: true
