@@ -35,6 +35,8 @@ navigation:
             path: ./docs/pages/instances/manage/overview.mdx
           - page: Create instances
             path: ./docs/pages/instances/manage/create.mdx
+          - page: Get a single instance
+            path: ./docs/pages/instances/manage/get.mdx
           - page: List instances
             path: ./docs/pages/instances/manage/list.mdx
           - page: Stop and start instances
