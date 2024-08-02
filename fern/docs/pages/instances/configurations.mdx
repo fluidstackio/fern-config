@@ -16,33 +16,3 @@ When you [create an instance](/api-reference/instances/create), you must specify
 
 <Note>If you do not provide a value for `gpu_count` when creating an instance, `1` is used as the default.</Note>
 
-### List of configurations
-
-We support the following configurations. Use our API to find out which are currently available.
-
-| GPU Type         | GPU Count | CPU Count | RAM Size (GB) | NVME Storage Size (GB) |
-|------------------|-----------|-----------|---------------|------------------------|
-| RTX_A4000_16GB   | 1         | 6         | 24            | 160                    |
-| RTX_A4000_16GB   | 2         | 12        | 48            | 320                    |
-| RTX_A4000_16GB   | 4         | 24        | 96            | 640                    |
-| RTX_A4000_16GB   | 8         | 48        | 192           | 1280                   |
-| RTX_A4000_16GB   | 10        | 64        | 240           | 1600                   |
-| RTX_A5000_24GB   | 1         | 8         | 30            | 200                    |
-| RTX_A5000_24GB   | 2         | 16        | 60            | 400                    |
-| RTX_A5000_24GB   | 4         | 32        | 120           | 800                    |
-| RTX_A5000_24GB   | 8         | 64        | 240           | 1600                   |
-| RTX_A6000_48GB   | 1         | 16        | 59            | 425                    |
-| RTX_A6000_48GB   | 2         | 32        | 119           | 850                    |
-| RTX_A6000_48GB   | 4         | 64        | 238           | 1700                   |
-| A100_PCIE_80GB   | 1         | 32        | 120           | 200                    |
-| A100_PCIE_80GB   | 1         | 32        | 120           | 850                    |
-| A100_PCIE_80GB   | 2         | 64        | 240           | 400                    |
-| A100_PCIE_80GB   | 4         | 128       | 480           | 800                    |
-| A100_PCIE_80GB   | 4         | 126       | 480           | 3300                   |
-| A100_PCIE_80GB   | 8         | 252       | 960           | 6600                   |
-| A100_NVLINK_80GB | 8         | 252       | 960           | 6500                   |
-| H100_PCIE_80GB   | 1         | 32        | 180           | 750                    |
-| H100_PCIE_80GB   | 2         | 64        | 360           | 1500                   |
-| H100_PCIE_80GB   | 4         | 126       | 720           | 3200                   |
-| H100_PCIE_80GB   | 8         | 252       | 1440          | 6500                   |
-| L40_48GB         | 4         | 126       | 240           | 3300                   |
