@@ -1,0 +1,19 @@
+---
+subtitle: How to view an existing instance with the FluidStackAPI
+---
+
+Call the [Get user instance](/api-reference/instances/get) endpoint:
+
+<EndpointRequestSnippet endpoint="GET /instances/:instance_id" />
+
+<Markdown src="../../../snippets/api-key-header.mdx" />
+
+Example response:
+
+<EndpointResponseSnippet endpoint="GET /instances/:instance_id" />
+
+If your request succeeds, the endpoint will respond with a JSON containing one object.
+
+Each object contains the details for an instance belonging to the user whose API key was provided in the header. 
+
+For further details, see the [API Reference](/api-reference/instances/get).
