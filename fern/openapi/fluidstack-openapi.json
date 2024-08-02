@@ -17,7 +17,7 @@
           "General"
         ],
         "summary": "Healthcheck",
-        "operationId": "healthcheck_healthcheck_head",
+        "operationId": "healthcheck_healthcheck_get",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -36,7 +36,7 @@
           "General"
         ],
         "summary": "Healthcheck",
-        "operationId": "healthcheck_healthcheck_head",
+        "operationId": "healthcheck_healthcheck_get",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -181,6 +181,138 @@
         }
       }
     },
+    "/instances/{instance_id}": {
+      "get": {
+        "summary": "Fetch a single user instance",
+        "description": "This endpoint is used to retrieve a single instance associated with the authenticated user by its ID.",
+        "operationId": "get_user_instance_instances__instance_id__get",
+        "parameters": [
+          {
+            "name": "instance_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Instance Id"
+            }
+          },
+          {
+            "name": "api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Api-Key"
+            }
+          },
+          {
+            "name": "wos_session",
+            "in": "cookie",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Wos Session"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InstanceResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Terminate an instance",
+        "description": "This endpoint is used to terminate an existing instance by its ID.",
+        "operationId": "terminate_instance_instances__instance_id__delete",
+        "parameters": [
+          {
+            "name": "instance_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Instance Id"
+            }
+          },
+          {
+            "name": "api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Api-Key"
+            }
+          },
+          {
+            "name": "wos_session",
+            "in": "cookie",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Wos Session"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/instances/{instance_id}/stop": {
       "put": {
         "summary": "Stop an instance",
@@ -291,72 +423,6 @@
                 "schema": {
                   "$ref": "#/components/schemas/ListInstanceResponse"
                 }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Message"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/instances/{instance_id}": {
-      "delete": {
-        "summary": "Terminate an instance",
-        "description": "This endpoint is used to terminate an existing instance by its ID.",
-        "operationId": "terminate_instance_instances__instance_id__delete",
-        "parameters": [
-          {
-            "name": "instance_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Instance Id"
-            }
-          },
-          {
-            "name": "api-key",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "title": "Api-Key"
-            }
-          },
-          {
-            "name": "wos_session",
-            "in": "cookie",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "title": "Wos Session"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
               }
             }
           },
@@ -998,6 +1064,124 @@
         },
         "type": "object",
         "title": "HealthCheckOutSchema"
+      },
+      "InstanceResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "The unique identifier of the instance."
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/InstanceStatus"
+              }
+            ],
+            "description": "The current status of the instance.",
+            "default": "pending"
+          },
+          "username": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Username",
+            "description": "The username used to connect to the instance. For example, to connect to the instance via SSH, use: \"ssh -i <path/to/private/key> <username>@<ip_address>\".",
+            "default": "ubuntu"
+          },
+          "ssh_port": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ssh Port",
+            "description": "The SSH port used to connect to the instance.",
+            "default": "22"
+          },
+          "ssh_keys": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Ssh Keys",
+            "description": "The names of the SSH keys used to login to the instance.",
+            "default": []
+          },
+          "ip_address": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ip Address",
+            "description": "The IP address of the instance."
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name",
+            "description": "The name provided when the instance was created."
+          },
+          "current_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Current Rate",
+            "description": "The current hourly price of the instance per processor based on its current status."
+          },
+          "configuration": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ConfigurationInstanceResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The configuration used to create the instance."
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At",
+            "description": "The creation date and time of the instance."
+          }
+        },
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "title": "InstanceResponse"
       },
       "InstanceStatus": {
         "type": "string",
