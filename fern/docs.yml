@@ -98,3 +98,5 @@ logo:
   dark: ./docs/assets/logo-dark-mode.svg
   href: /
   height: 30
+js:
+  - ./js/koala.js
