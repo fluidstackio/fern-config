@@ -1,0 +1,91 @@
+---
+subtitle: Download files to your instance from a server
+---
+
+The `wget` command is used to download files from HTTP, HTTPS, or FTP servers. It is particularly useful for downloading files directly to your instance from a web server.
+
+To upload files or directories to your instance, see our documentation on [scp](/instances/transfer-files/scp) and [rsync](/instances/transfer-files/rsync).
+
+## Basic syntax
+
+Run the `wget`command from an SSH session on your instance to download files:
+
+```bash
+wget <URL_of_source_file>
+```
+
+### Example
+
+```bash
+wget https://www.example.com/index.html
+```
+
+This command downloads the file located at `https://www.example.com/index.html` to the current directory on your instance.
+
+## Commonly used options
+
+### Rename the downloaded file
+
+To download the file under a different name, use the `-O` option:
+
+```bash
+wget -O <desired_filename> <URL_of_source_file>
+```
+
+**Example**
+
+Download `index.html` from `https://www.example.com/` and save it as `myfile.html`:
+
+```bash
+wget -O myfile.html https://www.example.com/index.html
+```
+
+### Download to a different directory
+
+To download a file to a directory on your instance other than the current one, specify the directory path with the `-P` option:
+
+```bash
+wget -P <directory_path> <URL_of_source_file>
+```
+
+**Example**
+
+Download `index.html` from `https://www.example.com/` and save it to `/home/ubuntu/`:
+
+```bash
+wget -P /home/ubuntu/ https://www.example.com/index.html
+```
+
+### Download in background
+
+To download a file in the background and continue running other commands, use the `-b` option:
+
+```bash
+wget -b <URL_of_source_file>
+```
+
+### Resume a download
+
+To resume an interrupted download, use the `-c` option:
+
+```bash
+wget -c <URL_of_source_file>
+```
+
+### Limit download speed
+
+To limit the download speed, use the `--limit-rate` option:
+
+```bash
+wget --limit-rate=<rate> <URL_of_source_file>
+```
+
+**Example**
+
+```bash
+wget --limit-rate=100k https://www.example.com/index.html
+```
+
+## Additional resources
+
+For more details on how to use `wget`, refer to the [GNU.org wget manual](https://www.gnu.org/software/wget/manual/) or enter `man wget` in a Linux terminal for the manual page.
