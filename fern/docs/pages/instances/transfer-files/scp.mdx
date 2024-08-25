@@ -1,0 +1,229 @@
+---
+subtitle: Transfer files to and from your instance
+---
+
+The `scp` command, short for _secure copy_, transfers files between local and remote machines using the SSH protocol. This method encrypts all data during transmission to ensure security.
+
+If SSH is installed on your local machine, `scp` is typically included in most SSH packages. See: [What is SSH?](/ssh/what-is-ssh)
+
+Although `scp` is straightforward and user-friendly, it lacks advanced features such as delta transfers (which send only the changed parts of files), integrity checks, and the ability to resume interrupted transfers. It is best suited for quick, one-time transfers of small to medium-sized files, like configuration files, scripts, and smaller data sets. For larger transfers or directory synchronization, consider using [rsync](/instances/transfer-files/rsync).
+
+<Warning title="Warning">
+Files copied with `scp` will be overwritten without confirmation if they already exist at the target location.
+</Warning>
+
+## Basic syntax
+
+Run the `scp` command from a terminal on your local machine. Ensure this terminal is _not_ within an SSH session to the instance.
+
+```bash
+scp -i <private_key_path> <source_path> <target_path>/
+```
+
+Prefix the instance's username and IP address to the source path for downloads and to the target path for uploads, followed by a colon.
+
+```text Example of a full instance path
+ubuntu@192.0.2.0:/home/ubuntu/
+```
+
+For the private key path, use the local path to the private key for the instance's SSH key. See: [How to use SSH keys](/ssh/use-ssh-keys).
+
+<Note>
+If you have recently logged into the instance via SSH from your local machine, your credentials might be cached. In this case, you can omit the `-i` flag and the private key path. 
+</Note>
+
+## Transfer files
+
+<Tabs>
+  <Tab title="Upload a file">
+
+    To upload a file to an instance, use the following command:
+
+```bash
+scp -i <private_key_path> <source_file_path> <username>@<ip_address>:<target_dir_path>/
+```
+
+    ### Example
+
+    Upload a file named `myfile` from the current directory of your local machine to the `/home/ubuntu/` directory on the instance:
+
+```bash
+scp -i ~/.ssh/id_rsa myfile ubuntu@192.0.2.0:/home/ubuntu/
+```
+  </Tab>
+
+  <Tab title="Download a file">
+
+    To download a file from an instance, use the following command:
+
+```bash
+scp -i <private_key_path> <username>@<ip_address>:<source_file_path> <target_dir_path>/
+```
+
+    ### Example
+
+    Download a file named `myfile` from `/home/ubuntu/` on the instance to the current directory of your local machine:
+
+```bash
+scp -i ~/.ssh/id_rsa ubuntu@192.0.2.0:/home/ubuntu/myfile ./
+```
+  </Tab>
+</Tabs>
+
+<Warning>
+  Be cautious! If you specify a non-existent directory on the target _and_ omit the trailing slash `/`, the source file will be copied with the directory name as the filename.
+
+  **Example:** Copying `myfile` to `ubuntu@192.0.2.0:/home/xyz` where the directory `/home/xyz` does not exist will result in `myfile` being copied to a _file_ named `xyz` at `/home/`.
+</Warning>
+
+## Transfer directories
+
+To recursively copy a directory and its contents, use the `-r` flag followed by the directory path.
+
+<Tabs>
+  <Tab title="Upload a directory">
+
+    To upload a directory to an instance, use the following command:
+
+```bash
+scp -i <private_key_path> -r <source_dir_path> <username>@<ip_address>:<target_parent_dir_path>/
+```
+
+    ### Example
+
+    Upload a directory named `mydir` from your local machine to `/home/ubuntu/mydir` on the instance:
+
+```bash
+scp -i ~/.ssh/id_rsa -r mydir ubuntu@192.0.2.0:/home/ubuntu/
+```
+  </Tab>
+
+  <Tab title="Download a directory">
+
+    To download a directory from an instance, use the following command:
+
+```bash
+scp -i <private_key_path> -r <username>@<ip_address>:<source_dir_path> <target_dir_path>/
+```
+
+    ### Example
+
+    Download a directory named `mydir` from `/home/ubuntu` on the instance to the current directory of your local machine:
+
+```bash
+scp -i ~/.ssh/id_rsa -r ubuntu@192.0.2.0:/home/ubuntu/mydir ./
+```
+  </Tab>
+</Tabs>
+
+## Commonly used options
+
+### Rename the transferred file
+
+<Tabs>
+  <Tab title="Rename a file during upload">
+
+    To upload a file and rename it at the target instance, use the following command:
+
+```bash
+scp -i <private_key_path> <source_file_path> <username>@<ip_address>:<target_dir_path>/<new_file_name>
+```
+    **Example**
+
+    Upload a file named `file1` from your local machine and rename it to `file2` in the `/home/ubuntu/` directory on the instance:
+
+```bash
+scp -i ~/.ssh/id_rsa file1 ubuntu@192.0.2.0:/home/ubuntu/file2
+```
+  </Tab>
+
+  <Tab title="Rename a file during download">
+
+    To download a file and rename it on your local machine, use the following command:
+
+```bash
+scp -i <private_key_path> <username>@<ip_address>:<source_file_path> <target_dir_path>/<new_file_name>
+```
+
+    **Example**
+
+    Download a file named `file1` from `/home/ubuntu/` on the instance and rename it to `file2` in the current directory of your local machine:
+
+```bash
+scp -i ~/.ssh/id_rsa ubuntu@192.0.2.0:/home/ubuntu/file1 ./file2
+```
+  </Tab>
+</Tabs>
+
+### Rename the transferred directory
+
+<Tabs>
+  <Tab title="Rename a directory during upload">
+
+    To upload a directory and rename it on the target instance, use the following command:
+
+```bash
+scp -i <private_key_path> -r <source_dir_path> <username>@<ip_address>:<target_parent_dir_path>/<new_dir_name>
+```
+
+    **Example**
+
+    Upload a directory named `dir1` from your local machine and rename it to `dir2` in the `/home/ubuntu/` directory on the instance:
+
+```bash
+scp -i ~/.ssh/id_rsa -r dir1 ubuntu@192.0.2.0:/home/ubuntu/dir2
+```
+  </Tab>
+
+  <Tab title="Rename a directory during download">
+
+    To download a directory and rename it on your local machine, use the following command:
+
+```bash
+scp -i <private_key_path> -r <username>@<ip_address>:<source_dir_path> <target_parent_dir_path>/<new_dir_name>
+```
+
+    **Example**
+
+    Download a directory named `dir1` from `/home/ubuntu/` on the instance and rename it to `dir2` in the current directory of your local machine:
+
+```bash
+scp -i ~/.ssh/id_rsa -r ubuntu@192.0.2.0:/home/ubuntu/dir1 ./dir2
+```
+
+  </Tab>
+</Tabs>
+
+### Limit bandwidth
+
+To limit the bandwidth used by scp, use the `-l` option followed by the bandwidth limit in kilobits per second (Kbps):
+
+```bash
+scp -i <private_key_path> -l <rate_in_Kbps> <source_path> <username>@<ip_address>:<target_path>/
+```
+
+**Example**
+
+```bash
+scp -i ~/.ssh/id_rsa -l 1000 myfile ubuntu@192.0.2.0:/home/ubuntu/
+```
+
+### Preserve file attributes
+
+To preserve file modification times, access times, and modes during the transfer, use the `-p` option:
+
+```bash
+scp -i <private_key_path> -p <source_path> <username>@<ip_address>:<target_path>/
+```
+
+### Verbose mode
+
+To enable verbose output for debugging purposes, use the `-v` option:
+
+```bash
+scp -i <private_key_path> -v <source_path> <username>@<ip_address>:<target_path>/
+```
+
+## Additional resources
+
+View the manual page (manpage) for [`scp` online](https://linux.die.net/man/1/scp). Alternatively, enter `man scp` in a Linux terminal to view the manpage.
