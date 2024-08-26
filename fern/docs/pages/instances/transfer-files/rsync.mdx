@@ -1,0 +1,215 @@
+---
+subtitle: Transfer larger files and directories
+---
+
+The `rsync` command is used to transfer large files and synchronize directories. It is particularly useful for resuming interrupted transfers and for efficiently transferring only the parts of files that have changed.
+
+Unlike `scp`, which copies entire files regardless of changes, `rsync` checks the differences between the source and target files, then copies only what has changed. This can significantly reduce transfer times, especially when dealing with large files or directories with many files.
+
+`rsync` is usually available by default on Linux, Unix, and macOS systems. On Windows, you can use `rsync` by installing a Linux-like environment, such as [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install) or [Cygwin](https://www.cygwin.com/install.html).
+
+<Warning title="Warning">
+  Files copied with `rsync` that already exist at the target location will be overwritten without confirmation. You can use the [--ignore-existing option](#prevent-overwrites) to prevent this behavior.
+</Warning>
+
+## Basic syntax
+
+Run the `rsync` command from a terminal on your local machine. Ensure this terminal is _not_ within an SSH session to the instance.
+
+```bash
+rsync -avz -e "ssh -i <private_key_path>" <source_path> <target_path>/
+```
+
+Prefix the instance's username and IP address to the source path for downloads and to the target path for uploads, followed by a colon:
+
+```text Example of a full instance path
+ubuntu@192.0.2.0:/home/ubuntu/
+```
+
+For the private key path, use the local path to the private key for the instance's SSH key. See: [How to use SSH keys](/ssh/use-ssh-keys).
+
+<Tip title="Tip">
+  If you have recently logged into the instance via SSH from your local machine, your credentials might be cached. In this case, you can omit the `-i` flag and the private key path. 
+</Tip>
+
+### About the `-e` option
+
+Since FluidStack uses SSH key authentication instead of password authentication, use the `-e` option to provide `rsync` with the private key path.
+
+### About the `-avz` options
+
+The options `-avz` are commonly used for efficient and informative data transfer:
+
+- `-a`: Archive mode. Preserves symbolic links, file permissions, timestamps, and other attributes. It also enables recursive copying.
+- `-v`: Verbose mode. Displays detailed information during the transfer, which is useful for tracking progress and debugging.
+- `-z`: Compression. Compresses the data during transfer to speed up the process.
+
+## Transfer a file
+
+<Tabs>
+  <Tab title="Upload a file">
+    To upload a file to an instance, use the following command:
+
+```bash
+rsync -avz -e "ssh -i <private_key_path>" <source_file_path> <username>@<ip_address>:<target_dir_path>/
+```
+
+    ### Example
+
+    Upload a file named `myfile` from the current directory of your local machine to the `/home/ubuntu/` directory on the instance:
+
+```bash
+rsync -avz -e "ssh -i ~/.ssh/id_rsa" myfile ubuntu@192.0.2.0:/home/ubuntu/
+```
+
+  </Tab>
+
+  <Tab title="Download a file">
+    To download a file from an instance, use the following command:
+
+```bash
+rsync -avz -e "ssh -i <private_key_path>" <username>@<ip_address>:<source_file_path> <target_dir_path>/
+```
+
+    ### Example
+
+    Download a file named `myfile` from `/home/ubuntu/` on the instance to the current directory of your local machine:
+
+```bash
+rsync -avz -e "ssh -i ~/.ssh/id_rsa" ubuntu@192.0.2.0:/home/ubuntu/myfile ./
+```
+  </Tab>
+</Tabs>
+
+<Warning title="Warning">
+  You can omit the trailing slash `/` for the target directory path. However, you must be cautious. If you specify a non-existent directory on the target _and_ omit the trailing slash, the source file will be copied with the directory name as the filename.
+
+  **Example:** Transferring `myfile` to `ubuntu@192.0.2.0:/home/ubuntu/xyz` where the directory `/home/ubuntu/xyz` does not exist will result in `myfile` being copied to a _file_ named `xyz` at `/home/ubuntu/`. If you use `ubuntu@192.0.2.0:/home/ubuntu/xyz/` instead, `rsync` will create the `xyz` directory and copy `myfile` into it.
+</Warning>
+
+## Transfer a directory
+
+<Tabs>
+  <Tab title="Upload a directory">
+    To upload a directory to an instance, use the following command:
+
+```bash
+rsync -avz -e "ssh -i <private_key_path>" <source_dir_path> <username>@<ip_address>:<target_parent_dir_path>/
+```
+
+    If the directory already exists in the provided target parent directory on the instance, this synchronizes that directory with the local directory.
+
+    ### Example
+
+    Upload a directory named `mydir` from your local machine to `/home/ubuntu/mydir` on the instance:
+
+```bash
+rsync -avz -e "ssh -i ~/.ssh/id_rsa" mydir ubuntu@192.0.2.0:/home/ubuntu/
+```
+  </Tab>
+
+  <Tab title="Download a directory">
+    To download a directory from an instance, use:
+
+```bash
+rsync -avz -e "ssh -i <private_key_path>" <username>@<ip_address>:<source_dir_path> <target_dir_path>/
+```
+
+    If the directory already exists at the provided target directory path on your local machine, this synchronizes that directory with the instance directory.
+
+    ### Example
+
+    Download a directory named `mydir` from `/home/ubuntu` on the instance to the current directory of your local machine:
+
+```bash
+rsync -avz -e "ssh -i ~/.ssh/id_rsa" ubuntu@192.0.2.0:/home/ubuntu/mydir ./
+```
+
+  </Tab>
+</Tabs>
+
+<Note title="Note">
+  If the target parent directory path does not exist, `rsync` will create the parent directory and copy the source directory into it. 
+</Note>
+
+## Other commonly used options
+
+In addition to `-avz` (the options described in the [Basic syntax](#basic-syntax) section), you might find these options helpful. 
+
+### Dry run
+
+To preview what files will be transferred without actually transferring them, use the `--dry-run` option:
+
+```bash
+rsync -avz -e "ssh -i <private_key_path>" --dry-run <source_path> <username>@<ip_address>:<target_path>/
+```
+
+### Progress bar
+
+To display progress information during the transfer, use the `--progress` option:
+
+```bash
+rsync -avz -e "ssh -i <private_key_path>" --progress <source_path> <username>@<ip_address>:<target_path>/
+```
+
+### Delete files on target
+
+To delete files on the target that do not exist on the source, use the `--delete` option:
+
+```bash
+rsync -avz -e "ssh -i <private_key_path>" --delete <source_path> <username>@<ip_address>:<target_path>/
+```
+
+This synchronizes the target directory with the source by removing any extra files that aren't in the source directory.
+
+### Resume an interrupted transfer
+
+To resume an interrupted transfer, use the `--partial` option:
+
+```bash
+rsync -avz --partial <source_path> <username>@<ip_address>:<target_path>/
+```
+
+This continues from where the transfer was interrupted, without re-transferring completed files.
+
+### Limit bandwidth usage
+
+To limit the bandwidth used by `rsync`, use the `--bwlimit` option followed by the limit in kilobits per second (Kbps):
+
+```bash
+rsync -avz -e "ssh -i <private_key_path>" --bwlimit=<rate_in_Kbps> <source_path> <username>@<ip_address>:<target_path>/
+```
+
+**Example**
+
+```bash
+rsync -avz -e "ssh -i ~/.ssh/id_rsa" --bwlimit=1000 /users/ada/mydir ubuntu@192.0.2.0:/home/ubuntu/mydir/
+```
+
+### Exclude files
+
+To exclude certain files from being transferred, use the `--exclude` option:
+
+```bash
+rsync -avz -e "ssh -i <private_key_path>" --exclude '<string_to_exclude>' <source_path> <username>@<ip_address>:<target_path>/
+```
+
+**Example**
+
+The following command excludes all `.log` files from the transfer:
+
+```bash
+rsync -avz -e "ssh -i ~/.ssh/id_rsa" --exclude '*.log' /users/ada/mydir ubuntu@192.0.2.0:/home/ubuntu/mydir/
+```
+
+### Prevent overwrites
+
+By default, `rsync` overwrites existing files at the target without prompting for confirmation. To prevent this behavior, use the `--ignore-existing` option:
+
+```bash
+rsync -avz -e "ssh -i <private_key_path>" --ignore-existing <source_path> <username>@<ip_address>:<target_path>/
+```
+
+## Additional resources
+
+For more information about how to use `rsync`, view the [official documentation](https://rsync.samba.org/documentation.html) or enter `man rsync` in a Linux terminal for its manual page.

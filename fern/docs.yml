@@ -46,6 +46,19 @@ navigation:
           - page: Programmatic instance management
             slug: programmatic
             path: ./docs/pages/instances/manage/programmatic.mdx
+      - section: Transfer files
+        contents:
+          - page: Overview
+            path: ./docs/pages/instances/transfer-files/overview.mdx
+          - page: How to use scp
+            slug: scp
+            path: ./docs/pages/instances/transfer-files/scp.mdx
+          - page: How to use rsync
+            slug: rsync
+            path: ./docs/pages/instances/transfer-files/rsync.mdx
+          - page: How to use wget
+            slug: wget
+            path: ./docs/pages/instances/transfer-files/wget.mdx
       - page: Configurations
         path: ./docs/pages/instances/configurations.mdx
         slug: configurations
