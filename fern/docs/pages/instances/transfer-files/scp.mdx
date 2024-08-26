@@ -17,7 +17,7 @@ Files copied with `scp` that already exist at the target location will be overwr
 Run the `scp` command from a terminal on your local machine. Ensure this terminal is _not_ within an SSH session to the instance.
 
 ```bash
-scp -i <private_key_path> <source_path> <target_path>/
+scp -i <private_key_path> <source_path> <target_path>
 ```
 
 Prefix the instance's username and IP address to the source path for downloads and to the target path for uploads, followed by a colon:
@@ -28,9 +28,9 @@ ubuntu@192.0.2.0:/home/ubuntu/
 
 For the private key path, use the local path to the private key for the instance's SSH key. See: [How to use SSH keys](/ssh/use-ssh-keys).
 
-<Note>
-If you have recently logged into the instance via SSH from your local machine, your credentials might be cached. In this case, you can omit the `-i` flag and the private key path. 
-</Note>
+<Tip title="Tip">
+  If you have recently logged into the instance via SSH from your local machine, your credentials might be cached. In this case, you can omit the `-i` flag and the private key path. 
+</Tip>
 
 ## Transfer a file
 
@@ -70,10 +70,10 @@ scp -i ~/.ssh/id_rsa ubuntu@192.0.2.0:/home/ubuntu/myfile ./
   </Tab>
 </Tabs>
 
-<Warning>
-  Be cautious! If you specify a non-existent directory on the target _and_ omit the trailing slash `/`, the source file will be copied with the directory name as the filename.
+<Warning title="Warning">
+  You can omit the trailing slash `/` for the target directory path. However, you must be cautious. If you specify a non-existent directory on the target _and_ omit the trailing slash, the source file will be copied with the directory name as the filename.
 
-  **Example:** Copying `myfile` to `ubuntu@192.0.2.0:/home/xyz` where the directory `/home/xyz` does not exist will result in `myfile` being copied to a _file_ named `xyz` at `/home/`.
+  **Example:** Transferring `myfile` to `ubuntu@192.0.2.0:/home/ubuntu/xyz` where the directory `/home/ubuntu/xyz` does not exist will result in `myfile` being copied to a _file_ named `xyz` at `/home/ubuntu/`. If you use `ubuntu@192.0.2.0:/home/ubuntu/xyz/` instead, `scp` will exit without copying.
 </Warning>
 
 ## Transfer a directory
