@@ -1,5 +1,5 @@
 ---
-subtitle: Transfer files to and from your instance
+subtitle: Transfer smaller files and directories
 ---
 
 The `scp` command, short for _secure copy_, transfers files between local and remote machines using the SSH protocol. This method encrypts all data during transmission to ensure security.
@@ -9,7 +9,7 @@ If SSH is installed on your local machine, `scp` is typically included in most S
 Although `scp` is straightforward and user-friendly, it lacks advanced features such as delta transfers (which send only the changed parts of files), integrity checks, and the ability to resume interrupted transfers. It is best suited for quick, one-time transfers of small to medium-sized files, like configuration files, scripts, and smaller data sets. For larger transfers or directory synchronization, consider using [rsync](/instances/transfer-files/rsync).
 
 <Warning title="Warning">
-Files copied with `scp` will be overwritten without confirmation if they already exist at the target location.
+Files copied with `scp` that already exist at the target location will be overwritten without confirmation.
 </Warning>
 
 ## Basic syntax
@@ -20,7 +20,7 @@ Run the `scp` command from a terminal on your local machine. Ensure this termina
 scp -i <private_key_path> <source_path> <target_path>/
 ```
 
-Prefix the instance's username and IP address to the source path for downloads and to the target path for uploads, followed by a colon.
+Prefix the instance's username and IP address to the source path for downloads and to the target path for uploads, followed by a colon:
 
 ```text Example of a full instance path
 ubuntu@192.0.2.0:/home/ubuntu/
@@ -32,7 +32,7 @@ For the private key path, use the local path to the private key for the instance
 If you have recently logged into the instance via SSH from your local machine, your credentials might be cached. In this case, you can omit the `-i` flag and the private key path. 
 </Note>
 
-## Transfer files
+## Transfer a file
 
 <Tabs>
   <Tab title="Upload a file">
@@ -76,7 +76,7 @@ scp -i ~/.ssh/id_rsa ubuntu@192.0.2.0:/home/ubuntu/myfile ./
   **Example:** Copying `myfile` to `ubuntu@192.0.2.0:/home/xyz` where the directory `/home/xyz` does not exist will result in `myfile` being copied to a _file_ named `xyz` at `/home/`.
 </Warning>
 
-## Transfer directories
+## Transfer a directory
 
 To recursively copy a directory and its contents, use the `-r` flag followed by the directory path.
 
@@ -196,7 +196,7 @@ scp -i ~/.ssh/id_rsa -r ubuntu@192.0.2.0:/home/ubuntu/dir1 ./dir2
 
 ### Limit bandwidth
 
-To limit the bandwidth used by scp, use the `-l` option followed by the bandwidth limit in kilobits per second (Kbps):
+To limit the bandwidth used by scp, use the `-l` option followed by the limit in kilobits per second (Kbps):
 
 ```bash
 scp -i <private_key_path> -l <rate_in_Kbps> <source_path> <username>@<ip_address>:<target_path>/
