@@ -46,7 +46,7 @@ navigation:
           - page: Programmatic instance management
             slug: programmatic
             path: ./docs/pages/instances/manage/programmatic.mdx
-      - section: Transfer Files
+      - section: Transfer files
         contents:
           - page: Overview
             path: ./docs/pages/instances/transfer-files/overview.mdx
