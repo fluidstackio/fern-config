@@ -1,0 +1,24 @@
+---
+subtitle: File transfer options
+---
+
+There are multiple ways to move files to and from your FluidStack instance.
+
+## Command line interface 
+
+- [scp](/instances/transfer-files/scp): Use `scp` to download or upload small to medium-sized files. It's a straightforward, secure option based on SSH, suitable for simple file transfers without complex requirements.
+
+- [rsync](/instances/transfer-files/rsync): For large files or directory synchronization, `rsync` is more efficient than `scp` while still maintaining security through SSH. It can resume interrupted operations and only updates the portions of data that have changed.
+
+- [wget](/instances/transfer-files/wget): Use `wget` to download files from web servers directly to your instance via HTTP, HTTPS, or FTP. This tool is useful for retrieving resources like packages, scripts, or data from web URLs.
+
+## Graphical user interface
+
+For users who prefer a visual interface, [Filezilla](https://filezilla-project.org/) is one popular open-source option available for Linux, macOS, and Windows. It supports secure file transfers via SFTP (SSH File Transfer Protocol).
+
+## Choosing the right tool
+
+- Use [scp](/instances/transfer-files/scp) when you need a simple and secure way to transfer individual files or smaller sets of data.
+- Use [rsync](/instances/transfer-files/rsync) when working with larger files or directories, especially when resuming transfers or minimizing bandwidth usage is important.
+- Use [wget](/instances/transfer-files/wget) when you need to download files from a web server directly to your instance without involving your local machine.
+- Use [Filezilla](https://filezilla-project.org/) or another GUI option if you prefer a visual interface.
