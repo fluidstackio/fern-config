@@ -1,0 +1,114 @@
+---
+subtitle: About the FluidStack Software Development Kit for TypeScript applications
+---
+
+FluidStack's TypeScript SDK assists in developing applications in TypeScript using the FluidStack API.
+
+It includes the following features:
+
+- TypeScript interfaces for all [request and response types](#request-and-response-types)
+- [Exception handling](#exception-handling) as subclasses of FluidStackApiError
+- Ability to [abort requests](#abort-requests)
+- [Runtime compatibility](#runtime-compatibility)
+- Ability to [customize the fetch client](#customize-the-fetch-client)
+- Automatic [retries](#retries) with exponential backoff
+- Configurable [timeouts](#timeouts)
+
+## Request and response types
+
+The SDK exports all request and response types as TypeScript interfaces. Import them with the following namespace:
+
+```ts Example
+import { FluidStackApi } from "fluidstack";
+
+const request: FluidStackApi.CreateInstanceRequest = {
+    ...
+};
+const response = await fluidStackApi.create(request);
+```
+
+## Exception handling
+
+When the API returns a non-success status code (4xx or 5xx response), a subclass of `FluidStackApiError` is thrown.
+
+```ts Example
+import { FluidStackApiError } from 'fluidstack';
+
+try {
+    await fluidStackApi.create(...);
+} catch (err) {
+    if (err instanceof FluidStackApiError) {
+        console.log(err.statusCode);
+        console.log(err.message);
+        console.log(err.body);
+    }
+}
+```
+
+## Abort requests
+
+Abort requests at any point by passing in an abort signal.
+
+```ts Example
+const controller = new AbortController();
+const response = await fluidStackApi.create(..., {
+    abortSignal: controller.signal
+});
+controller.abort(); // aborts the request
+```
+
+## Runtime compatibility
+
+The SDK defaults to `node-fetch` but will use the global `fetch` client if present.
+
+The SDK works in the following runtimes:
+
+- Node.js 18+
+- Vercel
+- Cloudflare Workers
+- Deno v1.25+
+- Bun 1.0+
+- React Native
+
+## Customize the fetch client
+
+The SDK provides a way for your to customize the underlying HTTP client or `fetch` function. If you're running in an unsupported environment, this provides a way for you to break the glass and ensure that the SDK works.
+
+```ts Example
+import { FluidStackApiClient } from 'fluidstack';
+
+const fluidStackApi = new FluidStackApiClient({
+    ...
+    fetcher: // provide your implementation here
+});
+```
+
+## Advanced
+
+### Retries
+
+The SDK is instrumented with automatic retries with exponential backoff. A request will be retried as long as the request is deemed retriable and the number of retry attempts has not grown larger than the configured retry limit (default: `2`).
+
+A request is deemed retriable when any of the following HTTP status codes is returned:
+
+- 408 (Timeout)
+- 429 (Too Many Requests)
+- 5XX (Internal Server Errors)
+
+Use the `maxRetries` request option to configure this behavior.
+
+```ts Example
+const response = await fluidStackApi.create(..., {
+    maxRetries: 0 // override maxRetries at the request level
+});
+```
+
+### Timeouts
+
+The SDK defaults to a 60-second timeout. Use the `timeoutInSeconds` option to configure this behavior.
+
+```ts Example
+const response = await fluidStackApi.create(..., {
+    timeoutInSeconds: 30 // override timeout to 30s
+});
+```

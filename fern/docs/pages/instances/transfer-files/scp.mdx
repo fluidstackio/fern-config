@@ -8,7 +8,7 @@ If SSH is installed on your local machine, `scp` is typically included in most S
 
 Although `scp` is straightforward and user-friendly, it lacks advanced features such as delta transfers (which send only the changed parts of files), integrity checks, and the ability to resume interrupted transfers. It is best suited for quick, one-time transfers of small to medium-sized files, like configuration files, scripts, and smaller data sets. For larger transfers or directory synchronization, consider using [rsync](/instances/transfer-files/rsync).
 
-<Warning title="Warning">
+<Warning title='Warning'>
 Files copied with `scp` that already exist at the target location will be overwritten without confirmation.
 </Warning>
 
@@ -28,14 +28,14 @@ ubuntu@192.0.2.0:/home/ubuntu/
 
 For the private key path, use the local path to the private key for the instance's SSH key. See: [How to use SSH keys](/ssh/use-ssh-keys).
 
-<Tip title="Tip">
+<Tip title='Tip'>
   If you have recently logged into the instance via SSH from your local machine, your credentials might be cached. In this case, you can omit the `-i` flag and the private key path. 
 </Tip>
 
 ## Transfer a file
 
 <Tabs>
-  <Tab title="Upload a file">
+  <Tab title='Upload a file'>
 
     To upload a file to an instance, use the following command:
 
@@ -52,7 +52,7 @@ scp -i ~/.ssh/id_rsa myfile ubuntu@192.0.2.0:/home/ubuntu/
 ```
   </Tab>
 
-  <Tab title="Download a file">
+  <Tab title='Download a file'>
 
     To download a file from an instance, use the following command:
 
@@ -70,7 +70,7 @@ scp -i ~/.ssh/id_rsa ubuntu@192.0.2.0:/home/ubuntu/myfile ./
   </Tab>
 </Tabs>
 
-<Warning title="Warning">
+<Warning title='Warning'>
   You can omit the trailing slash `/` for the target directory path. However, you must be cautious. If you specify a non-existent directory on the target _and_ omit the trailing slash, the source file will be copied with the directory name as the filename.
 
   **Example:** Transferring `myfile` to `ubuntu@192.0.2.0:/home/ubuntu/xyz` where the directory `/home/ubuntu/xyz` does not exist will result in `myfile` being copied to a _file_ named `xyz` at `/home/ubuntu/`. If you use `ubuntu@192.0.2.0:/home/ubuntu/xyz/` instead, `scp` will exit without copying.
@@ -81,7 +81,7 @@ scp -i ~/.ssh/id_rsa ubuntu@192.0.2.0:/home/ubuntu/myfile ./
 To recursively copy a directory and its contents, use the `-r` flag followed by the directory path.
 
 <Tabs>
-  <Tab title="Upload a directory">
+  <Tab title='Upload a directory'>
 
     To upload a directory to an instance, use the following command:
 
@@ -98,7 +98,7 @@ scp -i ~/.ssh/id_rsa -r mydir ubuntu@192.0.2.0:/home/ubuntu/
 ```
   </Tab>
 
-  <Tab title="Download a directory">
+  <Tab title='Download a directory'>
 
     To download a directory from an instance, use the following command:
 
@@ -121,7 +121,7 @@ scp -i ~/.ssh/id_rsa -r ubuntu@192.0.2.0:/home/ubuntu/mydir ./
 ### Rename the transferred file
 
 <Tabs>
-  <Tab title="Rename a file during upload">
+  <Tab title='Rename a file during upload'>
 
     To upload a file and rename it at the target instance, use the following command:
 
@@ -137,7 +137,7 @@ scp -i ~/.ssh/id_rsa file1 ubuntu@192.0.2.0:/home/ubuntu/file2
 ```
   </Tab>
 
-  <Tab title="Rename a file during download">
+  <Tab title='Rename a file during download'>
 
     To download a file and rename it on your local machine, use the following command:
 
@@ -158,7 +158,7 @@ scp -i ~/.ssh/id_rsa ubuntu@192.0.2.0:/home/ubuntu/file1 ./file2
 ### Rename the transferred directory
 
 <Tabs>
-  <Tab title="Rename a directory during upload">
+  <Tab title='Rename a directory during upload'>
 
     To upload a directory and rename it on the target instance, use the following command:
 
@@ -175,7 +175,7 @@ scp -i ~/.ssh/id_rsa -r dir1 ubuntu@192.0.2.0:/home/ubuntu/dir2
 ```
   </Tab>
 
-  <Tab title="Rename a directory during download">
+  <Tab title='Rename a directory during download'>
 
     To download a directory and rename it on your local machine, use the following command:
 

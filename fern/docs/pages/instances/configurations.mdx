@@ -5,14 +5,14 @@ A configuration consists of the specific GPU, CPU, and storage settings for an i
 To see available configurations, call the [List available configurations](/api-reference/configurations/list) endpoint.
 
 Example request:
-<EndpointRequestSnippet endpoint="GET /list_available_configurations" />
+<EndpointRequestSnippet endpoint='GET /list_available_configurations' />
 
 Make sure to replace the `<api_key>` with your own [API key](/get-started/api-overview#authentication).
 
 The endpoint returns a list of configuration objects, as shown in this example response:
-<EndpointResponseSnippet endpoint="GET /list_available_configurations" />
+<EndpointResponseSnippet endpoint='GET /list_available_configurations' />
 
 When you [create an instance](/api-reference/instances/create), you must specify a value for `gpu_type`. The value you specify for `gpu_count` determines the CPU count, as well as the RAM and NVME storage sizes.
 
-<Note>If you do not provide a value for `gpu_count` when creating an instance, `1` is used as the default.</Note>
+<Note title="Note">If you do not provide a value for `gpu_count` when creating an instance, `1` is used as the default.</Note>
 

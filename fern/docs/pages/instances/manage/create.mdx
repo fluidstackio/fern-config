@@ -1,5 +1,5 @@
 ---
-subtitle: How to create an instance with the FluidStackAPI
+subtitle: How to create an instance with the FluidStack API
 ---
 
 ## Steps
@@ -19,16 +19,16 @@ Retrieve the `gpu_type` of the desired configuration, and the `label` of the des
 Call the [Create a new instance](/api-reference/instances/create) endpoint to deploy an instance. 
 
 Example:
-<EndpointRequestSnippet endpoint="POST /instances" />
+<EndpointRequestSnippet endpoint='POST /instances' />
 
-<Markdown src="../../../snippets/api-key-header.mdx" />
+<Markdown src='../../../snippets/api-key-header.mdx' />
 
 The following values are required in the JSON body of your request:
-- a custom `name` for the instance
 - the`gpu_type` (Select an option from the `gpu_model` field of your desired [Configuration](/instances/configurations).)
 - the `ssh_key_name` from an SSH key added to your FluidStack account
 
 These values are optional:
+- a custom `name` for the instance (Default: a randomized string)
 - `gpu_count` (Default: `1`)
 - `operating_system_label` (Select an option from the `label` field of your desired [Operating Systems](/instances/operating-systems). Default: `ubuntu_20_04_lts_nvidia`)
 
@@ -36,7 +36,7 @@ These values are optional:
 
 If the instance is successfully created, the endpoint will respond with a status code of `201`. The response body should contain a JSON object similar to this:
 
-<EndpointResponseSnippet endpoint="POST /instances" />
+<EndpointResponseSnippet endpoint='POST /instances' />
 
 </Steps>
 

@@ -8,6 +8,7 @@
 Our Python SDK is hosted at the [Python Package Index](https://pypi.org/project/fluidstack/) (PyPI). You can use any Python package manager, such as [pip](https://pip.pypa.io/en/stable/) or [poetry](https://python-poetry.org/docs/). 
 
 For example, you can add this dependency to your project's build file:
+
 ```python
 pip install fluidstack
 # or
@@ -22,7 +23,7 @@ Import `FluidStack` and instantiate a client with your API key:
 from FluidStack.client import FluidStack
 
 client = FluidStack(
-    api_key = "<your_api_key>"
+    api_key = '<your_api_key>'
 )
 ```
 
@@ -39,16 +40,21 @@ The SDK also provides code hints, type hints, parameter information, and other u
 For example, compare the tabs below:
 
 <CodeBlocks>
+
 ```python With the SDK
+...
 client.instances.create(
-  name="my_instance",
-  gpu_type="RTX_A6000_48GB",
-  ssh_key="my_ssh_key"
+  name='my_instance',
+  gpu_type='RTX_A6000_48GB',
+  ssh_key='my_ssh_key'
 )
+...
 ```
+
 ```python Without the SDK
+...
 requests.post(
-  api_url + "instances",
+  api_url + 'instances',
   headers = headers,
   json = {
       "name": "my_instance",
@@ -56,7 +62,9 @@ requests.post(
       "ssh_key": "my_ssh_key"
   }
 )
+...
 ```
+
 </CodeBlocks>
 
 You can see that instead of using `requests` or a similar module to send an HTTP request and including the endpoint path and headers each time, the FluidStack client simplifies the request for you. 
@@ -78,126 +86,169 @@ print(client.instances.list())
 ```
 
 Or you could loop through the list and print only the name and status for each instance:
+
 ```python Print each instance name and status
 my_instances = client.instances.list()
 for instance in my_instances:
-    print(f"Instance: {instance.name}, Status: {instance.status}")
+    print(f'Instance: {instance.name}, Status: {instance.status}')
 ```
+
+See the [Programmatic Instance Management](/instances/manage/programmatic) tutorial for more information on using Python, TypeScript, and their respective SDKs.
 
 ## Instances 
 
 <Tabs>
-  <Tab title="List user instances">
-    ```python 
-      client.instances.list()
-    ```
+  <Tab title='List user instances'>
+
+```python 
+  client.instances.list()
+```
+
     **Parameters: None.**
   </Tab>
 
-  <Tab title="Create an instance">
-    ```python 
-    client.instances.create(
-      name="my_instance",
-      gpu_type="my_gpu_type",
-      ssh_key="my_ssh_key",
-      gpu_count="my_gpu_count"
-      operating_system_label="my_os_label"
-    )
-    ```
+  <Tab title='Create an instance'>
+
+```python 
+client.instances.create(
+  name='my_instance_name',
+  gpu_type='RTX_A6000_48GB',
+  ssh_key='my_ssh_key',
+  gpu_count='2'
+  operating_system_label='ubuntu_20_04_lts_nvidia',
+  region='NORWAY'
+)
+
+```
     | parameter              | type   | required | default                 |
     |------------------------|--------|----------|-------------------------|
-    | name                   | string |     yes  |   n/a                   |
     | gpu_type               | string |     yes  |   n/a                   |
     | ssh_key                | string |     yes  |   n/a                   |
+    | name                   | string |     no   |   randomized string     |
     | gpu_count              | string |     no   |    1                    |
     | operating_system_label | string |     no   | ubuntu_20_04_lts_nvidia |
+    | region                 | string |     no   | none                    |
 
   </Tab>
 
-  <Tab title="Stop an instance">
-    ```python 
-    client.instances.stop(
-        instance_id="instance_id",
-    )
-    ```
+  <Tab title='Fetch an instance'>
+
+```python 
+client.instances.get(
+    instance_id='instance_id',
+)
+```
+
     | parameter              | type   | required |
     |------------------------|--------|----------|
     | instance_id            | string |     yes  |
+
+  </Tab>
+
+  <Tab title='Stop an instance'>
+
+```python 
+client.instances.stop(
+    instance_id='instance_id',
+)
+```
+
+    | parameter              | type   | required |
+    |------------------------|--------|----------|
+    | instance_id            | string |     yes  |
+
   </Tab>
   
-  <Tab title="Start an instance">
-    ```python
-    client.instances.start(
-        instance_id="instance_id",
-    )
-    ```
+  <Tab title='Start an instance'>
+
+```python
+client.instances.start(
+    instance_id='instance_id',
+)
+```
+
     | parameter              | type   | required |
     |------------------------|--------|----------|
     | instance_id            | string |     yes  |
   </Tab>
 
-  <Tab title="Terminate an instance">
-    ```python 
-    client.instances.delete(
-        instance_id="instance_id",
-    )
-    ```
+  <Tab title='Terminate an instance'>
+
+```python 
+client.instances.delete(
+    instance_id='instance_id',
+)
+```
+
     | parameter              | type   | required |
     |------------------------|--------|----------|
     | instance_id            | string |     yes  |
   </Tab>
+
 </Tabs>
 
 ## SSH Keys
 
 <Tabs>
-  <Tab title="List SSH keys">
-    ```python 
-      client.ssh_keys.list()
-    ```
+  <Tab title='List SSH keys'>
+
+```python 
+  client.ssh_keys.list()
+```
+
     **Parameters: None.**
   </Tab>
 
-  <Tab>
-    ```python Add an SSH key
-    client.ssh_keys.create(
-      name="my_ssh_key", 
-      public_key="my_public_key" 
-    )
-    ```
+  <Tab title='Add an SSH key'>
+
+```python Add an SSH key
+client.ssh_keys.create(
+  name='my_ssh_key', 
+  public_key='my_public_key' 
+)
+```
+
     | parameter              | type   | required |
     |------------------------|--------|----------|
     | name                   | string |     yes  |
     | public_key             | string |     yes  |
   </Tab>
 
-  <Tab title="Delete an SSH key">
-    ```python 
-    client.ssh_keys.delete(
-        ssh_key_name="my_ssh_key",
-    )
-    ```
+  <Tab title='Delete an SSH key'>
+
+```python 
+client.ssh_keys.delete(
+    ssh_key_name='my_ssh_key',
+)
+```
+
     | parameter              | type   | required |
     |------------------------|--------|----------|
     | ssh_key_name           | string |     yes  |
+
   </Tab>
 </Tabs>
-
 
 ## List available configurations and operating system templates
 
 <Tabs>
-  <Tab title="Configurations">
-    ```python 
-    client.configurations.list()
-    ```
+  <Tab title='Configurations'>
+
+```python 
+client.configurations.list()
+```
+
     **Parameters: None.**
+
   </Tab>
 
-  <Tab title="OS Templates">
-  ```python 
-  client.templates.list()
-  ```
+  <Tab title='OS Templates'>
+
+```python 
+client.templates.list()
+```
+
     **Parameters: None.**
+
   </Tab>
 </Tabs>
