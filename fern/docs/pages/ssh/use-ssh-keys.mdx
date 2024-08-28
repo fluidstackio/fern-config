@@ -6,7 +6,7 @@ You must provide an [SSH key](/ssh/what-is-ssh#about-ssh-keys) when you create a
 
 ## Generate a public/private key pair
 
-<Markdown src="../../snippets/public-key-formats.mdx" />
+<Markdown src='../../snippets/public-key-formats.mdx' />
 
 If you already have a public/private key pair of a supported format, you can use that pair instead of generating a new one.
 
@@ -17,7 +17,7 @@ Use any supported format for your key pair. The tabs below contain instructions 
 <Frame>
 <Tabs>
 
-  <Tab title="RSA">
+  <Tab title='RSA'>
     <Steps>
       ### Generate the key pair
       Enter the following command in your CLI shell:
@@ -43,7 +43,7 @@ cat ~/.ssh/id_rsa.pub
     </Steps>
   </Tab>
 
-  <Tab title="ECDSA with NIST curves">
+  <Tab title='ECDSA with NIST curves'>
     <Steps>
     ### Generate the key pair
     Enter the following command in your CLI shell:
@@ -85,30 +85,30 @@ cat ~/.ssh/id_ecdsa_256.pub
 
 Use your public key to create an SSH key on your FluidStack account. If you don't have a public key, see: [Generate a public/private key pair](#generate-a-publicprivate-key-pair).
 
-<Tip>In this context, "creating an SSH key" means "storing (adding) a copy of your public key on your FluidStack account." The stored SSH key is identical to your public key.</Tip>
+<Tip>In this context, 'creating an SSH key' means 'storing (adding) a copy of your public key on your FluidStack account.' The stored SSH key is identical to your public key.</Tip>
 
 <AccordionGroup>
 
-  <Accordion title="Use the FluidStack Dashboard">
-    <Markdown src="../../snippets/open-dashboard.mdx" />
-    <Markdown src="../../snippets/add-ssh-key-dashboard.mdx" />
+  <Accordion title='Use the FluidStack Dashboard'>
+    <Markdown src='../../snippets/open-dashboard.mdx' />
+    <Markdown src='../../snippets/add-ssh-key-dashboard.mdx' />
   </Accordion>
 
-  <Accordion title="Use the FluidStack API">
+  <Accordion title='Use the FluidStack API'>
     Create an SSH key by using the [Create an SSH key](/api-reference/ssh-keys/create) endpoint.
 
-    <EndpointRequestSnippet endpoint="POST /ssh_keys" />
+    <EndpointRequestSnippet endpoint='POST /ssh_keys' />
 
     <Tip>Make sure to replace the `<api-key>` value with your API key, the `<public-key>` value with your public key, and the `name` of `my_ssh_key` with the unique SSH key name you'd like to use.</Tip>
 
     If your POST request is successful, the endpoint responds with a JSON object that echoes the `name` and `public_key` that you sent:
 
-    ```json title="Response example"
-    {
-        "name": "my_ssh_key",
-        "public_key": "<your_public_key>"
-    }
-    ```
+```json title='Response example'
+{
+    "name": "my_ssh_key",
+    "public_key": "<your_public_key>"
+}
+```
   </Accordion>
   
 </AccordionGroup>
@@ -116,20 +116,20 @@ Use your public key to create an SSH key on your FluidStack account. If you don'
 ## View existing SSH keys
 
 <AccordionGroup>
-  <Accordion title="Use the FluidStack Dashboard">
-    <Markdown src="../../snippets/open-dashboard.mdx" />
+  <Accordion title='Use the FluidStack Dashboard'>
+    <Markdown src='../../snippets/open-dashboard.mdx' />
 
-    <Markdown src="../../snippets/view-ssh-keys-dashboard.mdx" />
+    <Markdown src='../../snippets/view-ssh-keys-dashboard.mdx' />
   </Accordion>
 
-  <Accordion title="Use the FluidStack API">
+  <Accordion title='Use the FluidStack API'>
     View SSH keys that have been added to your FluidStack account by using the [List SSH keys](/api-reference/ssh-keys/list) endpoint:
 
-    <EndpointRequestSnippet endpoint="GET /ssh_keys" />
+    <EndpointRequestSnippet endpoint='GET /ssh_keys' />
 
     If your GET request is successful, the endpoint responds with a JSON array of objects. Each object in the JSON array represents an SSH key, including its `name` and `public_key`: 
 
-```json title="Example response"
+```json title='Example response'
 [
     {
         "name": "my_ssh_key",
@@ -146,18 +146,18 @@ Use your public key to create an SSH key on your FluidStack account. If you don'
 
 ## Delete an SSH key
 
-<Markdown src="../../snippets/delete-ssh-key-warning.mdx" />
+<Markdown src='../../snippets/delete-ssh-key-warning.mdx' />
 <AccordionGroup>
-  <Accordion title="Use the FluidStack Dashboard">
-    <Markdown src="../../snippets/open-dashboard.mdx" />
-    <Markdown src="../../snippets/delete-ssh-key-dashboard.mdx" />
+  <Accordion title='Use the FluidStack Dashboard'>
+    <Markdown src='../../snippets/open-dashboard.mdx' />
+    <Markdown src='../../snippets/delete-ssh-key-dashboard.mdx' />
   </Accordion>
 
-  <Accordion title="Use the FluidStack API">
+  <Accordion title='Use the FluidStack API'>
 
     Delete an SSH key by using the [Delete an SSH key](/api-reference/ssh-keys/delete) endpoint. Replace the text `{ssh_key_name}` with the name of the key you want to delete:
 
-    <EndpointRequestSnippet endpoint="DELETE /ssh_keys/:ssh_key_name" />
+    <EndpointRequestSnippet endpoint='DELETE /ssh_keys/:ssh_key_name' />
 
   </Accordion>
 </AccordionGroup>
@@ -166,4 +166,4 @@ Use your public key to create an SSH key on your FluidStack account. If you don'
 
 Use your private key to authenticate when connecting to a running instance via SSH. The instance has an SSH key associated with it, provided when that instance was created. The private key must correspond to that SSH key.
 
-<Markdown src="../../snippets/connect-with-ssh.mdx" />
+<Markdown src='../../snippets/connect-with-ssh.mdx' />

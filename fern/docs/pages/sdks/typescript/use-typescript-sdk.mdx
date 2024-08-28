@@ -1,0 +1,277 @@
+## Prerequisites
+- An [API key](/dashboard/api-keys)
+- Familiarity with command-line tools
+- Basic familiarity with TypeScript and Node.js; Node 18+ installed
+
+## Installation
+
+Our TypeScript SDK is hosted at [NPM](https://www.npmjs.com/package/fluidstack). 
+
+Use `npm` or `yarn` to install it to your project:
+
+```bash
+npm install fluidstack
+```
+
+```bash
+yarn add fluidstack
+```
+
+## Instantiate a client
+
+Import `FluidStackApiClient` and instantiate a TypeScript client with your API key:
+
+```ts Example
+import { FluidStackApiClient } from 'fluidstack';
+
+const client = new FluidStackApiClient({
+    apiKey: '<your_api_key>'
+});
+```
+
+Now you can use the client to consume the API from your TypeScript application.
+
+<Markdown src='../../../snippets/api-security-warning.mdx' />
+
+## Use the FluidStack TypeScript client in your app
+
+The FluidStack TypeScript client simplifies making API requests. It stores the API key that you used to instantiate it, and it already knows our API server's base URL, so you can omit those details in your requests.
+
+The SDK also provides code hints, type hints, parameter information, and other useful functions to speed up development. 
+
+For example, compare the tabs below:
+
+<CodeBlocks>
+
+```ts With the TypeScript SDK
+client.instances.create(
+  gpuType='RTX_A6000_48GB',
+  sshKey='mySSHKey'
+)
+```
+
+```ts Without the SDK
+  await fetch('https://platform.fluidstack.io/', {
+    method: 'POST',
+    headers: {
+      'api-key': <my_api_key>
+    },
+    body: JSON.stringify({
+      gpu_type: 'RTX_A6000_48GB',
+      ssh_key: 'my_ssh_key'
+    })
+  });
+```
+
+</CodeBlocks>
+
+You can see that instead of using `fetch` or a similar module to send an HTTP request and including the endpoint path and headers each time, the FluidStack TypeScript client simplifies the request for you. 
+
+## Call endpoints
+
+Requests to API endpoints are implemented in the SDK as methods of the client. For example, the [GET /instances](/api-reference/instances/list) endpoint is implemented like this:
+
+```ts Get the list of instances with the SDK
+client.instances.list()
+```
+
+In TypeScript/JavaScript, you must handle asynchronous operations such as HTTP requests explicitly using `async/await` or promises. To use `async/await`, wrap the method call in an `async` function and `await` the result, then call the function:
+
+```ts Use async/await to get the list of instances
+async function listInstances() {
+  const instances = await client.instances.list();
+}
+
+listInstances();
+```
+
+The code shown above does not do anything with the response from the endpoint. It is up to you to handle the response, including error handling.
+
+For example, you could simply print the entire response to the terminal:
+
+```ts Print the entire response
+async function listInstances() {
+  try {
+    const instances = await client.instances.list();
+    console.log(instances);
+  } catch (error) {
+    console.error('An error occurred:', error);
+  }
+}
+
+// Call the async function
+listInstances();
+```
+
+Or you could loop through the list and print only the name and status for each instance:
+
+```ts Print each instance name and status
+async function listInstances() {
+    const instances = await client.instances.list();
+    instances.forEach(instance => {
+        console.log(`Instance: ${instance.name}, Status: ${instance.status}`);
+    });
+}
+
+listInstances();
+```
+
+See [Programmatic Instance Management](/instances/manage/programmatic) for a more detailed tutorial on using TypeScript, Python, and their respective SDKs.
+
+## Instances 
+
+<Tabs>
+  <Tab title='List user instances'>
+
+```ts 
+  client.instances.list()
+```
+
+    **Parameters: None.**
+
+  </Tab>
+
+  <Tab title='Create an instance'>
+
+```ts 
+client.instances.create(
+  name='my_instance_name',
+  gpuType='RTX_A6000_48GB',
+  sshKey='my_ssh_key_name',
+  gpuCount=2,
+  operatingSystemLabel='ubuntu_20_04_lts_nvidia',
+  region='NORWAY'
+)
+```
+
+    | parameter              | type   | required | default                 |
+    |------------------------|--------|----------|-------------------------|
+    | gpuType                | string |     yes  |   n/a                   |
+    | sshKey                 | string |     yes  |   n/a                   |
+    | name                   | string |     no   |   randomized string     |
+    | gpuCount               | string |     no   |    1                    |
+    | operatingSystemLabel   | string |     no   | ubuntu_20_04_lts_nvidia |
+    | region                 | string |     no   | none                    |
+
+  </Tab>
+
+  <Tab title='Fetch an instance'>
+
+```ts 
+client.instances.get(
+    instanceId='instanceId')
+```
+
+    | parameter              | type   | required |
+    |------------------------|--------|----------|
+    | instanceId             | string |     yes  |
+
+  </Tab>
+
+  <Tab title='Stop an instance'>
+
+```ts 
+client.instances.stop(
+    instanceId='instanceId',
+)
+```
+
+    | parameter              | type   | required |
+    |------------------------|--------|----------|
+    | instanceId             | string |     yes  |
+
+  </Tab>
+  
+  <Tab title='Start an instance'>
+
+```ts
+client.instances.start(
+    instanceId='instanceId',
+)
+```
+
+    | parameter              | type   | required |
+    |------------------------|--------|----------|
+    | instanceId             | string |     yes  |
+  </Tab>
+
+  <Tab title='Terminate an instance'>
+
+```ts 
+client.instances.delete(
+    instanceId='instanceId',
+)
+```
+
+    | parameter              | type   | required |
+    |------------------------|--------|----------|
+    | instanceId             | string |     yes  |
+  </Tab>
+
+</Tabs>
+
+## SSH Keys
+
+<Tabs>
+  <Tab title='List SSH keys'>
+
+```ts 
+  client.sshKeys.list()
+```
+
+    **Parameters: None.**
+  </Tab>
+
+  <Tab title='Add an SSH key'>
+
+```ts
+client.sshKeys.create(
+  name='mySSHKey', 
+  publicKey='myPublicKey' 
+)
+```
+
+    | parameter              | type   | required |
+    |------------------------|--------|----------|
+    | name                   | string |     yes  |
+    | publicKey              | string |     yes  |
+  </Tab>
+
+  <Tab title='Delete an SSH key'>
+
+```ts 
+client.sshKeys.delete(
+    sshKeyName='mySSHKey',
+)
+```
+
+    | parameter              | type   | required |
+    |------------------------|--------|----------|
+    | sshKeyName             | string |     yes  |
+
+  </Tab>
+</Tabs>
+
+## List available configurations and operating system templates
+
+<Tabs>
+  <Tab title='Configurations'>
+
+```ts 
+client.configurations.list()
+```
+
+    **Parameters: None.**
+
+  </Tab>
+
+  <Tab title='OS Templates'>
+
+```ts 
+client.templates.list()
+```
+
+    **Parameters: None.**
+
+  </Tab>
+</Tabs>

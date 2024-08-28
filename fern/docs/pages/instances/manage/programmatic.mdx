@@ -1,299 +1,582 @@
 ---
-description: This page contains example Python scripts to demonstrate how the FluidStack API can be used to manage instances programmatically.
+description: This page contains example scripts to demonstrate how the FluidStack API can be used to manage instances programmatically.
 ---
 
-The Python scripts on this page demonstrates how the [FluidStack API](/api-reference) can be used to manage instances programmatically. 
-
-You can choose to use Python only, or you can use our [Python SDK](/sdks/python/overview). 
+The Python and TypeScript scripts on this page demonstrates how the [FluidStack API](/api-reference) can be used to manage instances programmatically, with or without using one of our SDKs. 
 
 ## Prerequisites
-  - An [API key](/dashboard/api-keys)
-  - A [public/private key pair](/ssh/use-ssh-keys#generate-a-publicprivate-key-pair)
-  - Basic familiarity with Python; Python 3+ installed
 
-## Script overview
+- An [API key](/dashboard/api-keys)
+- A [public/private key pair](/ssh/use-ssh-keys#generate-a-publicprivate-key-pair)
+- (for Python) Basic familiarity with Python; Python 3+ installed
+- (for TypeScript) Basic familiarity with TypeScript; Node 18+ installed; a [way to run TypeScript code locally](https://nodejs.org/en/learn/getting-started/nodejs-with-typescript#running-typescript-code-in-nodejs)
+
+## Overview of example scripts
 
 <Tabs>
-  <Tab title="Python script">
-    <Steps>
-      ### Create an SSH key
+    <Tab title='Without SDK'>
+        <Steps>
+            ### Create an SSH key
 
-      The script reads the public key located at `~/.ssh/id_rsa.pub`, then sends a request to the [Create an SSH key](/api-reference/ssh-keys/create) endpoint to create a SSH key named `python_ssh_key`. This SSH key is a copy of the public key that was read.
+            The script reads the public key located at `~/.ssh/id_rsa.pub`, then sends a request to the [Create an SSH key](/api-reference/ssh-keys/create) endpoint to create an SSH key. This key will be named either `python_ssh_key` or `typescript_ssh_key` and is a copy of the public key that was read.
 
-      <Warning>
-        - If you already have an SSH key named `python_ssh_key`, change the script to use a different, unique name.
-        - If your public key is in a different location or filename, make sure to update this part of the script.
-      </Warning>
+            <Warning>
+                - If you already have an SSH key on your FluidStack account named `python_ssh_key` or `typescript_ssh_key`, change the script to use a different, unique name. Alternatively, delete the existing key. 
+                - If your public key is in a different location or filename, make sure to update that part of the script.
+            </Warning>
 
-      ### Create an instance
+            ### Create an instance
 
-      The script creates an instance by sending a request to the [Create a new instance](/api-reference/instances/create) endpoint.
-      
-      The API key is sent in the request as a header. A custom name for the instance, the GPU type, and the name of the SSH key to use for accessing the instance are sent in the JSON body of the request.
+            The script creates an instance by sending a request to the [Create a new instance](/api-reference/instances/create) endpoint.
+            
+            The API key is sent in the request as a header. A custom name for the instance, the GPU type, and the name of the SSH key to use for accessing the instance are sent in the JSON body of the request.
 
-      ### Check the instance status
+            ### Check the instance status
 
-      Initially, the instance's `status` is `pending`. The script repeatedly checks this `status` until it is `running` by sending requests to the [List user instances](/api-reference/instances/list) endpoint and parsing the response. 
+            Initially, the instance's `status` is `pending`. The script repeatedly checks this `status` until it is `running` by sending requests to the [Fetch a single user instances](/api-reference/instances/get) endpoint and parsing the response. 
 
-      This status-checking loop stops once the instance's `status` returns as `running`, or if its `status` indicates that it has been `terminated` or is otherwise unable to run.
+            This status-checking loop stops once the instance's `status` returns as `running`, or if its `status` indicates that it has been `terminated` or is otherwise unable to run.
 
-      ### Print the instance IP
+            ### Print the instance IP
 
-      Once the instance's status is `running`, the script prints the instance's IP address.
+            Once the instance's status is `running`, the script prints the instance's IP address.
 
-      ### Terminate the instance
+            ### Terminate the instance
 
-      Finally, the script uses the [Terminate an instance](/api-reference/instances/delete) endpoint to delete the instance. 
-    </Steps>
-  </Tab>
+            The script uses the [Terminate an instance](/api-reference/instances/delete) endpoint to delete the instance. 
 
-  <Tab title="Python SDK script">
-    <Steps>
-      ### Instantiate a client
-      
-      The script uses the FluidStack SDK to instantiate an API client, passing a valid API key. 
-      
-      The instantiated client is configured with the API key and base URL of the API server, which means you can make requests without manually providing that information every time. 
+            ### Delete the SSH key on the account
 
-      ### Create an SSH key
+            Finally, the script also deletes the public SSH key that was added to the account.
 
-      The script reads the public key located at `~/.ssh/id_rsa.pub`, then sends a request to the [Create an SSH key](/api-reference/ssh-keys/create) endpoint to create a SSH key named `python_sdk_ssh_key`. This SSH key is a copy of the public key that was read.
+        </Steps>
+    </Tab>
 
-      <Warning>
-        - If you already have an SSH key named `python_sdk_ssh_key`, change the script to use a different, unique name.
-        - If your public key is in a different location or filename, make sure to update this part of the script.
-      </Warning>
+    <Tab title='With SDK'>
+        <Steps>
+            ### Instantiate a client
+            
+            The script uses the FluidStack SDK to instantiate an API client, passing a valid API key. 
+            
+            The instantiated client is configured with the API key and base URL of the API server, which means you can make requests without manually providing that information every time. 
 
-      ### Create an instance
+            ### Create an SSH key
 
-      The script creates an instance, using the `client.instances.create()` method.
+            The script reads the public key located at `~/.ssh/id_rsa.pub`, then sends a request to the [Create an SSH key](/api-reference/ssh-keys/create) endpoint to create an SSH key. This key will be named either `python_sdk_ssh_key` or `typescript_sdk_ssh_key` and is a copy of the public key that was read.
 
-      A custom name for the instance, the GPU type, and the name of the SSH key to use for accessing the instance are provided to the method. The client handles sending the request to the [Create a new instance](/api-reference/instances/create) endpoint, using the API key provided when the client was instantiated.
+            <Warning>
+                - If you already have an SSH key on your FluidStack account named `python_sdk_ssh_key` or `typescript_sdk_ssh_key`, change the script to use a different, unique name. Alternatively, delete the existing key.
+                - If your public key is in a different location or filename, make sure to update that part of the script.
+            </Warning>
 
-      ### Check the instance status
+            ### Create an instance
 
-      Initially, the instance's `status` is `pending`. The script repeatedly checks this `status` until it is `running` using the `client.instances.list()` method and parsing the response. 
+            The script creates an instance, using the `client.instances.create()` method.
 
-      This status-checking loop stops once the instance's `status` returns as `running`, or if its `status` indicates that it has been `terminated` or is otherwise unable to run.
+            A custom name for the instance, the GPU type, and the name of the SSH key to use for accessing the instance are provided to the method. The client handles sending the request to the [Create a new instance](/api-reference/instances/create) endpoint, using the API key provided when the client was instantiated.
 
-      ### Print the instance IP
+            ### Check the instance status
 
-      Once the instance's status is `running`, the script prints the instance's IP address.
+            Initially, the instance's `status` is `pending`. The script repeatedly checks this `status` until it is `running` using the `client.instances.get()` method and parsing the response. 
 
-      ### Terminate the instance
+            This status-checking loop stops once the instance's `status` returns as `running`, or if its `status` indicates that it has been `terminated` or is otherwise unable to run.
 
-      Finally, the script terminates the created instance, using the `client.instances.delete()` method.
-    </Steps>
-  </Tab>
+            ### Print the instance IP
+
+            Once the instance's status is `running`, the script prints the instance's IP address.
+
+            ### Terminate the instance
+
+            The script terminates the created instance, using the `client.instances.delete()` method.
+
+            ### Delete the SSH key on the account
+
+            Finally, the script also deletes the public SSH key that was added to the account.
+
+        </Steps>
+    </Tab>
 </Tabs>
 
-## Example script
+## Example scripts
 
 <Markdown src='../../../snippets/api-security-warning.mdx' />
 
 <Tabs>
-  {/* PYTHON WITHOUT SDK VERSION */}
 
-  <Tab title="Python">
-    Before running this script, replace the `api_key` value on line 7 with your own. You must also [install the `requests` library](https://pypi.org/project/requests/) into your environment. 
+    {/* PYTHON WITHOUT SDK VERSION */}
+    <Tab title='Python'>
 
-    ```python maxLines=30 {12,34,60,83,86}
-    import requests
-    from pathlib import Path
-    import time
-    import json
+        Before you run this script, replace the `api_key` value on line 7 with your own. You must also [install the `requests` library](https://pypi.org/project/requests/) into your environment. 
 
-    base_url = 'https://platform.fluidstack.io/'
-    api_key = 'api_key_j123My_FakeAPIKey'
+<Warning title="Warning">
+    The scripts below are intended for learning purposes. Do not place your API key inside any file that might be shared with others, such as by being committed to a git repository. For information on using a `.env` file to safeguard your API key, see: [API Overview - Secure use of your API key](/get-started/api-overview/secure-use-of-your-api-key).
+</Warning>
 
-    # Set the API key in a header
-    headers = { 'api-key': api_key }
+```python maxLines=30 {7,15,37,60,78,81,91}
+import requests
+from pathlib import Path
+import time
+import json
 
-    # 1: Create an SSH key
-    print('Creating SSH key')
+base_url = 'https://platform.fluidstack.io/'
+api_key = 'api_key_j123My_FakeAPIKey'
 
-    # Read the public key from ~/.ssh/id_rsa.pub
-    public_key = Path.home().joinpath('.ssh', 'id_rsa.pub').read_text().strip() 
+# Set the API key in a header
+headers = {
+    'api-key': api_key,
+    'Content-Type': 'application/json'
+}
 
-    ssh_key_name = 'python_ssh_key'
+# 1: Create an SSH key
+print('Creating SSH key')
 
-    # Send POST request to /ssh_keys
-    response = requests.post(
-      base_url + 'ssh_keys',
-      headers=headers,
-      json={
+# Read the public key from ~/.ssh/id_rsa.pub
+public_key = Path.home().joinpath('.ssh', 'id_rsa.pub').read_text().strip() 
+
+ssh_key_name = 'python_ssh_key'
+
+# Send POST request to /ssh_keys
+response = requests.post(
+    base_url + 'ssh_keys',
+    headers=headers,
+    json={
         'name': ssh_key_name,
         'public_key': public_key
-      },
-    )
+    },
+)
 
-    # Print response body if the response status code is not OK
-    if not response.ok:
-      raise Exception('Could not create SSH key')
+# Print response body if the response status code is not OK
+if not response.ok:
+    raise Exception('Could not create SSH key')
 
-    # 2: Create an instance 
-    print('Creating instance')
+# 2: Create an instance 
+print('Creating instance')
 
-    gpu_type = 'RTX_A6000_48GB'
-    instance_name = 'python_test_instance'
-
-    # Send POST request to /instances
-    response = requests.post(
-      base_url + 'instances',
-      headers = headers,
-      json = {
-        'name': instance_name,
+# Send POST request to /instances
+created_instance = requests.post(
+    base_url + 'instances',
+    headers=headers,
+    json={
+        'name': 'python_test_instance',
+        'gpu_type': 'RTX_A6000_48GB',
         'ssh_key': ssh_key_name,
-        'gpu_type': gpu_type,
-      },
-    )
+    },
+)
 
-    print('Response: ' + json.dumps(response.json(), indent=2))
-    if not response.ok:
-      raise Exception('Could not create instance')
+print('Response: ' + json.dumps(created_instance.json(), indent=2))
+if not created_instance.ok:
+    raise Exception('Could not create instance')
 
-    instance_id = response.json()['id']
+instance_id = created_instance.json()['id']
 
-    status = 'pending'
-    print('Waiting for instance to start')
+status = 'pending'
+print('Waiting for instance to start')
 
-    # 3: Check the instance status
-    # Check status every 10 seconds, exit when status is 'running'
-    count = 1
-    while status != 'running':
-      if status != 'pending':
+# 3: Check the instance status using GET /instances/{instance_id}
+# Check status every 10 seconds, exit when status is 'running'
+count = 1
+while status != 'running':
+    if status != 'pending':
         print('Could not create instance')
         raise Exception('Could not create instance')
-      try:
-        # Send GET request to /instances
-        response = requests.get(base_url + 'instances', headers=headers)
-        instances = response.json()
-        instance = None
-        for instance in instances:
-          if instance['id'] == instance_id:
-            status = instance['status']
-            break
+    try:
+        # Send GET request to /instances/{instance_id}
+        response = requests.get(base_url + f'instances/{instance_id}', headers=headers)
+        instance = response.json()
         status = instance['status']
-      except Exception as e:
+    except Exception as e:
         print(e)
-      print(f'\t [{count}] Status: {status}')
-      time.sleep(10)
-      count += 1
+    print(f'\t [{count}] Status: {status}')
+    time.sleep(10)
+    count += 1
 
-    # 4: Print the instance IP
-    print('Instance IP address: ' + instance['ip_address'])
+# 4: Print the instance IP
+print('Instance IP address: ' + instance['ip_address'])
 
-    # 5: Terminate the instance
-    print('Terminating instance')
+# 5: Terminate the instance
+print('Terminating instance')
 
-    # Send DELETE request to /instances/{instance_id}
-    response = requests.delete(base_url + f'instances/{instance_id}', headers=headers)
-    if not response.ok:
-      print('Response: ' + json.dumps(response.json(), indent=2))
-      raise Exception('Could not delete instance')
-    print('Instance deleted')
-    ```
+# Send DELETE request to /instances/{instance_id}
+response = requests.delete(base_url + f'instances/{instance_id}', headers=headers)
+if not response.ok:
+    print('Response: ' + json.dumps(response.json(), indent=2))
+    raise Exception('Could not delete instance')
+print('Instance deleted')
+
+# 6: Delete the public SSH key that was added to the account
+response = requests.delete(base_url + f'ssh_keys/{ssh_key_name}', headers=headers)
+if not response.ok:
+    print('Response: ' + json.dumps(response.json(), indent=2))
+    raise Exception('Could not delete the SSH key')
+print('SSH key deleted')
+```
   </Tab>
 
-  {/* PYTHON SDK VERSION */}
-  <Tab title="Python SDK">
-    Before running this script, replace the `api_key` value on line 6 with your own. You must also [install the FluidStack SDK](/sdks/python/use-python-sdk#installation) into your environment.
+    {/* PYTHON SDK VERSION */}
+    <Tab title='Python SDK'>
 
-    ```python maxLines=30 title="Python SDK" {8,13,31,53,76,79}
-    from FluidStack.client import FluidStack
-    from FluidStack.core import ApiError
-    from pathlib import Path
-    import time
+        Before you run this script, replace the `api_key` value on line 6 with your own. You must also [install the FluidStack SDK](/sdks/python/use-python-sdk#installation) into your environment.
 
-    api_key = 'api_key = 'api_key_j123My_FakeAPIKey'
+```python maxLines=30 {6,8,13,31,51,70,73,87}
+from FluidStack.client import FluidStack
+from FluidStack.core import ApiError
+from pathlib import Path
+import time
 
-    # 1: Instantiate a client
-    client = FluidStack(
-      api_key = api_key
+api_key = 'api_key_j123My_FakeAPIKey'
+
+# 1: Instantiate a client
+client = FluidStack(
+    api_key=api_key
+)
+
+# 2: Create an SSH key
+print('Creating SSH key')
+
+# Read the public key from ~/.ssh/id_rsa.pub
+public_key = Path.home().joinpath('.ssh', 'id_rsa.pub').read_text().strip()
+
+ssh_key_name = 'python_sdk_ssh_key'
+
+# Send POST request to /ssh_keys
+try:
+    client.ssh_keys.create(
+        name=ssh_key_name,
+        public_key=public_key,
     )
+except ApiError as e:
+    print(f'SSH key creation failed: {e}')
+    raise
 
-    # 2: Create an SSH key
-    print('Creating SSH key')
+# 3: Create an instance 
+print('Creating instance')
 
-    # Read the public key from ~/.ssh/id_rsa.pub
-    public_key = Path.home().joinpath('.ssh', 'id_rsa.pub').read_text().strip() 
+# Send POST request to /instances
+try:
+    created_instance = client.instances.create(
+        name='python_sdk_test_instance',
+        gpu_type='RTX_A6000_48GB',
+        ssh_key=ssh_key_name,
+    )
+except ApiError as e:
+    print(f'Instance creation failed: {e}')
+    raise
 
-    ssh_key_name = 'python_sdk_ssh_key'
+print(f'Response: {created_instance}')
+instance_id = created_instance.id
+status = 'pending'
 
-    # Send POST request to /ssh_keys
-    try:
-      response = client.ssh_keys.create(
-        name = ssh_key_name,
-        public_key = public_key,
-      )
-    except ApiError as e:
-      print(f'SSH key creation failed: {e}')
-      raise
+print('Waiting for instance to start')
 
-    # 3: Create an instance 
-    print('Creating instance')
-
-    gpu_type = 'RTX_A6000_48GB'
-    instance_name = 'python_sdk_test_instance'
-
-    # Send POST request to /instances
-    try:
-      my_instance = client.instances.create(
-        name = instance_name,
-        gpu_type = gpu_type,
-        ssh_key = ssh_key_name,
-      )
-    except ApiError as e:
-      print(f'Instance creation failed: {e}')
-      raise
-
-    print(f'Instance created: {my_instance}')
-    status = 'pending'
-
-    print('Waiting for instance to start')
-
-    # 4: Check the instance status
-    # Check status every 10 seconds, exit when status is 'running'
-    count = 1
-    while status != 'running':
-      if status != 'pending':
+# 4: Check the instance status using client.instances.get()
+# Check status every 10 seconds, exit when status is 'running'
+count = 1
+while status != 'running':
+    if status != 'pending':
         print('Could not create instance')
         raise Exception('Could not create instance')
-      try:
-        # Send GET request to /instances
-        instances = client.instances.list()
-        for instance in instances:
-          if instance.id == my_instance.id:
-            status = instance.status
-            break
+    try:
+        # Send GET request to /instances/{instance_id}
+        instance = client.instances.get(instance_id)
         status = instance.status
-      except ApiError as e:
-        print(f'Listing instances failed: {e}')
+    except ApiError as e:
+        print(f'Getting instance status failed: {e}')
         raise
 
-      print(f'\t [{count}] Status: {status}')
-      time.sleep(10)
-      count += 1
+    print(f'\t [{count}] Status: {status}')
+    time.sleep(10)
+    count += 1
 
-    # 5: Print the instance IP
-    print(f'Instance IP address: {instance.ip_address}')
+# 5: Print the instance IP
+print(f'Instance IP address: {instance.ip_address}')
 
-    # 6: Terminate the instance
-    print('Terminating instance')
+# 6: Terminate the instance
+print('Terminating instance')
 
-    # Send DELETE request to /instances/{instance_id}
-    try: 
-      response = client.instances.delete(
-        instance_id = my_instance.id,
+# Send DELETE request to /instances/{instance_id}
+try:
+    client.instances.delete(
+        instance_id=instance_id
     )
-    except ApiError as e:
-      print(f'Instance termination failed: {e}')
-      raise
+except ApiError as e:
+    print(f'Instance termination failed: {e}')
+    raise
 
-    print('Instance deleted')
-    ```
+print('Instance deleted')
+
+# 7: Delete the public SSH key that was added to the account
+try:
+    client.ssh_keys.delete(
+        ssh_key_name=ssh_key_name
+    )
+except ApiError as e:
+    print(f'SSH key deletion failed: {e}')
+    raise
+```
+    </Tab>
+
+    {/* TYPESCRIPT WITHOUT SDK VERSION */}
+    <Tab title='TypeScript'>
+
+        Before you run this script, replace the `apiKey` value on line 5 with your own. 
+
+```ts maxLines=30 {5,36,53,73,106,109,120}
+import { readFileSync } from 'fs';
+import { join } from 'path';
+
+const baseUrl = 'https://platform.fluidstack.io/';
+const apiKey = 'api_key_j123My_FakeAPIKey';
+
+// Set the API key in a header
+const headers = new Headers({
+    'api-key': apiKey,
+    'Content-Type': 'application/json',
+});
+
+interface Instance {
+    id: string;
+    status: string;
+    ip_address: string;
+}
+
+interface CreateInstanceResponse {
+    id: string;
+}
+
+// Utility function to fetch JSON data and assert its type
+async function fetchJson<T>(url: string, options?: RequestInit): Promise<T> {
+    const response = await fetch(url, options);
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json() as Promise<T>;
+}
+
+async function main(): Promise<void> {
+    const publicKey = readFileSync(join(process.env.HOME || '', '.ssh', 'id_rsa.pub'), 'utf-8').trim();
+    const sshKeyName = 'typescript_ssh_key';
+
+    // 1: Create an SSH key
+    // Read the public key from ~/.ssh/id_rsa.pub
+    console.log('Creating SSH key');
+    try {
+        await fetchJson(`${baseUrl}ssh_keys`, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({
+                name: sshKeyName,
+                public_key: publicKey,
+            }),
+        });
+    } catch (error) {
+        console.error('Error creating SSH key:', error);
+        return;
+    }
+
+    // 2: Create an instance
+    console.log('Creating instance');
+    let instanceId: string;
+    try {
+        const createdInstance = await fetchJson<CreateInstanceResponse>(`${baseUrl}instances`, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({
+                name: 'typescript_test_instance',
+                ssh_key: sshKeyName,
+                gpu_type: 'RTX_A6000_48GB',
+            }),
+        });
+        instanceId = createdInstance.id;
+        console.log('Response:', JSON.stringify(createdInstance, null, 2));
+    } catch (error) {
+        console.error('Error creating instance:', error);
+        return;
+    }
+
+    // 3: Check the instance status
+    console.log('Waiting for instance to start');
+    let instance: Instance;
+    let status: string;
+    let count = 1;
+
+    try {
+        instance = await fetchJson<Instance>(`${baseUrl}instances/${instanceId}`, { headers });
+        status = instance.status;
+    } catch (error) {
+        console.error('Error retrieving instance by ID:', error);
+        return;
+    }
+
+    while (status !== 'running') {
+        if (status !== 'pending') {
+            console.error('Could not create instance. Status:', status);
+            return;
+        }
+
+        try {
+            instance = await fetchJson<Instance>(`${baseUrl}instances/${instanceId}`, { headers });
+            status = instance.status;
+        } catch (error) {
+            console.error('Error fetching instance:', error);
+            return;
+        }
+
+        console.log(`\t [${count}] Status: ${status}`);
+        await new Promise(resolve => setTimeout(resolve, 10000)); // Wait for 10 seconds
+        count += 1;
+    }
+
+    // 4: Print the instance IP
+    console.log('Instance IP address:', instance.ip_address);
+
+    // 5: Terminate the instance
+    try {
+        await fetch(`${baseUrl}instances/${instanceId}`, {
+            method: 'DELETE',
+            headers,
+        });
+        console.log('Instance deleted');
+    } catch (error) {
+        console.error('Error deleting instance:', error);
+    }
+
+    // 6: Delete the SSH key
+    try {
+        await fetch(`${baseUrl}ssh_keys/${sshKeyName}`, {
+            method: 'DELETE',
+            headers,
+        });
+        console.log('SSH key deleted');
+    } catch (error) {
+        console.error('Error deleting SSH key:', error);
+    }
+}
+
+main().catch(error => {
+    console.error('Error in main function', error);
+});
+
+```
+
   </Tab>
+
+  {/* TYPESCRIPT SDK VERSION */}
+  <Tab title='TypeScript SDK'>
+    Before you run this script, replace the `apiKey` value on line 5 with your own. You must also [install the FluidStack TypeScript SDK](/sdks/typescript/use-typescript-sdk#installation) into your environment.
+
+```ts maxLines=30 {5,9,12,29,45,78,81,89}
+import { FluidStackApiClient } from "fluidstack";
+import { readFileSync } from 'fs';
+import { join } from 'path';
+
+const apiKey = 'api_key_j123My_FakeAPIKey';
+
+async function main() {
+
+    // 1: Instantiate a client
+    const client = new FluidStackApiClient({ apiKey });
+
+    // 2: Create an SSH key
+    // Read the public key from ~/.ssh/id_rsa.pub
+    const publicKey = readFileSync(join(process.env.HOME || '', '.ssh', 'id_rsa.pub'), 'utf-8').trim();
+    const sshKeyName = 'typescript_sdk_ssh_key';
+
+    console.log('Creating SSH key');
+  
+    try {
+        await client.sshKeys.create({
+            name: sshKeyName,
+            publicKey: publicKey,
+        });
+    } catch (error) {
+        console.error('Error creating SSH key:', error);
+        return;
+    }
+
+    // 3: Create an instance
+    console.log('Creating instance')
+    let instanceId: string;
+    try {
+        const createdInstance = await client.instances.create({
+            name: 'typescript_sdk_test_instance',
+            gpuType: 'RTX_A6000_48GB',
+            sshKey: sshKeyName,
+        });
+        instanceId = createdInstance.id;
+        console.log('Response:', createdInstance);
+    } catch (error) {
+        console.error('Error creating instance:', error);
+        return;
+    }
+
+    // 4: Check the instance status
+    console.log('Waiting for instance to start');
+    let instance;
+    let count = 1;
+
+    try {
+        instance = await client.instances.get(instanceId);
+    } catch (error) {
+        console.error('Error retrieving instance by ID:', error);
+        return;
+    }
+
+    let status = instance.status;
+
+    while (status !== 'running') {
+        if (status !== 'pending') {
+            console.error('Could not create instance. Status:', status);
+            return;
+        }
+
+        try {
+            instance = await client.instances.get(instanceId);
+            status = instance.status;
+        } catch (error) {
+            console.error('Error fetching instance status:', error);
+            return;
+        }
+
+        console.log(`\t [${count}] Status: ${status}`);
+        await new Promise(resolve => setTimeout(resolve, 10000)); // Wait for 10 seconds
+        count += 1;
+    }
+
+    // 5: Print the instance IP
+    console.log('Instance IP address:', instance.ipAddress);
+
+    // 6: Terminate the instance
+    try {
+        await client.instances.delete(instanceId);
+        console.log('Instance deleted');
+    } catch (error) {
+        console.error('Error deleting instance:', error);
+    }
+
+    // 7: Delete the SSH key
+    try {
+        await client.sshKeys.delete(sshKeyName);
+        console.log('SSH key deleted');
+    } catch (error) {
+        console.error('Error deleting SSH key:', error);
+    }
+}
+
+main().catch(error => {
+    console.error('Error in main function', error);
+});
+```
+  </Tab>
+
 </Tabs>
+
+## Cleanup
+
+The script creates and deletes an SSH key and instance on the account associated with the provided API key.
+
+In case you ran into any issues with the script, confirm that the instance was deleted. If it was not deleted, stop or delete it manually to avoid incurring charges.
+
+If the SSH key on the account created by the script was not deleted, you must remove it manually before you can run the script again. 
 
 ## What's next?
 

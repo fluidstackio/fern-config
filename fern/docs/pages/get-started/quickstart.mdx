@@ -11,7 +11,7 @@ This FluidStack API tutorial leads you through the following steps:
 2. [Access your instance](#access-your-instance) using an SSH client and your SSH key.
 3. [Terminate your instance](#terminate-your-instance).
 
-<Tip>If you'd rather use the FluidStack Dashboard UI to manage instances instead of the API, see: [Dashboard - Instances](/dashboard/instances).</Tip>
+<Tip title='Tip'>If you'd rather use the FluidStack Dashboard UI to manage instances instead of the API, see: [Dashboard - Instances](/dashboard/instances).</Tip>
 
 ## Prerequisites
 
@@ -49,16 +49,6 @@ curl -X POST https://platform.fluidstack.io/instances \
 
 <Warning>The `$` and `>` characters are not intended to be copied.</Warning>
 
-{/* If you have multiple SSH keys you'd like to associate with this instance, provide a comma-separated list in the cURL command:
-
-```bash Multiple SSH keys example {2-4}
-    "ssh_keys": [
-      "my_key1",
-      "my_key2",
-      "my_key3"
-    ]
-``` */}
-
 Paste the command to a location where you can edit its text in plaintext format, such as a code editor. Replace the text `<api_key>` with your API key, and `my_ssh_key` with the name of an SSH key on your account. 
 
 If your request succeeds, the endpoint will respond with the created instance's `id`, `name`, `gpu_type`, and `operating_system_label`:
@@ -76,14 +66,14 @@ Take note of the `id` of your instance for the next step.
 <Note>
 Did you notice that the cURL command you sent did not specify an `operating_system_label`? 
 
-When the operating system is not specified, a default value is used. The only values you're required to specify when creating an instance are the instance `name`, `gpu_type`, and `ssh_key`.
+When the instance name is not specified, a randomized string is used. When the operating system is not specified, a default value is used. The only values you're required to specify when creating an instance are the instance `gpu_type`, and `ssh_key`.
 </Note>
 
 ### Check the status of your instance
 
 Request the instance's status using the [List user instances](/api-reference/instances/list) endpoint:
 
-<EndpointRequestSnippet endpoint="GET /instances" />
+<EndpointRequestSnippet endpoint='GET /instances' />
 
 Initially, the instance's `status` will be `pending`. Once the instance is created and available, its `status` will update to `running` and FluidStack will assign it an IP address.
 
@@ -128,7 +118,7 @@ Locate the instance object with the `id` of your newly created instance. Take no
 
 Once the instance's status is `running`, you can connect to it using SSH. Use the private key that corresponds to the public key you used when creating the SSH key for this instance, and the `username` and `ip_address` you noted in the previous step. 
 
-<Markdown src="../../snippets/connect-with-ssh.mdx" />
+<Markdown src='../../snippets/connect-with-ssh.mdx' />
 
 <Note>The first time you connect to your instance, you will see a message that says "The authenticity of host `x.x.x.x` can't be established ... Are you sure you want to continue connecting". This is normal for the first connection. Type `yes` and press `Enter`.</Note>
 
@@ -140,11 +130,11 @@ When you're ready to close your connection and log out from the instance, type `
 
 To terminate your instance, first close your SSH connection, then call the API using the cURL command below. Replace the text `instance_id` in the endpoint's path with the `id` you received when you created the endpoint, and `<api_key>` with your API key.
 
-<EndpointRequestSnippet endpoint="DELETE /instances/:instance_id" />
+<EndpointRequestSnippet endpoint='DELETE /instances/:instance_id' />
 
 Example:
 
-```bash title="Example request"
+```bash title='Example request'
   curl -X DELETE https://platform.fluidstack.io/instances/i-1234567890 \
   -H "api-key: api_key_j123MyFakeAPIKey"
 ```

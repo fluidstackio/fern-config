@@ -25,41 +25,53 @@ An **API key** is required for authentication to use the FluidStack API. Your AP
 Whenever you make a call to the FluidStack API, include your API key in the request headers with a header name of `api-key`. Otherwise, your call will fail. 
 
 Example:
-<EndpointRequestSnippet endpoint="GET /instances" />
+<EndpointRequestSnippet endpoint='GET /instances' />
 
 ### Requests and responses
 
-All request and response bodies are sent in JSON format. When sending data in the body of a request, always include the header `"Content-Type: application/json"`.
+All request and response bodies are sent in JSON format. When sending data in the body of a request, always include the header `'Content-Type: application/json'`.
 
 ## Programmatic API use
 
 ### Instance management
 
-See an example of [how to use Python to manage instances](/instances/manage/programmatic).
+See our tutorial about [how to use Python or TypeScript to manage instances](/instances/manage/programmatic).
 
-### Python SDK
+### SDKs
 
-Use our [Python SDK](/sdks/python/overview) to interface with our API in your Python applications.
+Use our [Python SDK](/sdks/python/overview) or [TypeScript SDK](/sdks/typescript/overview) to interface with our API in your applications.
 
 ### Secure use of your API key
 
 For security, avoid placing your API key in any file that could potentially be seen by others.
 
-There are many ways to safeguard the privacy of your API key. One common approach is using an `.env` file. Create a file named `.env` or look for one that already exists in your project. Add your key to it, then use the `dotenv` module to import it into your Python file. 
+There are several ways to safeguard the privacy of your API key. One common approach is using an `.env` file. Create a file named `.env` or look for one that already exists in your project. Add your key to it, then use the `dotenv` module to import it into your Python or TypeScript file. 
+
+<Note title="Note">
+The `dotenv` module is not available by default and must be installed before use. It is called `dotenv` in both Python and Node.js/TypeScript.
+</Note>
 
 Example:
 
 ```properties .env file
-FLUIDSTACK_API_KEY="api_key_j123YourAPIKey"
+FLUIDSTACK_API_KEY='api_key_j123YourAPIKey'
 ```
+
 <CodeBlocks>
+
 ```python Python
 from dotenv import load_dotenv
 import os
 
-load_dotenv() # load the variables from your .env file
+load_dotenv() # Load environment variables from .env file
 
-api_key = os.getenv('FLUIDSTACK_API_KEY') # Use your API key securely
+# Get the API key from the environment variable
+api_key = os.getenv('FLUIDSTACK_API_KEY')
+
+if api_key is None:
+    raise ValueError("The FLUIDSTACK_API_KEY environment variable is not set in the .env file.")
+
+...
 ```
 
 ```python Python SDK
@@ -67,13 +79,57 @@ from FluidStack.client import FluidStack
 from dotenv import load_dotenv
 import os
 
-load_dotenv() # load the variables from your .env file
+# Load environment variables from .env file
+load_dotenv()
 
+# Get the API key from the environment variable
+api_key = os.getenv('FLUIDSTACK_API_KEY')
+
+if api_key is None:
+    raise ValueError("The FLUIDSTACK_API_KEY environment variable is not set in the .env file.")
+
+# 1: Instantiate a client
 client = FluidStack(
-  api_key = os.getenv('FLUIDSTACK_API_KEY') # Use your API key securely
+    api_key=api_key
 )
+
+...
+```
+
+```ts TypeScript
+import dotenv from 'dotenv';
+
+// Load environment variables from .env file
+dotenv.config();
+
+// Get the API key from the environment variable
+const apiKey = process.env.FLUIDSTACK_API_KEY;
+
+if (!apiKey) {
+    throw new Error('FLUIDSTACK_API_KEY environment variable is not set.');
+}
+
+...
+```
+
+```ts TypeScript SDK
+import { FluidStackApiClient } from "fluidstack";
+import dotenv from 'dotenv';
+
+// Load environment variables from .env file
+dotenv.config();
+
+// Get the API key from the environment variable
+const apiKey = process.env.FLUIDSTACK_API_KEY;
+
+if (!apiKey) {
+    throw new Error('FLUIDSTACK_API_KEY environment variable is not set.');
+}
+
+...
 ```
 </CodeBlocks>
+
 <Warning>
   If your `.env` file is inside a git repository, make sure that it's added to the [`.gitignore`](https://git-scm.com/docs/gitignore) file for that repository.
 </Warning>
