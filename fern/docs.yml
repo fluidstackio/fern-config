@@ -82,6 +82,7 @@ navigation:
             path: ./docs/pages/sdks/python/use-python-sdk.mdx
             slug: use-python-sdk
       - section: TypeScript
+        slug: typescript
         contents:
           - page: Overview
             path: ./docs/pages/sdks/typescript/overview.mdx

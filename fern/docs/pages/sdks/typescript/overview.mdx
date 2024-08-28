@@ -11,8 +11,8 @@ It includes the following features:
 - Ability to [abort requests](#abort-requests)
 - [Runtime compatibility](#runtime-compatibility)
 - Ability to [customize the fetch client](#customize-the-fetch-client)
-- Configurable [timeouts](#timeouts)
 - Automatic [retries](#retries) with exponential backoff
+- Configurable [timeouts](#timeouts)
 
 ## Request and response types
 
@@ -57,7 +57,7 @@ const response = await fluidStackApi.create(..., {
 controller.abort(); // aborts the request
 ```
 
-# Runtime compatibility
+## Runtime compatibility
 
 The SDK defaults to `node-fetch` but will use the global `fetch` client if present.
 
