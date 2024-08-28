@@ -77,7 +77,7 @@ cat ~/.ssh/id_ecdsa_256.pub
 </Tabs>
 </Frame>
 
-<Warning>
+<Warning title="Warning">
   With any public/private key pair that you generate, your public key can be shared freely. Your private key should be just that—private! Take care not to share it with others, or in public repositories such as in GitHub. 
 </Warning>
 
@@ -85,7 +85,7 @@ cat ~/.ssh/id_ecdsa_256.pub
 
 Use your public key to create an SSH key on your FluidStack account. If you don't have a public key, see: [Generate a public/private key pair](#generate-a-publicprivate-key-pair).
 
-<Tip>In this context, 'creating an SSH key' means 'storing (adding) a copy of your public key on your FluidStack account.' The stored SSH key is identical to your public key.</Tip>
+<Tip title="Tip">In this context, 'creating an SSH key' means 'storing (adding) a copy of your public key on your FluidStack account.' The stored SSH key is identical to your public key.</Tip>
 
 <AccordionGroup>
 
@@ -99,7 +99,7 @@ Use your public key to create an SSH key on your FluidStack account. If you don'
 
     <EndpointRequestSnippet endpoint='POST /ssh_keys' />
 
-    <Tip>Make sure to replace the `<api-key>` value with your API key, the `<public-key>` value with your public key, and the `name` of `my_ssh_key` with the unique SSH key name you'd like to use.</Tip>
+    <Tip title="Tip">Make sure to replace the `<api-key>` value with your API key, the `<public-key>` value with your public key, and the `name` of `my_ssh_key` with the unique SSH key name you'd like to use.</Tip>
 
     If your POST request is successful, the endpoint responds with a JSON object that echoes the `name` and `public_key` that you sent:
 

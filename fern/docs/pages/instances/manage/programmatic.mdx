@@ -20,7 +20,7 @@ The Python and TypeScript scripts on this page demonstrates how the [FluidStack 
 
             The script reads the public key located at `~/.ssh/id_rsa.pub`, then sends a request to the [Create an SSH key](/api-reference/ssh-keys/create) endpoint to create an SSH key. This key will be named either `python_ssh_key` or `typescript_ssh_key` and is a copy of the public key that was read.
 
-            <Warning>
+            <Warning title="Warning">
                 - If you already have an SSH key on your FluidStack account named `python_ssh_key` or `typescript_ssh_key`, change the script to use a different, unique name. Alternatively, delete the existing key. 
                 - If your public key is in a different location or filename, make sure to update that part of the script.
             </Warning>
@@ -64,7 +64,7 @@ The Python and TypeScript scripts on this page demonstrates how the [FluidStack 
 
             The script reads the public key located at `~/.ssh/id_rsa.pub`, then sends a request to the [Create an SSH key](/api-reference/ssh-keys/create) endpoint to create an SSH key. This key will be named either `python_sdk_ssh_key` or `typescript_sdk_ssh_key` and is a copy of the public key that was read.
 
-            <Warning>
+            <Warning title="Warning">
                 - If you already have an SSH key on your FluidStack account named `python_sdk_ssh_key` or `typescript_sdk_ssh_key`, change the script to use a different, unique name. Alternatively, delete the existing key.
                 - If your public key is in a different location or filename, make sure to update that part of the script.
             </Warning>

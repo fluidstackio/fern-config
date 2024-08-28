@@ -30,7 +30,7 @@ In this step, you will create an instance with the following configuration and o
 |------------------|-----------|-----------|----------|-------------------|-----------------
 | RTX_A6000_48GB   | 1         | 16        | 59GB     | 425 GB            | Ubuntu 20.04 LTS
 
-<Note>
+<Note title="Note">
   If you prefer, you can use a different [instance configuration](/instances/configurations) and/or [operating system](/instances/operating-systems).
 </Note>
 
@@ -47,7 +47,7 @@ curl -X POST https://platform.fluidstack.io/instances \
 }'
 ```
 
-<Warning>The `$` and `>` characters are not intended to be copied.</Warning>
+<Warning title="Warning">The `$` and `>` characters are not intended to be copied.</Warning>
 
 Paste the command to a location where you can edit its text in plaintext format, such as a code editor. Replace the text `<api_key>` with your API key, and `my_ssh_key` with the name of an SSH key on your account. 
 
@@ -63,7 +63,7 @@ If your request succeeds, the endpoint will respond with the created instance's 
 ```
 Take note of the `id` of your instance for the next step.
 
-<Note>
+<Note title="Note">
 Did you notice that the cURL command you sent did not specify an `operating_system_label`? 
 
 When the instance name is not specified, a randomized string is used. When the operating system is not specified, a default value is used. The only values you're required to specify when creating an instance are the instance `gpu_type`, and `ssh_key`.
@@ -120,7 +120,7 @@ Once the instance's status is `running`, you can connect to it using SSH. Use th
 
 <Markdown src='../../snippets/connect-with-ssh.mdx' />
 
-<Note>The first time you connect to your instance, you will see a message that says "The authenticity of host `x.x.x.x` can't be established ... Are you sure you want to continue connecting". This is normal for the first connection. Type `yes` and press `Enter`.</Note>
+<Note title="Note">The first time you connect to your instance, you will see a message that says "The authenticity of host `x.x.x.x` can't be established ... Are you sure you want to continue connecting". This is normal for the first connection. Type `yes` and press `Enter`.</Note>
 
 When you have successfully logged in, notice that your command prompt has changed. All commands that you enter into this command prompt are executed on your instance.
 
