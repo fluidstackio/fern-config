@@ -64,6 +64,9 @@ navigation:
         slug: configurations
       - page: Operating systems
         path: ./docs/pages/instances/operating-systems.mdx
+      - page: CUDA Toolkit
+        slug: cuda-toolkit
+        path: ./docs/pages/instances/cuda-toolkit.mdx
   - section: SSH
     contents:
       - page: What is SSH?
