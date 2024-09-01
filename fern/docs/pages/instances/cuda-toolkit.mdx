@@ -1,0 +1,165 @@
+---
+subtitle: How to use and update the CUDA Toolkit
+description: How to use the CUDA Toolkit, how to use the CUDA Samples repository, and how to update the CUDA Toolkit to the latest version.
+---
+
+## What is CUDA?
+
+CUDA is a general-purpose parallel computing platform and programming architecture developed by [NVIDIA](https://developer.nvidia.com/about-cuda). It enables the use of NVIDIA GPUs for tasks beyond traditional graphics rendering, a practice known as **General-Purpose Computing on Graphics Processing Units (GPGPU)**.
+
+By running thousands of threads in parallel using GPU resources, CUDA accelerates compute-intensive processes that would take much longer on a CPU alone. It is widely used in fields such as AI training, scientific simulations, and deep learning.
+
+## What is the CUDA Toolkit?
+
+The CUDA Toolkit is an SDK provided by NVIDIA that contains tools, libraries, and resources to develop applications using the CUDA architecture. It provides everything a developer needs to write, compile, debug, and optimize CUDA applications.
+
+Key components of the CUDA Toolkit include:
+
+- [NVCC](https://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html): the compiler driver that compiles CUDA code (usually written in C/C++) into an executable that can run on an NVIDIA GPU
+- [cuda-gdb](https://docs.nvidia.com/cuda/cuda-gdb/index.html): a debugger for CUDA applications; an extension to GDB (the GNU Project debugger) that allows simultaneous debugging of GPU and CPU code within the same environment
+- Profiling and optimization tools: the [CUDA Profiling Tools Interface (CUPTI)](https://developer.nvidia.com/cupti) and [NSight Compute](https://developer.nvidia.com/nsight-compute), and other tools
+- [GPU-accelerated libraries](https://developer.nvidia.com/gpu-accelerated-libraries): libraries for math, quantum computing, data processing, graphics, deep learning, and more
+
+## Find the current CUDA Toolkit version
+
+FluidStack's NVIDIA GPU instances are pre-installed with CUDA and the CUDA Toolkit.
+
+To find out what version is installed on your instance, first [SSH into the instance](/ssh/use-ssh-keys#connect-to-an-instance-with-an-ssh-key).
+
+Though the CUDA Toolkit is installed, two environment variables must be configured before you can use it globally. Copy and paste the following commands into the SSH session.
+
+```bash
+echo 'export PATH=/usr/local/cuda/bin:$PATH' >> ~/.bashrc
+echo 'export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH' >> ~/.bashrc
+source ~/.bashrc
+```
+
+After this, enter the following command on your instance:
+
+```bash
+nvcc --version
+```
+
+If the CUDA Toolkit is installed and the environment variable configuration in the previous step was successful, the output will show a release number (such as `12.6`). This number indicates the CUDA Toolkit version that is installed.
+
+## The CUDA Samples repository
+
+NVIDIA provides a repository of sample code that demonstrates various CUDA features and best practices. These examples can help you quickly get started with writing CUDA applications.
+
+This repository is available at: [https://github.com/nvidia/cuda-samples](https://github.com/nvidia/cuda-samples). To try it out, as well as to test that CUDA is properly installed on your instance, follow the steps below. 
+
+<Info title="Important">
+    Enter the commands shown below into an SSH session to your instance.
+</Info>
+
+<Steps>
+
+    ### Clone the CUDA Samples repository
+
+    Run the following command:
+
+```bash
+git clone https://github.com/nvidia/cuda-samples
+```
+
+    ### Move to the deviceQuery directory
+
+    Move to the `deviceQuery` sample directory on the cloned repository:
+
+```bash
+cd cuda-samples/Samples/1_Utilities/deviceQuery
+```
+
+    ### Run `make`
+
+    Build the sample code in that directory, using the provided Makefile: 
+
+```bash 
+make
+```
+
+    ### Run the deviceQuery sample
+
+    Run the compiled executable for the `deviceQuery` sample:
+
+```bash
+./deviceQuery
+```
+
+    If successful, you should see detailed output about each your instance's GPU devices, along with a final line that ends with `RESULT = PASS`. 
+
+</Steps>
+
+For any other samples in the CUDA Samples repository that you want to use, follow the same procedure. Move to the directory of the sample, run `make`, then run the compiled executable.
+
+## How to update the CUDA Toolkit to the latest version
+
+<Warning title="Warning">
+    Updating drivers can sometimes produce unexpected results. Back up any important data on your instance before you proceed!
+</Warning>
+
+<Info title="Important">
+    Enter the commands shown below into an SSH session to your instance.
+</Info>
+
+<Steps>
+
+    ### Find the current CUDA Toolkit version
+
+    Locate the version of the CUDA Toolkit currently installed on your instance. See: [Find the current CUDA Toolkit version](#find-the-current-cuda-toolkit-version).
+
+    ### Find the latest CUDA Toolkit version
+
+    Go to [NVIDIA's update page](https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu) and confirm that the version number is higher than the version you have currently installed.
+
+    ### Select distribution version and installer type
+
+    Select the distribution version for your instance, then for **Installer Type**, choose the **deb (network)** option.
+
+    ### Run the installer commands
+
+    Copy and paste each line under the CUDA Toolkit Installer instructions, one at a time, in the SSH session to your instance.
+
+    ### Upgrade packages
+
+    Once the final command you copied has finished running, enter the following command:
+
+```bash
+sudo apt upgrade
+```
+
+    Once the upgrade has finished, run `nvcc --version` again to confirm that your CUDA Toolkit version has been updated to the latest version.
+
+    ### Update the NVIDIA driver
+
+    Next, run the following command to also update the NVIDIA driver:
+
+```bash
+sudo apt-get install -y nvidia-open
+```
+
+    ### Reboot
+    
+    To complete the NVIDIA driver update, you must reboot the instance:
+
+```bash
+sudo reboot
+```
+
+    Rebooting the instance ends your SSH session to it. After waiting for a minute or longer for the instance to finish rebooting, SSH to your instance again. If your SSH attempt fails, your instance is most likely still starting up. 
+
+    ### Confirm the driver version
+
+    Once you have logged back into your instance, run the following command:
+
+```bash
+nvidia-smi
+```
+
+    The CUDA version shown at the top of the output from this command should match the version of the CUDA Toolkit that you installed. 
+
+    ### (Optional) Test devices with the CUDA Samples repository
+
+    Follow the steps under [The CUDA Samples repository](#the-cuda-samples-repository) to confirm that CUDA is functioning on all your instance's GPUs. 
+
+</Steps>
