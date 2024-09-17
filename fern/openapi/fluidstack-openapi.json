@@ -777,7 +777,7 @@
       "ConfigurationInstanceResponse": {
         "properties": {
           "id": {
-            "$ref": "#/components/schemas/EntityId"
+            "$ref": "#/components/schemas/EntityId-Output"
           },
           "gpu_model": {
             "anyOf": [
@@ -827,6 +827,9 @@
             "type": "integer",
             "title": "Estimated Provisioning Time Minutes",
             "default": 5
+          },
+          "region": {
+            "$ref": "#/components/schemas/Region"
           }
         },
         "type": "object",
@@ -836,7 +839,8 @@
           "gpu_count",
           "cpu_count",
           "nvme_storage_size_gb",
-          "memory_size_gb"
+          "memory_size_gb",
+          "region"
         ],
         "title": "ConfigurationInstanceResponse"
       },
@@ -931,6 +935,15 @@
               }
             ],
             "description": "The region in which to create the instance."
+          },
+          "volumes": {
+            "items": {
+              "$ref": "#/components/schemas/VolumeInstanceResponse-Input"
+            },
+            "type": "array",
+            "title": "Volumes",
+            "description": "The volumes attached to the instance.",
+            "default": []
           }
         },
         "type": "object",
@@ -986,7 +999,26 @@
         ],
         "title": "CreateSSHKeyRequest"
       },
-      "EntityId": {
+      "EntityId-Input": {
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Value"
+          },
+          "prefix": {
+            "type": "string",
+            "title": "Prefix"
+          }
+        },
+        "type": "object",
+        "required": [
+          "value",
+          "prefix"
+        ],
+        "title": "EntityId"
+      },
+      "EntityId-Output": {
         "type": "string",
         "title": "EntityId"
       },
@@ -1022,6 +1054,7 @@
           "RTX_A4000_16GB",
           "RTX_A6000_48GB",
           "RTX_A5000_24GB",
+          "TESLA_V100_16GB",
           "A100_PCIE_80GB",
           "A40_48GB",
           "A30_24GB",
@@ -1032,9 +1065,12 @@
           "A100_NVLINK_80GB",
           "A100_NVLINK_40GB",
           "H100_SXM5_80GB",
+          "H100_SXM4_80GB",
+          "A10_24GB",
+          "RTX_6000_24GB",
           "H100_PCIE_80GB",
           "H100_NVLINK_80GB",
-          "RTX_6000_ADA_48GB",
+          "RTX_A6000_ADA_48GB",
           "L40_48GB",
           "L4_24GB",
           "T4_16GB"
@@ -1140,7 +1176,7 @@
             "title": "Name",
             "description": "The name provided when the instance was created."
           },
-          "current_rate": {
+          "current_gpu_hr_cost": {
             "anyOf": [
               {
                 "type": "number"
@@ -1149,7 +1185,7 @@
                 "type": "null"
               }
             ],
-            "title": "Current Rate",
+            "title": "Current Gpu Hr Cost",
             "description": "The current hourly price of the instance per processor based on its current status."
           },
           "configuration": {
@@ -1175,6 +1211,15 @@
             ],
             "title": "Created At",
             "description": "The creation date and time of the instance."
+          },
+          "volumes": {
+            "items": {
+              "$ref": "#/components/schemas/VolumeInstanceResponse-Output"
+            },
+            "type": "array",
+            "title": "Volumes",
+            "description": "The volumes attached to the instance.",
+            "default": []
           }
         },
         "type": "object",
@@ -1187,10 +1232,12 @@
         "type": "string",
         "enum": [
           "running",
+          "starting",
           "pending",
-          "unhealthy",
+          "failed",
           "terminated",
-          "stopped"
+          "stopped",
+          "stopping"
         ],
         "title": "InstanceStatus"
       },
@@ -1269,7 +1316,7 @@
             "title": "Name",
             "description": "The name provided when the instance was created."
           },
-          "current_rate": {
+          "current_gpu_hr_cost": {
             "anyOf": [
               {
                 "type": "number"
@@ -1278,7 +1325,7 @@
                 "type": "null"
               }
             ],
-            "title": "Current Rate",
+            "title": "Current Gpu Hr Cost",
             "description": "The current hourly price of the instance per processor based on its current status."
           },
           "configuration": {
@@ -1304,6 +1351,15 @@
             ],
             "title": "Created At",
             "description": "The creation date and time of the instance."
+          },
+          "volumes": {
+            "items": {
+              "$ref": "#/components/schemas/VolumeInstanceResponse-Output"
+            },
+            "type": "array",
+            "title": "Volumes",
+            "description": "The volumes attached to the instance.",
+            "default": []
           }
         },
         "type": "object",
@@ -1367,7 +1423,18 @@
           "NORWAY",
           "CANADA",
           "SWEDEN",
-          "NETHERLANDS"
+          "NETHERLANDS",
+          "TEXAS_USA",
+          "CALIFORNIA_USA",
+          "ARIZONA_USA",
+          "VIRGINIA_USA",
+          "ILLINOIS_USA",
+          "JAPAN",
+          "UTAH_USA",
+          "WASHINGTON_USA",
+          "GERMANY",
+          "INDIA",
+          "ISRAEL"
         ],
         "title": "Region"
       },
@@ -1437,6 +1504,174 @@
           "type"
         ],
         "title": "ValidationError"
+      },
+      "VolumeInstanceResponse-Input": {
+        "properties": {
+          "id": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EntityId-Input"
+              }
+            ],
+            "description": "The ID of the volume."
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "The name of the volume."
+          },
+          "size_gb": {
+            "type": "integer",
+            "title": "Size Gb",
+            "description": "The size of the volume in GB."
+          },
+          "status": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/VolumeStatus"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The status of the volume.",
+            "default": "creating"
+          },
+          "cost_gb_hr": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Cost Gb Hr",
+            "description": "The current hourly rate of the volume."
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At",
+            "description": "The creation time of the volume."
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At",
+            "description": "The update time of the volume."
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "size_gb",
+          "cost_gb_hr",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "VolumeInstanceResponse"
+      },
+      "VolumeInstanceResponse-Output": {
+        "properties": {
+          "id": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EntityId-Output"
+              }
+            ],
+            "description": "The ID of the volume."
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "The name of the volume."
+          },
+          "size_gb": {
+            "type": "integer",
+            "title": "Size Gb",
+            "description": "The size of the volume in GB."
+          },
+          "status": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/VolumeStatus"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The status of the volume.",
+            "default": "creating"
+          },
+          "cost_gb_hr": {
+            "type": "string",
+            "title": "Cost Gb Hr",
+            "description": "The current hourly rate of the volume."
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At",
+            "description": "The creation time of the volume."
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At",
+            "description": "The update time of the volume."
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "size_gb",
+          "cost_gb_hr",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "VolumeInstanceResponse"
+      },
+      "VolumeStatus": {
+        "type": "string",
+        "enum": [
+          "creating",
+          "attached",
+          "attaching",
+          "error",
+          "deleted"
+        ],
+        "title": "VolumeStatus"
       }
     }
   }
