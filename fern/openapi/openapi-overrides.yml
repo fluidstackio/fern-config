@@ -32,9 +32,10 @@ paths:
                   - my_ssh_key
                 ip_address: 192.0.2.0
                 name: my_instance_name
-                current_rate: 1
+                current_gpu_hr_cost: 1
                 configuration:
                   id: c-1234567890
+                  region: NORWAY
                   gpu_model:
                     name: RTX_A5000_24GB
                     memory_size_gb: 24
@@ -84,9 +85,10 @@ paths:
                   - my_ssh_key
                 ip_address: 192.0.2.0
                 name: my_instance_name
-                current_rate: 1
+                current_gpu_hr_cost: 1
                 configuration:
                   id: c-1234567890
+                  region: NORWAY
                   gpu_model:
                     name: RTX_A5000_24GB
                     memory_size_gb: 24
@@ -114,9 +116,10 @@ paths:
                 - my_ssh_key
               ip_address: 192.0.2.0
               name: my_instance_name
-              current_rate: null
+              current_gpu_hr_cost: 1
               configuration:
                 id: c-1234567890
+                region: NORWAY
                 gpu_model:
                   name: RTX_A5000_24GB
                   memory_size_gb: 24
@@ -144,9 +147,10 @@ paths:
                 - my_ssh_key
               ip_address: 192.0.2.0
               name: my_instance_name
-              current_rate: null
+              current_gpu_hr_cost: 1
               configuration:
                 id: c-1234567890
+                region: NORWAY
                 gpu_model:
                   name: RTX_A5000_24GB
                   memory_size_gb: 24
