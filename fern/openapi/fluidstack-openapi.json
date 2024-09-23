@@ -17,7 +17,7 @@
           "General"
         ],
         "summary": "Healthcheck",
-        "operationId": "healthcheck_healthcheck_get",
+        "operationId": "healthcheck_healthcheck_head",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -36,7 +36,7 @@
           "General"
         ],
         "summary": "Healthcheck",
-        "operationId": "healthcheck_healthcheck_get",
+        "operationId": "healthcheck_healthcheck_head",
         "responses": {
           "200": {
             "description": "Successful Response",
