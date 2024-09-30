@@ -56,6 +56,7 @@ paths:
             ssh_key: 'my_ssh_key'
             operating_system_label: ubuntu_20_04_lts_nvidia
           response:
+            status: 202
             body:
               id: i-1234567890
               name: my_instance_name

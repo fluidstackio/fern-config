@@ -1,1 +1,1 @@
-wget http://localhost:8000/openapi.json; cat openapi.json | jq > fern/openapi/fluidstack-openapi.json; rm openapi.json*
+wget https://platform.fluidstack.io/openapi.json; cat openapi.json | jq > fern/openapi/fluidstack-openapi.json; rm openapi.json*
