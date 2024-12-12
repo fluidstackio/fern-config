@@ -17,6 +17,9 @@ paths:
   /user/balance:
     get:
       x-fern-ignore: true
+  /user/company-details:
+    put:
+      x-fern-ignore: true
   /instances:
     get:
       x-fern-sdk-group-name: instances
