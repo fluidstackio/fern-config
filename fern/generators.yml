@@ -1,7 +1,7 @@
-default-group: local
 api:
   path: ./openapi/fluidstack-openapi.json
   overrides: ./openapi/openapi-overrides.yml
+default-group: local
 groups:
   python-sdk:
     generators:
@@ -16,7 +16,6 @@ groups:
         config:
           client_class_name: FluidStack
         smart-casing: true
-
   python-local:
     generators:
       - name: fernapi/fern-python-sdk
@@ -27,8 +26,7 @@ groups:
         config:
           client_class_name: FluidStack
         smart-casing: true
-
-  ts-local: 
+  ts-local:
     generators:
       - name: fernapi/fern-typescript-node-sdk
         version: 0.23.0
@@ -36,7 +34,6 @@ groups:
           location: local-file-system
           path: ../generated
         smart-casing: true
-
   ts-sdk:
     generators:
       - name: fernapi/fern-typescript-node-sdk
@@ -45,8 +42,17 @@ groups:
           location: npm
           package-name: fluidstack
           token: ${NPM_TOKEN}
-        github: 
+        github:
           repository: fluidstackio/fluidstack-typescript-sdk
-        smart-casing: true
-        config: 
+        config:
           includeApiReference: true
+        smart-casing: true
+  go-sdk:
+    generators:
+      - name: fernapi/fern-go-sdk
+        version: 0.23.2
+        output:
+          location: local-file-system
+          path: ../sdks/go
+        config:
+          importPath: go-mod-path/generated/go
