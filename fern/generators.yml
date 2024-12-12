@@ -50,8 +50,12 @@ groups:
   go-sdk:
     generators:
       - name: fernapi/fern-go-sdk
-        version: 0.23.2
+        version: 0.33.0
         github:
           repository: fluidstackio/fluidstack-go-sdk
-        config:
-          importPath: go-mod-path/generated/go
+        config: 
+          alwaysSendRequiredProperties: true
+          inlinePathParameters: true
+          inlineFileProperties: true
+          union: v1
+          packageName: fluidstack
