@@ -17,7 +17,7 @@
           "General"
         ],
         "summary": "Healthcheck",
-        "operationId": "healthcheck_healthcheck_head",
+        "operationId": "healthcheck_healthcheck_get",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -36,7 +36,7 @@
           "General"
         ],
         "summary": "Healthcheck",
-        "operationId": "healthcheck_healthcheck_head",
+        "operationId": "healthcheck_healthcheck_get",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -66,6 +66,18 @@
               "default": 1,
               "title": "Page"
             }
+          },
+          {
+            "name": "include_failed_instances",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Include failed instances. Default is False.",
+              "default": false,
+              "title": "Include Failed Instances"
+            },
+            "description": "Include failed instances. Default is False."
           },
           {
             "name": "api-key",
@@ -792,6 +804,75 @@
           }
         }
       }
+    },
+    "/user/company-details": {
+      "put": {
+        "summary": "Update the user company details",
+        "description": "Update the user company details",
+        "operationId": "update_company_details_user_company_details_put",
+        "parameters": [
+          {
+            "name": "api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Api-Key"
+            }
+          },
+          {
+            "name": "wos_session",
+            "in": "cookie",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Wos Session"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserCompanyDetailsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -939,11 +1020,15 @@
             "description": "The SSH key name to add to the instance. This SSH key is used to connect to the instance."
           },
           "operating_system_label": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/SupportedOperatingSystem"
+              },
+              {
+                "type": "string"
               }
             ],
+            "title": "Operating System Label",
             "description": "The operating system label used to create the instance.",
             "default": "ubuntu_20_04_lts_nvidia"
           },
@@ -989,15 +1074,25 @@
             "$ref": "#/components/schemas/GPUType"
           },
           "operating_system_label": {
-            "$ref": "#/components/schemas/SupportedOperatingSystem"
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SupportedOperatingSystem"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Operating System Label"
           }
         },
         "type": "object",
         "required": [
           "id",
           "name",
-          "gpu_type",
-          "operating_system_label"
+          "gpu_type"
         ],
         "title": "CreateInstanceResponse"
       },
@@ -1242,6 +1337,33 @@
             "title": "Volumes",
             "description": "The volumes attached to the instance.",
             "default": []
+          },
+          "operating_system_label": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SupportedOperatingSystem"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Operating System Label",
+            "description": "The operating system used to create the instance."
+          },
+          "user_email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "User Email",
+            "description": "The email of the user that owns the instance."
           }
         },
         "type": "object",
@@ -1259,7 +1381,8 @@
           "failed",
           "terminated",
           "stopped",
-          "stopping"
+          "stopping",
+          "provisioning"
         ],
         "title": "InstanceStatus"
       },
@@ -1382,6 +1505,33 @@
             "title": "Volumes",
             "description": "The volumes attached to the instance.",
             "default": []
+          },
+          "operating_system_label": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SupportedOperatingSystem"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Operating System Label",
+            "description": "The operating system used to create the instance."
+          },
+          "user_email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "User Email",
+            "description": "The email of the user that owns the instance."
           }
         },
         "type": "object",
@@ -1443,6 +1593,7 @@
         "type": "string",
         "enum": [
           "NORWAY",
+          "FINLAND",
           "CANADA",
           "SWEDEN",
           "NETHERLANDS",
@@ -1456,7 +1607,8 @@
           "WASHINGTON_USA",
           "GERMANY",
           "INDIA",
-          "ISRAEL"
+          "ISRAEL",
+          "LUXEMBOURG"
         ],
         "title": "Region"
       },
@@ -1493,6 +1645,238 @@
           "ubuntu_22_04_lts_nvidia"
         ],
         "title": "SupportedOperatingSystem"
+      },
+      "UpdateUserCompanyDetailsRequest": {
+        "properties": {
+          "company_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Company Name"
+          },
+          "company_vat_number": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Company Vat Number"
+          },
+          "company_address": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Company Address"
+          },
+          "company_tax_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Company Tax Id"
+          },
+          "company_contact_info": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Company Contact Info"
+          }
+        },
+        "type": "object",
+        "title": "UpdateUserCompanyDetailsRequest"
+      },
+      "User": {
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/EntityId-Output"
+          },
+          "first_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Name"
+          },
+          "last_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Name"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email"
+          },
+          "stripe_customer_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stripe Customer Id"
+          },
+          "workos_user_id": {
+            "type": "string",
+            "title": "Workos User Id"
+          },
+          "workos_organization_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Workos Organization Id"
+          },
+          "is_banned": {
+            "type": "boolean",
+            "title": "Is Banned",
+            "default": false
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At"
+          },
+          "auto_topup_enabled": {
+            "type": "boolean",
+            "title": "Auto Topup Enabled",
+            "default": false
+          },
+          "auto_topup_amount": {
+            "type": "integer",
+            "title": "Auto Topup Amount",
+            "default": 0
+          },
+          "auto_topup_minimum_balance": {
+            "type": "integer",
+            "title": "Auto Topup Minimum Balance",
+            "default": 0
+          },
+          "company_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Company Name"
+          },
+          "company_vat_number": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Company Vat Number"
+          },
+          "company_address": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Company Address"
+          },
+          "company_tax_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Company Tax Id"
+          },
+          "company_contact_info": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Company Contact Info"
+          },
+          "auto_terminate_on_depletion": {
+            "type": "boolean",
+            "title": "Auto Terminate On Depletion",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "email",
+          "workos_user_id"
+        ],
+        "title": "User"
       },
       "ValidationError": {
         "properties": {
@@ -1690,6 +2074,8 @@
           "creating",
           "attached",
           "attaching",
+          "ready",
+          "unknown",
           "error",
           "deleted"
         ],
