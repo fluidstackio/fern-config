@@ -51,8 +51,7 @@ groups:
     generators:
       - name: fernapi/fern-go-sdk
         version: 0.23.2
-        output:
-          location: local-file-system
-          path: ../sdks/go
+        github:
+          repository: fluidstackio/fluidstack-go-sdk
         config:
           importPath: go-mod-path/generated/go
