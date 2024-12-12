@@ -1,6 +1,14 @@
+auth-schemes:
+  api-key:
+    header: api-key
+    env: FLUIDSTACK_API_KEY
+    type: string
 api:
-  path: ./openapi/fluidstack-openapi.json
-  overrides: ./openapi/openapi-overrides.yml
+  auth: api-key
+  headers: {}
+  specs: 
+    - openapi: ./openapi/fluidstack-openapi.json
+      overrides: ./openapi/openapi-overrides.yml
 default-group: local
 groups:
   python-sdk:
