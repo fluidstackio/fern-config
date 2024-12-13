@@ -2,7 +2,7 @@
 description: This page contains example scripts to demonstrate how the FluidStack API can be used to manage instances programmatically.
 ---
 
-The Python and TypeScript scripts on this page demonstrates how the [FluidStack API](/api-reference) can be used to manage instances programmatically, with or without using one of our SDKs. 
+The Python and TypeScript scripts on this page demonstrate how the [FluidStack API](/api-reference) can be used to manage instances programmatically, with or without using one of our SDKs.
 
 ## Prerequisites
 
@@ -16,24 +16,24 @@ The Python and TypeScript scripts on this page demonstrates how the [FluidStack 
 <Tabs>
     <Tab title='Without SDK'>
         <Steps>
-            ### Create an SSH key
+            ### Add an SSH key
 
-            The script reads the public key located at `~/.ssh/id_rsa.pub`, then sends a request to the [Create an SSH key](/api-reference/ssh-keys/create) endpoint to create an SSH key. This key will be named either `python_ssh_key` or `typescript_ssh_key` and is a copy of the public key that was read.
+            The script reads the public key located at `~/.ssh/id_rsa.pub`, then sends a request to the [Add an SSH key](/api-reference/ssh-keys/add) endpoint to add an SSH key. This key will be named either `python_ssh_key` or `typescript_ssh_key` and is a copy of the public key that was read.
 
             <Warning title="Warning">
-                - If you already have an SSH key on your FluidStack account named `python_ssh_key` or `typescript_ssh_key`, change the script to use a different, unique name. Alternatively, delete the existing key. 
+                - If you already have an SSH key on your FluidStack account named `python_ssh_key` or `typescript_ssh_key`, change the script to use a different, unique name. Alternatively, delete the existing key.
                 - If your public key is in a different location or filename, make sure to update that part of the script.
             </Warning>
 
             ### Create an instance
 
             The script creates an instance by sending a request to the [Create a new instance](/api-reference/instances/create) endpoint.
-            
+
             The API key is sent in the request as a header. A custom name for the instance, the GPU type, and the name of the SSH key to use for accessing the instance are sent in the JSON body of the request.
 
             ### Check the instance status
 
-            Initially, the instance's `status` is `pending`. The script repeatedly checks this `status` until it is `running` by sending requests to the [Fetch a single user instances](/api-reference/instances/get) endpoint and parsing the response. 
+            Initially, the instance's `status` is `pending`. The script repeatedly checks this `status` until it is `running` by sending requests to the [Fetch a single user instances](/api-reference/instances/get) endpoint and parsing the response.
 
             This status-checking loop stops once the instance's `status` returns as `running`, or if its `status` indicates that it has been `terminated` or is otherwise unable to run.
 
@@ -43,7 +43,7 @@ The Python and TypeScript scripts on this page demonstrates how the [FluidStack 
 
             ### Terminate the instance
 
-            The script uses the [Terminate an instance](/api-reference/instances/delete) endpoint to delete the instance. 
+            The script uses the [Terminate an instance](/api-reference/instances/delete) endpoint to delete the instance.
 
             ### Delete the SSH key on the account
 
@@ -55,14 +55,14 @@ The Python and TypeScript scripts on this page demonstrates how the [FluidStack 
     <Tab title='With SDK'>
         <Steps>
             ### Instantiate a client
-            
-            The script uses the FluidStack SDK to instantiate an API client, passing a valid API key. 
-            
-            The instantiated client is configured with the API key and base URL of the API server, which means you can make requests without manually providing that information every time. 
 
-            ### Create an SSH key
+            The script uses the FluidStack SDK to instantiate an API client, passing a valid API key.
 
-            The script reads the public key located at `~/.ssh/id_rsa.pub`, then sends a request to the [Create an SSH key](/api-reference/ssh-keys/create) endpoint to create an SSH key. This key will be named either `python_sdk_ssh_key` or `typescript_sdk_ssh_key` and is a copy of the public key that was read.
+            The instantiated client is configured with the API key and base URL of the API server, which means you can make requests without manually providing that information every time.
+
+            ### Add an SSH key
+
+            The script reads the public key located at `~/.ssh/id_rsa.pub`, then sends a request to the [Add an SSH key](/api-reference/ssh-keys/add) endpoint to add an SSH key. This key will be named either `python_sdk_ssh_key` or `typescript_sdk_ssh_key` and is a copy of the public key that was read.
 
             <Warning title="Warning">
                 - If you already have an SSH key on your FluidStack account named `python_sdk_ssh_key` or `typescript_sdk_ssh_key`, change the script to use a different, unique name. Alternatively, delete the existing key.
@@ -77,7 +77,7 @@ The Python and TypeScript scripts on this page demonstrates how the [FluidStack 
 
             ### Check the instance status
 
-            Initially, the instance's `status` is `pending`. The script repeatedly checks this `status` until it is `running` using the `client.instances.get()` method and parsing the response. 
+            Initially, the instance's `status` is `pending`. The script repeatedly checks this `status` until it is `running` using the `client.instances.get()` method and parsing the response.
 
             This status-checking loop stops once the instance's `status` returns as `running`, or if its `status` indicates that it has been `terminated` or is otherwise unable to run.
 
@@ -106,7 +106,7 @@ The Python and TypeScript scripts on this page demonstrates how the [FluidStack 
     {/* PYTHON WITHOUT SDK VERSION */}
     <Tab title='Python'>
 
-        Before you run this script, replace the `api_key` value on line 7 with your own. You must also [install the `requests` library](https://pypi.org/project/requests/) into your environment. 
+        Before you run this script, replace the `api_key` value on line 7 with your own. You must also [install the `requests` library](https://pypi.org/project/requests/) into your environment.
 
 ```python maxLines=30 {7,15,37,60,78,81,91}
 import requests
@@ -123,11 +123,11 @@ headers = {
     'Content-Type': 'application/json'
 }
 
-# 1: Create an SSH key
-print('Creating SSH key')
+# 1: Add an SSH key
+print('Adding SSH key')
 
 # Read the public key from ~/.ssh/id_rsa.pub
-public_key = Path.home().joinpath('.ssh', 'id_rsa.pub').read_text().strip() 
+public_key = Path.home().joinpath('.ssh', 'id_rsa.pub').read_text().strip()
 
 ssh_key_name = 'python_ssh_key'
 
@@ -143,9 +143,9 @@ response = requests.post(
 
 # Print response body if the response status code is not OK
 if not response.ok:
-    raise Exception('Could not create SSH key')
+    raise Exception('Could not add SSH key')
 
-# 2: Create an instance 
+# 2: Create an instance
 print('Creating instance')
 
 # Send POST request to /instances
@@ -226,8 +226,8 @@ client = FluidStack(
     api_key=api_key
 )
 
-# 2: Create an SSH key
-print('Creating SSH key')
+# 2: Add an SSH key
+print('Adding SSH key')
 
 # Read the public key from ~/.ssh/id_rsa.pub
 public_key = Path.home().joinpath('.ssh', 'id_rsa.pub').read_text().strip()
@@ -244,7 +244,7 @@ except ApiError as e:
     print(f'SSH key creation failed: {e}')
     raise
 
-# 3: Create an instance 
+# 3: Create an instance
 print('Creating instance')
 
 # Send POST request to /instances
@@ -314,7 +314,7 @@ except ApiError as e:
     {/* TYPESCRIPT WITHOUT SDK VERSION */}
     <Tab title='TypeScript'>
 
-        Before you run this script, replace the `apiKey` value on line 5 with your own. 
+        Before you run this script, replace the `apiKey` value on line 5 with your own.
 
 ```ts maxLines=30 {5,36,53,73,106,109,120}
 import { readFileSync } from 'fs';
@@ -352,9 +352,9 @@ async function main(): Promise<void> {
     const publicKey = readFileSync(join(process.env.HOME || '', '.ssh', 'id_rsa.pub'), 'utf-8').trim();
     const sshKeyName = 'typescript_ssh_key';
 
-    // 1: Create an SSH key
+    // 1: Add an SSH key
     // Read the public key from ~/.ssh/id_rsa.pub
-    console.log('Creating SSH key');
+    console.log('Adding SSH key');
     try {
         await fetchJson(`${baseUrl}ssh_keys`, {
             method: 'POST',
@@ -365,7 +365,7 @@ async function main(): Promise<void> {
             }),
         });
     } catch (error) {
-        console.error('Error creating SSH key:', error);
+        console.error('Error adding SSH key:', error);
         return;
     }
 
@@ -472,20 +472,20 @@ async function main() {
     // 1: Instantiate a client
     const client = new FluidStackApiClient({ apiKey });
 
-    // 2: Create an SSH key
+    // 2: Add an SSH key
     // Read the public key from ~/.ssh/id_rsa.pub
     const publicKey = readFileSync(join(process.env.HOME || '', '.ssh', 'id_rsa.pub'), 'utf-8').trim();
     const sshKeyName = 'typescript_sdk_ssh_key';
 
-    console.log('Creating SSH key');
-  
+    console.log('Adding SSH key');
+
     try {
         await client.sshKeys.create({
             name: sshKeyName,
             publicKey: publicKey,
         });
     } catch (error) {
-        console.error('Error creating SSH key:', error);
+        console.error('Error adding SSH key:', error);
         return;
     }
 
@@ -568,11 +568,11 @@ main().catch(error => {
 
 ## Cleanup
 
-The script creates and deletes an SSH key and instance on the account associated with the provided API key.
+The script adds and deletes an SSH key and instance on the account associated with the provided API key.
 
 In case you ran into any issues with the script, confirm that the instance was deleted. If it was not deleted, stop or delete it manually to avoid incurring charges.
 
-If the SSH key on the account created by the script was not deleted, you must remove it manually before you can run the script again. 
+If the SSH key on the account created by the script was not deleted, you must remove it manually before you can run the script again.
 
 ## What's next?
 

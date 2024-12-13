@@ -29,11 +29,11 @@ ssh-keygen
       <br />
       ### Confirm that your key pair was created
       Enter the following command to confirm that your key pair was created:
-```bash 
+```bash
 ls ~/.ssh
 ```
     In the output, you should see `id_rsa` (the file that contains your private key) and `id_rsa.pub` (the file that contains your public key).
-    
+
       <br />
       ### View your public key
       Open the `id_rsa.pub` file in a plaintext editor, or enter the command below to output it to your terminal:
@@ -57,7 +57,7 @@ ssh-keygen -t ecdsa -b 256 -f ~/.ssh/id_ecdsa_256
     ### Confirm that your key pair was created
 
     Enter the following command to confirm that your key pair was created:
-```bash 
+```bash
 ls ~/.ssh
 ```
 
@@ -68,7 +68,7 @@ ls ~/.ssh
 
     Open the `id_ecdsa_256.pub` file in a plaintext editor, or enter the command below to output it to your terminal:
 
-```bash 
+```bash
 cat ~/.ssh/id_ecdsa_256.pub
 ```
     </Steps>
@@ -78,14 +78,14 @@ cat ~/.ssh/id_ecdsa_256.pub
 </Frame>
 
 <Warning title="Warning">
-  With any public/private key pair that you generate, your public key can be shared freely. Your private key should be just that—private! Take care not to share it with others, or in public repositories such as in GitHub. 
+  With any public/private key pair that you generate, your public key can be shared freely. Your private key should be just that—private! Take care not to share it with others, or in public repositories such as in GitHub.
 </Warning>
 
-## Create an SSH key
+## Add an SSH key
 
-Use your public key to create an SSH key on your FluidStack account. If you don't have a public key, see: [Generate a public/private key pair](#generate-a-publicprivate-key-pair).
+Use your public key to add an SSH key to your FluidStack account. If you don't have a public key, see: [Generate a public/private key pair](#generate-a-publicprivate-key-pair).
 
-<Tip title="Tip">In this context, 'creating an SSH key' means 'storing (adding) a copy of your public key on your FluidStack account.' The stored SSH key is identical to your public key.</Tip>
+<Tip title="Tip">In this context, 'adding an SSH key' means 'storing a copy of your public key on your FluidStack account.' The stored SSH key is identical to your public key.</Tip>
 
 <AccordionGroup>
 
@@ -95,7 +95,7 @@ Use your public key to create an SSH key on your FluidStack account. If you don'
   </Accordion>
 
   <Accordion title='Use the FluidStack API'>
-    Create an SSH key by using the [Create an SSH key](/api-reference/ssh-keys/create) endpoint.
+    Add an SSH key by using the [Add an SSH key](/api-reference/ssh-keys/add) endpoint.
 
     <EndpointRequestSnippet endpoint='POST /ssh_keys' />
 
@@ -110,7 +110,7 @@ Use your public key to create an SSH key on your FluidStack account. If you don'
 }
 ```
   </Accordion>
-  
+
 </AccordionGroup>
 
 ## View existing SSH keys
@@ -127,7 +127,7 @@ Use your public key to create an SSH key on your FluidStack account. If you don'
 
     <EndpointRequestSnippet endpoint='GET /ssh_keys' />
 
-    If your GET request is successful, the endpoint responds with a JSON array of objects. Each object in the JSON array represents an SSH key, including its `name` and `public_key`: 
+    If your GET request is successful, the endpoint responds with a JSON array of objects. Each object in the JSON array represents an SSH key, including its `name` and `public_key`:
 
 ```json title='Example response'
 [
