@@ -6,7 +6,7 @@ auth-schemes:
 api:
   auth: api-key
   headers: {}
-  specs: 
+  specs:
     - openapi: ./openapi/fluidstack-openapi.json
       overrides: ./openapi/openapi-overrides.yml
 default-group: local
@@ -27,7 +27,7 @@ groups:
   python-local:
     generators:
       - name: fernapi/fern-python-sdk
-        version: 2.10.2
+        version: 2.16.0
         output:
           location: local-file-system
           path: ../generated
@@ -61,7 +61,7 @@ groups:
         version: 0.33.0
         github:
           repository: fluidstackio/fluidstack-go-sdk
-        config: 
+        config:
           alwaysSendRequiredProperties: true
           inlinePathParameters: true
           inlineFileProperties: true
