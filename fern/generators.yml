@@ -6,7 +6,7 @@ auth-schemes:
 api:
   auth: api-key
   headers: {}
-  specs: 
+  specs:
     - openapi: ./openapi/fluidstack-openapi.json
       overrides: ./openapi/openapi-overrides.yml
 default-group: local
@@ -58,10 +58,10 @@ groups:
   go-sdk:
     generators:
       - name: fernapi/fern-go-sdk
-        version: 0.33.0
+        version: 0.36.5
         github:
           repository: fluidstackio/fluidstack-go-sdk
-        config: 
+        config:
           alwaysSendRequiredProperties: true
           inlinePathParameters: true
           inlineFileProperties: true
