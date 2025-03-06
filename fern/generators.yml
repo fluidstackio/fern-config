@@ -27,7 +27,7 @@ groups:
   python-local:
     generators:
       - name: fernapi/fern-python-sdk
-        version: 2.10.2
+        version: 2.16.0
         output:
           location: local-file-system
           path: ../generated
