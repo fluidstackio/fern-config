@@ -74,6 +74,7 @@ navigation:
       - page: How to use SSH keys
         path: ./docs/pages/ssh/use-ssh-keys.mdx
         slug: use-ssh-keys
+
   - section: SDKs
     slug: sdks
     contents:
@@ -96,6 +97,19 @@ navigation:
     snippets:
       python: fluidstack
       typescript: fluidstack
+  - section: Atlas
+    slug: atlas
+    contents:
+      - page: Surge
+        path: ./docs/pages/atlas/surge/surge.mdx
+        slug: surge
+      - page: Container Registry
+        path: ./docs/pages/atlas/container-registry/registry.mdx
+        slug: registry
+      - page: ArgoCD
+        path: ./docs/pages/atlas/argocd/argo.mdx
+        slug: argo
+    
 colors:
   accentPrimary: 
     light: '#0270FF'
