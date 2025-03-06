@@ -1,0 +1,63 @@
+
+# Surge
+
+Accelerate your AI inference workloads with instant access to thousands of H100/H200 GPUs through our on-demand infrastructure. Surge provides enterprise-grade autoscaling for containerized AI models with on-demand billing and zero upfront commitments.
+
+### Why Choose Surge for AI Inference?
+- **Instant GPU Scaling** - Go from 10 to hundreds of H100/H200 GPUs in minutes
+- **Cost-Efficient Inference** - Pay only for active GPU time ($X/hr per H100) with automatic scale-to-zero
+- **Seamless Integration** - Works with existing ML pipelines through AWS SQS, RabbitMQ, and Redis triggers
+- **Production-Ready** - Built-in monitoring, logging, and automatic recovery for mission-critical workloads
+
+## Getting Started
+Surge configuration is done through a YAML configuration file in a shared GitHub repository that has been set up for your organisation.  The repository structure is 
+
+```bash
+.
+├── apps
+│   └── surge.yaml
+└── values.yaml
+```
+
+## Configuration
+The configuration file is available at path `values.yaml`. To update your container deployment, simply modify the `image` field in your `values.yaml` file with your pre-pushed image from our Fluidstack Harbor registry:
+
+```yaml
+image: image-name:v1.2.0
+```
+
+It is possible to specify resource specifications in your `values.yaml` file. This ensures optimal usage of cluster resources for your containers For example:
+
+```yaml
+resources:
+  limits:
+    nvidia.com/gpu: 1
+    memory: "16Gi"
+    cpu: "8"
+```
+This configuration requests 1 GPU, 16GiB of RAM and 8 vCPUs for each container. 
+
+Make sure to adjust these values (number of GPUs, memory, and CPU) according to your workload demands. 
+
+
+## Deployment
+
+1. Push container image to the [Atlas Container Registry](/atlas/registry#getting-started).
+2. [Update the image](/atlas/registry#building-and-deploying-images) tag in your configuration.
+3. Commit changes and push to the `main` branch of the shared repository.
+4. Monitor deployment in [ArgoCD](/atlas/argo).
+
+## Autoscaling
+
+Your deployment automatically scales based on real-time demand using our pre-configured optimization rules. We monitor:
+- Queue depths in message brokers (Kafka, SQS, RabbitMQ, Redis etc)
+- API request rates
+- Resource utilization patterns
+
+For special scaling requirements, our support team can discuss and quickly implement custom rules.
+
+
+
+
+
+

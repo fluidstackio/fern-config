@@ -74,6 +74,7 @@ navigation:
       - page: How to use SSH keys
         path: ./docs/pages/ssh/use-ssh-keys.mdx
         slug: use-ssh-keys
+
   - section: SDKs
     slug: sdks
     contents:
@@ -92,10 +93,27 @@ navigation:
           - page: How to use the TypeScript SDK
             path: ./docs/pages/sdks/typescript/use-typescript-sdk.mdx
             slug: use-typescript-sdk
+
+  
+      
+            
+
   - api: API reference
     snippets:
       python: fluidstack
       typescript: fluidstack
+  - section: Atlas
+    slug: atlas
+    contents:
+      - page: Container Registry
+        path: ./docs/pages/atlas/container-registry/registry.mdx
+        slug: registry
+      - page: ArgoCD
+        path: ./docs/pages/atlas/argocd/argo.mdx
+        slug: argo
+      - page: Surge
+        path: ./docs/pages/atlas/surge/surge.mdx
+        slug: surge
 colors:
   accentPrimary: 
     light: '#0270FF'
