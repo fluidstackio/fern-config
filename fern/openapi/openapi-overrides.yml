@@ -214,6 +214,7 @@ paths:
                   - 4
                   - 8
                 price_per_gpu_hr: '5'
+                stopped_price_per_hour: '0.1'
                 estimated_provisioning_time_minutes: 5
                 regions:
                   - NORWAY
@@ -222,6 +223,7 @@ paths:
                   - 1
                   - 8
                 price_per_gpu_hr: '5'
+                stopped_price_per_hour: '0.1'
                 estimated_provisioning_time_minutes: 5
                 regions:
                   - CANADA
